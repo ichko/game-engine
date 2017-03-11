@@ -24,7 +24,7 @@ class Renderer {
         position = this.getTranslation().add(position);
         this.ctx.beginPath();
         this.ctx.fillStyle = color;
-        this.ctx.arc(position.x, position.y, radius, 0, Math.PI * 2);
+        this.ctx.arc(position.x, -position.y, radius, 0, Math.PI * 2);
         this.ctx.fill();
         this.ctx.closePath();
     }
@@ -32,7 +32,7 @@ class Renderer {
     rectangle(position, size, color) {
         position = this.getTranslation().add(position);
         this.ctx.fillStyle = color;
-        this.ctx.fillRect(position.x, position.y, size.width, size.height);
+        this.ctx.fillRect(position.x - size.width / 2, -position.y, size.width, size.height);
     }
 
     clear() {

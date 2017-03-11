@@ -12,9 +12,9 @@ class GameObject {
 
 class Circle extends GameObject {
 
-    constructor(config) {
+    constructor(config = {}) {
         super(config);
-        this.radius = config.radius;
+        this.radius = config.radius || 5;
     }
 
     render(renderer)  {
@@ -25,7 +25,7 @@ class Circle extends GameObject {
 
 class Rectangle extends GameObject {
 
-    constructor(config) {
+    constructor(config = {}) {
         super(config);
         this.size = config.size;
     }
@@ -38,9 +38,9 @@ class Rectangle extends GameObject {
 
 class Composite extends GameObject {
 
-    constructor(config) {
+    constructor(config = {}) {
         super(config);
-        this.bones = { };
+        this.root = {};
         this.nameCounter = 0;
     }
 
@@ -50,14 +50,15 @@ class Composite extends GameObject {
         offset = new Vector(),
         parent = 'root'
     }) {
-        this.bones[name] = { object, offset };
+        this.root[name] = { object, offset };
+        return this;
     }
 
     render(renderer) {
         renderer.pushTranslation(this.position);
-        for (let name in this.bones) {
+        for (let name in this.root) {
             renderer.pushTranslation(this.root[name].offset);
-            this.root[name].render(renderer);
+            this.root[name].object.render(renderer);
             renderer.popTranslation();
         }
         renderer.popTranslation();
