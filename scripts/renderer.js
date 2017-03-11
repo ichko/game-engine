@@ -36,7 +36,7 @@ class Renderer {
     }
 
     clear() {
-        this.ctx.clearRect(0, 0, this.width, this.height);
+        this.ctx.clearRect(-this.width / 2, -this.height / 2, this.width, this.height);
     }
 
 }

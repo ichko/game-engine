@@ -9,6 +9,10 @@ class Vector {
         return new Vector(this.x + vector.x, this.y + vector.y);
     }
 
+    reverse() {
+        return new Vector(-this.x, -this.y);
+    }
+
     scale(factor) {
         return new Vector(this.x * factor, this.y * factor);
     }

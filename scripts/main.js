@@ -17,7 +17,7 @@ let player = new Rectangle({
 let world = new Parallax(camera)
     .newLayer({
         name: 'foreground',
-        depth: 0.5,
+        depth: 1,
         objects: [new Rectangle({ size: { width: 60, height: 50, color: '#0f0' } })]
     })
     .newLayer({ name: 'player layer', objects: [ player ] });
@@ -28,6 +28,7 @@ let world = new Parallax(camera)
     io.callHandlers();
 
     camera.x++;
+    player.position.x++;
 
     requestAnimationFrame(animation);
 })();

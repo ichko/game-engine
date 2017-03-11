@@ -28,7 +28,7 @@ class Parallax {
 
     draw(renderer) {
         this.layers.forEach(layer => {
-            renderer.pushTranslation(this.reference.scale(layer.depth));
+            renderer.pushTranslation(this.reference.scale(-layer.depth));
             layer.draw(renderer)
             renderer.popTranslation();
         });
