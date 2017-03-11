@@ -6,9 +6,9 @@ class Layer {
         this.position = position;
     }
 
-    draw(renderer) {
+    render(renderer) {
         renderer.pushTranslation(this.position);
-        this.objects.forEach(object => object.draw(renderer));
+        this.objects.forEach(object => object.render(renderer));
         renderer.popTranslation();
     }
 
@@ -21,15 +21,15 @@ class Parallax {
         this.layers = [];
     }
 
-    newLayer({ objects, depth = 1 }) {
+    addLayer({ objects, depth = 1 }) {
         this.layers.push(new Layer(objects, depth));
         return this;
     }
 
-    draw(renderer) {
+    render(renderer) {
         this.layers.forEach(layer => {
             renderer.pushTranslation(this.reference.scale(-layer.depth));
-            layer.draw(renderer)
+            layer.render(renderer)
             renderer.popTranslation();
         });
     }

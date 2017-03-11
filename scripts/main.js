@@ -15,16 +15,16 @@ let player = new Rectangle({
 });
 
 let world = new Parallax(camera)
-    .newLayer({
+    .addLayer({
         name: 'foreground',
         depth: 1,
         objects: [new Rectangle({ size: { width: 60, height: 50, color: '#0f0' } })]
     })
-    .newLayer({ name: 'player layer', objects: [ player ] });
+    .addLayer({ name: 'player layer', objects: [ player ] });
 
 (function animation() {
     renderer.clear();
-    world.draw(renderer);
+    world.render(renderer);
     io.callHandlers();
 
     camera.x++;
