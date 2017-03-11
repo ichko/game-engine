@@ -1,7 +1,7 @@
 class IO {
 
     constructor() {
-        this.mouse = { x : 0, y: 0 };
+        this.mouse = { x: 0, y: 0 };
         this.keyHandlers = { };
         this.keyStates = { };
         this.bindEvents();
@@ -9,10 +9,10 @@ class IO {
 
     callHandlers() {
         for (let name in this.keyHandlers) {
-            if (this.keyState[name]) {
+            if (this.keyStates[name]) {
                 this.keyHandlers[name].handeler();
             } else {
-                this.keyHandlers[name].reverseHandler();
+                this.keyHandlers[name].reverseHandler && this.keyHandlers[name].reverseHandler();
             }
         }
     }

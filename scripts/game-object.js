@@ -1,53 +1,35 @@
 class GameObject {
-    constructor(position = new Vector()) {
+
+    constructor({ position = new Vector(), scale = 1, color = '#f00' }) {
         this.position = position;
-        this.sizeScale = 1;
-        this.scale = new Vector(1, 1);
-        this.offset = new Vector();
+        this.scale = scale;
+        this.color = color;
     }
 
-    getWorldPosition() {
-        return this.position.add(this.offset.vectorScale(this.scale));
-    }
 }
 
-let PrimitiveObject = {
+class Circle extends GameObject {
 
-    Circle: class Circle extends GameObject {
-        constructor(position = new Vector(), radius = 5, color = '#f00') {
-            super(position);
-            this.radius = radius;
-            this.color = color;
-        }
+    constructor(config) {
+        super(config);
+        this.radius = config.radius;
+    }
 
-        draw(ctx)  {
-            let worldPosition = this.getWorldPosition();
-            ctx.beginPath();
-            ctx.fillStyle = this.color;
-            ctx.arc(worldPosition.x, worldPosition.y,
-                    this.radius * this.sizeScale, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.closePath();
-        }
-    },
+    draw(renderer)  {
+        renderer.circle(this.position, this.radius, this.color);
+    }
 
-    Rectangle: class Rectangle extends GameObject {
-        constructor(position = new Vector(), size = { width: 5, height: 10 }, color = '#f00') {
-            super(position);
-            this.width = size.width;
-            this.height = size.height;
-            this.color = color;
-        }
+}
 
-        draw(ctx)  {
-            let worldPosition = this.getWorldPosition();
-            ctx.beginPath();
-            ctx.fillStyle = this.color;
-            ctx.rect(worldPosition.x, worldPosition.y,
-                     this.width * this.sizeScale, this.height * this.sizeScale);
-            ctx.fill();
-            ctx.closePath();
-        }
+class Rectangle extends GameObject {
+
+    constructor(config) {
+        super(config);
+        this.size = config.size;
+    }
+
+    draw(renderer) {
+        renderer.rectangle(this.position, this.size, this.color);
     }
 
 }
