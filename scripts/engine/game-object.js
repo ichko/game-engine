@@ -1,12 +1,12 @@
 class GameObject {
 
-    constructor({ position = new Vector(), scale = 1, color = '#f00' }) {
+    constructor({ position = new Vector() }) {
         this.position = position;
-        this.scale = scale;
-        this.color = color;
     }
 
     render() {}
+
+    update() {}
 
 }
 
@@ -14,6 +14,7 @@ class Circle extends GameObject {
 
     constructor(config = {}) {
         super(config);
+        this.color = config.color || '#f00';
         this.radius = config.radius || 5;
     }
 
@@ -27,6 +28,7 @@ class Rectangle extends GameObject {
 
     constructor(config = {}) {
         super(config);
+        this.color = config.color || '#f00';
         this.size = config.size;
     }
 
@@ -46,9 +48,8 @@ class Composite extends GameObject {
 
     add({
         name = 'unnamed' + this.nameCounter++,
-        object,
         offset = new Vector(),
-        parent = 'root'
+        object
     }) {
         this.root[name] = { object, offset };
         return this;

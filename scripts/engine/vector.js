@@ -9,6 +9,10 @@ class Vector {
         return new Vector(this.x + vector.x, this.y + vector.y);
     }
 
+    subtract(vector) {
+        return new Vector(this.x - vector.x, this.y - vector.x);
+    }
+
     reverse() {
         return new Vector(-this.x, -this.y);
     }
