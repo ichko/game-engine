@@ -10,17 +10,6 @@ class PhysicalObject {
         this.mass = mass;
     }
 
-    update() {
-        this.updateVelocity();
-        this.updatePosition();
-    }
-
-    updatePosition() {
-        this.position.add(this.velocity);
-    }
-
-    updateVelocity() {}
-
 }
 
 class SpringyVector extends PhysicalObject {

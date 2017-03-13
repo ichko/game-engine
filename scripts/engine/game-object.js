@@ -1,12 +1,23 @@
 class GameObject {
 
-    constructor({ position = new Vector() }) {
+    constructor({ position = new Vector(), color = '#f00' }) {
         this.position = position;
+        this.velocity = velocity;
+        this.color = color;
     }
 
     render() {}
 
-    update() {}
+    update() {
+        this.updateVelocity();
+        this.updatePosition();
+    }
+
+    updatePosition() {
+        this.position.add(this.velocity);
+    }
+
+    updateVelocity() {}
 
 }
 
@@ -14,7 +25,6 @@ class Circle extends GameObject {
 
     constructor(config = {}) {
         super(config);
-        this.color = config.color || '#f00';
         this.radius = config.radius || 5;
     }
 

@@ -12,6 +12,10 @@ class Layer {
         renderer.popTranslation();
     }
 
+    update() {
+        this.objects.forEach(object => object.update());
+    }
+
 }
 
 class Parallax {
@@ -32,6 +36,10 @@ class Parallax {
             layer.render(renderer)
             renderer.popTranslation();
         });
+    }
+
+    update() {
+        this.layers.forEach(layer => layer.update());
     }
 
 }

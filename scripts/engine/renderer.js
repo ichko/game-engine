@@ -1,4 +1,4 @@
-class Renderer {
+class Renderer extends Pluggable {
 
     constructor(ctx, width, height) {
         this.ctx = ctx;
