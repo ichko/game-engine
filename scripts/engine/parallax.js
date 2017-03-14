@@ -12,10 +12,6 @@ class Layer {
         renderer.popTranslation();
     }
 
-    update() {
-        this.objects.forEach(object => object.update());
-    }
-
 }
 
 class Parallax {
@@ -23,10 +19,18 @@ class Parallax {
     constructor(reference = new Vector()) {
         this.reference = reference;
         this.layers = [];
+        this.objects = [];
+    }
+
+    add(...objects) {
+        this.objects = this.objects.concat(objects);
+        return this;
     }
 
     addLayer({ objects, depth = 1 }) {
         this.layers.push(new Layer(objects, depth));
+        this.objects = this.objects.concat(objects);
+
         return this;
     }
 
@@ -39,7 +43,7 @@ class Parallax {
     }
 
     update() {
-        this.layers.forEach(layer => layer.update());
+        this.objects.forEach(object => object.update());
     }
 
 }
