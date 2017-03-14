@@ -1,23 +1,8 @@
-class PhysicalObject {
-
-    constructor({
-        position = new Vector(),
-        velocity = new Vector(),
-        mass = 1
-    } = {}) {
-        this.position = position;
-        this.velocity = velocity;
-        this.mass = mass;
-    }
-
-}
-
-class SpringyVector extends PhysicalObject {
+class SpringyVector extends GameObject {
 
     constructor({ damping = 0.1, elasticity = 0.1, target = new Vector(), self = new Vector() } = {}) {
-        super({ self,  });
+        super({ position: self });
         this.target = target;
-        this.position = self;
         this.elasticity = elasticity;
         this.damping = damping;
     }

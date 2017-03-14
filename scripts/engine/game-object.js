@@ -1,12 +1,20 @@
 class GameObject {
 
-    constructor({ position = new Vector(), color = '#f00' }) {
+    constructor({
+        position = new Vector(),
+        color = '#f00',
+        velocityDamping = 0.1,
+        velocity = new Vector()
+    }) {
         this.position = position;
         this.velocity = velocity;
+        this.velocityDamping = velocityDamping;
         this.color = color;
     }
 
-    render() {}
+    render(renderer) {
+        renderer.circle(this.position, 1, this.color);
+    }
 
     update() {
         this.updateVelocity();
@@ -17,7 +25,9 @@ class GameObject {
         this.position.add(this.velocity);
     }
 
-    updateVelocity() {}
+    updateVelocity() {
+        this.velocity.scale(this.velocityDamping);
+    }
 
 }
 
