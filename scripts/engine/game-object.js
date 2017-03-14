@@ -5,7 +5,7 @@ class GameObject {
         color = '#f00',
         velocityDamping = 0.1,
         velocity = new Vector()
-    }) {
+    } = {}) {
         this.position = position;
         this.velocity = velocity;
         this.velocityDamping = velocityDamping;
@@ -22,11 +22,11 @@ class GameObject {
     }
 
     updatePosition() {
-        this.position.add(this.velocity);
+        this.position = this.position.add(this.velocity);
     }
 
     updateVelocity() {
-        this.velocity.scale(this.velocityDamping);
+        this.velocity = this.velocity.scale(this.velocityDamping);
     }
 
 }
@@ -89,37 +89,26 @@ class Composite extends GameObject {
 
 class SpringyVector extends GameObject {
 
-    constructor({ damping = 0.1, elasticity = 0.1, target = new Vector(), self = new Vector() } = {}) {
-        super({ position: self });
+    constructor({
+        damping = 0.1,
+        elasticity = 0.1,
+        target = new Vector(),
+        position = new Vector()
+    } = {}) {
+        super({ position });
         this.target = target;
         this.elasticity = elasticity;
         this.damping = damping;
     }
 
     updateVelocity() {
-        let damping = this.velocity.scale(this.damping);
+        let dampingForce = this.velocity.scale(this.damping);
         let acceleration = this.target
             .subtract(this.position)
-            .scale(elasticity)
-            .subtract(damping);
+            .scale(this.elasticity)
+            .subtract(dampingForce);
 
-        this.velocity = this.velocity.add(this.acceleration);
-    }
-
-    get x() {
-        this.self.x;
-    }
-
-    get y() {
-        this.self.y;
-    }
-
-    set x(value) {
-        this.self.x = value;
-    }
-
-    set y(value) {
-        this.self.y = value;
+        this.velocity = this.velocity.add(acceleration);
     }
 
 }

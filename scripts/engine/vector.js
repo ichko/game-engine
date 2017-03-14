@@ -10,7 +10,7 @@ class Vector {
     }
 
     subtract(vector) {
-        return new Vector(this.x - vector.x, this.y - vector.x);
+        return new Vector(this.x - vector.x, this.y - vector.y);
     }
 
     reverse() {

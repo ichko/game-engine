@@ -1,11 +1,11 @@
-class EventManager {
+let EventManager = new class EventManager {
 
     constructor() {
         this.container = {};
     }
 
     register(name, condition, context) {
-        this.container[name] = { condition, context, handlers = [] };
+        this.container[name] = { condition, context, handlers: [] };
         return this;
     }
 
