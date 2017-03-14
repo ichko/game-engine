@@ -92,7 +92,7 @@ class SpringyVector extends GameObject {
     constructor({
         damping = 0.1,
         elasticity = 0.1,
-        target = new Vector(),
+        target = () => new Vector(),
         position = new Vector()
     } = {}) {
         super({ position });
@@ -103,7 +103,7 @@ class SpringyVector extends GameObject {
 
     updateVelocity() {
         let dampingForce = this.velocity.scale(this.damping);
-        let acceleration = this.target
+        let acceleration = this.target()
             .subtract(this.position)
             .scale(this.elasticity)
             .subtract(dampingForce);

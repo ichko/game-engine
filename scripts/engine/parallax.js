@@ -16,7 +16,7 @@ class Layer {
 
 class Parallax {
 
-    constructor(reference = new Vector()) {
+    constructor(reference = () => new Vector()) {
         this.reference = reference;
         this.layers = [];
         this.objects = [];
@@ -36,7 +36,7 @@ class Parallax {
 
     render(renderer) {
         this.layers.forEach(layer => {
-            renderer.pushTranslation(this.reference.scale(-layer.depth));
+            renderer.pushTranslation(this.reference().scale(-layer.depth));
             layer.render(renderer)
             renderer.popTranslation();
         });

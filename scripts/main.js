@@ -8,12 +8,11 @@ ctx.scale(1.5, 1.5);
 let io = new IO();
 let renderer = new Renderer(ctx, innerWidth, innerHeight);
 
-let sp = new SpringyVector({ elasticity: 0.001, target: new Vector(0, 50) });
-let camera = sp.position;
+let player = new Circle({ radius: 15, color: '#0f0' });
+let camera = new SpringyVector({ position: new Vector(-300, 0), elasticity: 0.01, target: () => player.position });
 
-let player = new Circle({ radius: 15, color: '#0f0', position: sp.target });
 
-let world = new Parallax(camera)
+let world = new Parallax(() => camera.position)
     .addLayer({
         name: 'foreground',
         depth: 2,
@@ -24,7 +23,7 @@ let world = new Parallax(camera)
         objects: [ player ]
     })
     
-    .add(sp);
+    .add(camera);
 
 (function animation() {
     renderer.clear();
@@ -32,12 +31,8 @@ let world = new Parallax(camera)
     world.update();
     io.callHandlers();
 
-    renderer.circle(sp.target, 5, 'red');
-    renderer.circle(sp.position, 5, 'red');
-
     player.position.x++;
-    sp.target = player.position;
-    camera.x = sp.position.x;
+    player.position.y = Math.sin(player.position.x / 20) * 30;
 
     requestAnimationFrame(animation);
 })();
