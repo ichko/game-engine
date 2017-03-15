@@ -48,7 +48,6 @@ class Rectangle extends GameObject {
 
     constructor(config = {}) {
         super(config);
-        this.color = config.color || '#f00';
         this.size = config.size;
     }
 
