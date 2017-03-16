@@ -1,4 +1,4 @@
-class Renderer {
+Game.define(() => class Renderer {
 
     constructor(ctx, width, height) {
         this.ctx = ctx;
@@ -39,4 +39,4 @@ class Renderer {
         this.ctx.clearRect(-this.width / 2, -this.height / 2, this.width, this.height);
     }
 
-}
+});

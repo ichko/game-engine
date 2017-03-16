@@ -1,4 +1,4 @@
-let EventManager = new class EventManager {
+Game.defineSingle(() => class EventManager {
 
     constructor() {
         this.container = {};
@@ -28,4 +28,4 @@ let EventManager = new class EventManager {
         }
     }
 
-}
+});

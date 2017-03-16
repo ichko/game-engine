@@ -1,4 +1,4 @@
-class GameObject {
+Game.define(() => class GameObject {
 
     constructor({
         position = new Vector(),
@@ -29,9 +29,9 @@ class GameObject {
         this.velocity = this.velocity.scale(this.velocityDamping);
     }
 
-}
+});
 
-class Circle extends GameObject {
+Game.define(({ GameObject }) => class Circle extends GameObject {
 
     constructor(config = {}) {
         super(config);
@@ -42,9 +42,9 @@ class Circle extends GameObject {
         renderer.circle(this.position, this.radius, this.color);
     }
 
-}
+});
 
-class Rectangle extends GameObject {
+Game.define(({ GameObject}) => class Rectangle extends GameObject {
 
     constructor(config = {}) {
         super(config);
@@ -55,9 +55,9 @@ class Rectangle extends GameObject {
         renderer.rectangle(this.position, this.size, this.color);
     }
 
-}
+});
 
-class Composite extends GameObject {
+Game.define(({ GameObject}) => class Composite extends GameObject {
 
     constructor(config = {}) {
         super(config);
@@ -84,9 +84,9 @@ class Composite extends GameObject {
         renderer.popTranslation();
     }
 
-}
+})
 
-class SpringyVector extends GameObject {
+Game.define(({ GameObject}) => class SpringyVector extends GameObject {
 
     constructor({
         damping = 0.1,
@@ -110,4 +110,4 @@ class SpringyVector extends GameObject {
         this.velocity = this.velocity.add(acceleration);
     }
 
-}
+})

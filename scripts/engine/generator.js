@@ -1,4 +1,4 @@
-class Generator {
+Game.define(() => class Generator {
 
     constructor({ set, cls, config = {} } = {}) {
         this.cls = cls;
@@ -19,4 +19,4 @@ class Generator {
         return Array.from(Array(size).keys()).map(() => this.single());
     }
 
-}
+});

@@ -1,4 +1,4 @@
-class Layer {
+Game.define(() => class Layer {
 
     constructor(objects = [], depth = 1, position = new Vector()) {
         this.objects = objects;
@@ -12,9 +12,9 @@ class Layer {
         renderer.popTranslation();
     }
 
-}
+});
 
-class Parallax {
+Game.define(() => class Parallax {
 
     constructor(reference = () => new Vector()) {
         this.reference = reference;
@@ -46,4 +46,4 @@ class Parallax {
         this.objects.forEach(object => object.update());
     }
 
-}
+});

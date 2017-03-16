@@ -5,6 +5,8 @@ let ctx = canvas.getContext('2d');
 ctx.translate(innerWidth / 2, innerHeight / 2);
 ctx.scale(1.5, 1.5);
 
+Game.load().useIn(window);
+
 let io = new IO();
 let renderer = new Renderer(ctx, innerWidth, innerHeight);
 

@@ -26,9 +26,9 @@ let Game = new class Module {
         return this;
     }
 
-    useAll(global) {
-        for (let name in this.definitions) {
-            global[name] = this.definitions;
+    useIn(global) {
+        for (let name in this.container) {
+            global[name] = this.container[name];
         }
 
         return this;
