@@ -28,7 +28,7 @@ $Module.define(() => class Parallax {
     }
 
     addLayer({ objects, depth = 1 }) {
-        this.layers.push(new Layer(objects, depth));
+        this.layers.push(new Layer(objects, 1 / depth));
         this.objects = this.objects.concat(objects);
 
         return this;

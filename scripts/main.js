@@ -1,14 +1,14 @@
+let [ width, height ] = [ innerWidth, innerHeight ];
 let canvas = document.getElementById('canvas');
-canvas.width = innerWidth;
-canvas.height = innerHeight;
+canvas.width = width;
+canvas.height = height;
 let ctx = canvas.getContext('2d');
-ctx.translate(innerWidth / 2, innerHeight / 2);
-ctx.scale(1.5, 1.5);
+ctx.translate(width / 2, height / 2);
 
 $Module.load().useIn(window);
 
 let io = new IO();
-let renderer = new Renderer(ctx, innerWidth, innerHeight);
+let renderer = new Renderer(ctx, width, height);
 
 let player = new Circle({ radius: 15, color: '#ff9' });
 let camera = new SpringyVector({
@@ -17,18 +17,26 @@ let camera = new SpringyVector({
     target: () => player.position
 });
 
-let foreground = new Generator(({ color, size = 20 }) => ({
+let circleGenerator = new Generator(({ color, size = 20 }) => ({
     cls: Circle,
     set: {
-        position: () => Vector.random(-innerWidth / 2, innerWidth / 2, - innerHeight / 2, innerHeight / 2),
+        position: () => Vector.random(-width, width, -height, height),
         radius: () => _.random(5, size),
         color: () => color
     }
 }));
 
 let world = new Parallax(() => camera.position)
-    .addLayer({ name: 'foreground.far', depth: 1, objects: foreground.make(50, { color: '#906' }) })
-    .addLayer({ name: 'foreground.near', depth: 2, objects: foreground.make(50, { color: '#603', size: 50 }) })
+    .addLayer({
+        name: 'foreground.far',
+        depth: 1,
+        objects: circleGenerator.make(150, { color: '#906' })
+    })
+    .addLayer({
+        name: 'foreground.near',
+        depth: 0.5,
+        objects: circleGenerator.make(150, { color: '#603', size: 50 })
+    })
     .addLayer({ name: 'player layer', objects: [ player ] })
     .add(camera);
 
