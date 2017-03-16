@@ -1,4 +1,4 @@
-Game.defineSingle(() => class EventManager {
+$Module.defineSingle(() => class EventManager {
 
     constructor() {
         this.container = {};

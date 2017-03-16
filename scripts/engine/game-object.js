@@ -1,4 +1,4 @@
-Game.define(() => class GameObject {
+$Module.define(() => class GameObject {
 
     constructor({
         position = new Vector(),
@@ -31,7 +31,7 @@ Game.define(() => class GameObject {
 
 });
 
-Game.define(({ GameObject }) => class Circle extends GameObject {
+$Module.define(({ GameObject }) => class Circle extends GameObject {
 
     constructor(config = {}) {
         super(config);
@@ -44,7 +44,7 @@ Game.define(({ GameObject }) => class Circle extends GameObject {
 
 });
 
-Game.define(({ GameObject}) => class Rectangle extends GameObject {
+$Module.define(({ GameObject }) => class Rectangle extends GameObject {
 
     constructor(config = {}) {
         super(config);
@@ -57,7 +57,7 @@ Game.define(({ GameObject}) => class Rectangle extends GameObject {
 
 });
 
-Game.define(({ GameObject}) => class Composite extends GameObject {
+$Module.define(({ GameObject }) => class Composite extends GameObject {
 
     constructor(config = {}) {
         super(config);
@@ -86,7 +86,7 @@ Game.define(({ GameObject}) => class Composite extends GameObject {
 
 })
 
-Game.define(({ GameObject}) => class SpringyVector extends GameObject {
+$Module.define(({ GameObject }) => class SpringyVector extends GameObject {
 
     constructor({
         damping = 0.1,

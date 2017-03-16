@@ -1,4 +1,4 @@
-Game.define(() => class Renderer {
+$Module.define(() => class Renderer {
 
     constructor(ctx, width, height) {
         this.ctx = ctx;

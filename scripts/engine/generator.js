@@ -1,4 +1,4 @@
-Game.define(() => class Generator {
+$Module.define(() => class Generator {
 
     constructor({ set, cls, config = {} } = {}) {
         this.cls = cls;

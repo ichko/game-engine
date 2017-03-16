@@ -5,7 +5,7 @@ let ctx = canvas.getContext('2d');
 ctx.translate(innerWidth / 2, innerHeight / 2);
 ctx.scale(1.5, 1.5);
 
-Game.load().useIn(window);
+$Module.load().useIn(window);
 
 let io = new IO();
 let renderer = new Renderer(ctx, innerWidth, innerHeight);
@@ -16,6 +16,15 @@ let camera = new SpringyVector({
     elasticity: 0.01,
     target: () => player.position
 });
+
+let foregroundGenerator = new Generator({
+    cls: Circle,
+    set: {
+        radius: () => _.random(5, 25),
+        color: () => '#906'
+    }
+});
+
 let foreground = {
     near: Array.from(Array(50).keys()).map(() => new Rectangle({
         size: { width: Math.random() * 50 + 20, height: Math.random() * 50 + 20 },

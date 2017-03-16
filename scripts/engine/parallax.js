@@ -1,4 +1,4 @@
-Game.define(() => class Layer {
+$Module.define(() => class Layer {
 
     constructor(objects = [], depth = 1, position = new Vector()) {
         this.objects = objects;
@@ -14,7 +14,7 @@ Game.define(() => class Layer {
 
 });
 
-Game.define(() => class Parallax {
+$Module.define(() => class Parallax {
 
     constructor(reference = () => new Vector()) {
         this.reference = reference;

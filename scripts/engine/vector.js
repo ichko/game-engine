@@ -1,4 +1,4 @@
-Game.define(() => class Vector {
+$Module.define(() => class Vector {
 
     constructor(x = 0, y = 0) {
         this.x = x;
