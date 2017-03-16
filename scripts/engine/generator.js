@@ -1,22 +1,21 @@
 $Module.define(() => class Generator {
 
-    constructor({ set, cls, config = {} } = {}) {
-        this.cls = cls;
-        this.config = config;
-        this.set = set;
+    constructor(paramExecutor) {
+        this.paramExecutor = paramExecutor;
     }
 
-    single() {
-        let result = new type(this.config);
-        for (let name in this.set) {
-            result[name] = this.set[name]();
+    single(generationConfig = {}) {
+        let { config, cls, set } = this.paramExecutor(generationConfig);
+        let result = new cls(config);
+        for (let name in set) {
+            result[name] = set[name]();
         }
 
         return result;
     }
 
-    make(size = 1) {
-        return Array.from(Array(size).keys()).map(() => this.single());
+    make(size = 1, config) {
+        return Array.from(Array(size).keys()).map(() => this.single(config));
     }
 
 });

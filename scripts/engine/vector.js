@@ -1,4 +1,4 @@
-$Module.define(() => class Vector {
+$Module.define(({ _ }) => class Vector {
 
     constructor(x = 0, y = 0) {
         this.x = x;
@@ -23,6 +23,10 @@ $Module.define(() => class Vector {
 
     vectorScale(vector) {
         return new Vector(this.x * vector.x, this.y * vector.y);
+    }
+
+    static random(minx, maxx, miny, maxy) {
+        return new Vector(_.random(minx, maxx), _.random(miny, maxy));
     }
 
 });
