@@ -1,4 +1,4 @@
-class Vector {
+Game.define(() => class Vector {
 
     constructor(x = 0, y = 0) {
         this.x = x;
@@ -25,4 +25,4 @@ class Vector {
         return new Vector(this.x * vector.x, this.y * vector.y);
     }
 
-}
+});
