@@ -111,3 +111,18 @@ $Module.define(({ GameObject }) => class SpringyVector extends GameObject {
     }
 
 })
+
+$Module.define(({ GameObject }) => class Polygon extends GameObject {
+
+    constructor(config = {}) {
+        super(config);
+        this.points = config.points || [];
+    }
+
+    render(renderer) {
+        renderer.pushTranslation(this.position);
+        renderer.polygon(this.points, this.color);
+        renderer.popTranslation();
+    }
+
+});
