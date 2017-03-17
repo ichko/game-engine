@@ -4,19 +4,26 @@ $Module.define(() => class Renderer {
         this.ctx = ctx;
         this.width = width;
         this.height = height;
-        this.translateTransformations = [];
+        this.transformations = [];
     }
 
-    pushTranslation(translation) {
-        this.translateTransformations.push(translation);
+    transform(transformation, transformedRendering) {
+        this.pushTransformation(transformation);
+        transformedRendering();
+        this.popTransformation();
     }
 
-    popTranslation() {
-        this.translateTransformations.pop();
+    pushTransformation(transformation) {
+        this.transformations.push(transformation);
+    }
+
+    popTransformation() {
+        this.transformations.pop();
     }
 
     getTranslation() {
-        return this.translateTransformations
+        return this.transformations
+            .map(({ translation }) => translation)
             .reduce((left, right) => left.add(right), new Vector());
     }
 
@@ -43,10 +50,7 @@ $Module.define(() => class Renderer {
         this.ctx.beginPath();
         this.ctx.fillStyle = color;
         this.ctx.moveTo(points[0]);
-        points.forEach(point => {
-            let position = this.getTranslation().add(point);
-            this.ctx.moveTo(point);
-        });
+        points.forEach(point => this.ctx.lineTo(this.getTranslation().add(point)));
         this.ctx.closePath();
         this.ctx.fill();
     }
