@@ -22,11 +22,11 @@ $Module.define(() => class Renderer {
 
     circle(position, radius, color) {
         position = this.getTranslation().add(position);
-        this.ctx.beginPath();
         this.ctx.fillStyle = color;
+        this.ctx.beginPath();
         this.ctx.arc(position.x, -position.y, radius, 0, Math.PI * 2);
-        this.ctx.fill();
         this.ctx.closePath();
+        this.ctx.fill();
     }
 
     rectangle(position, size, color) {
@@ -37,6 +37,18 @@ $Module.define(() => class Renderer {
 
     clear() {
         this.ctx.clearRect(-this.width / 2, -this.height / 2, this.width, this.height);
+    }
+
+    polygon(points, color) {
+        this.ctx.beginPath();
+        this.ctx.fillStyle = color;
+        this.ctx.moveTo(points[0]);
+        points.forEach(point => {
+            let position = this.getTranslation().add(point);
+            this.ctx.moveTo(point);
+        });
+        this.ctx.closePath();
+        this.ctx.fill();
     }
 
 });
