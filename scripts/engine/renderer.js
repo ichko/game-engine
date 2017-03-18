@@ -29,7 +29,11 @@ $Module.define(() => class Renderer {
 
     circle(position, radius, color) {
         position = this.getTranslation().add(position);
+
+        this.ctx.shadowColor = color;
+        this.ctx.shadowBlur = 10;
         this.ctx.fillStyle = color;
+
         this.ctx.beginPath();
         this.ctx.arc(position.x, -position.y, radius, 0, Math.PI * 2);
         this.ctx.closePath();
