@@ -7,9 +7,8 @@ $Module.define(() => class Layer {
     }
 
     render(renderer) {
-        renderer.pushTranslation(this.position);
-        this.objects.forEach(object => object.render(renderer));
-        renderer.popTranslation();
+        renderer.transform({ translation: this.position }, () =>
+            this.objects.forEach(object => object.render(renderer)));
     }
 
 });
@@ -35,11 +34,9 @@ $Module.define(() => class Parallax {
     }
 
     render(renderer) {
-        this.layers.forEach(layer => {
-            renderer.pushTranslation(this.reference().scale(-layer.depth));
-            layer.render(renderer)
-            renderer.popTranslation();
-        });
+        this.layers.forEach(layer =>
+            renderer.transform({ translation: this.reference().scale(-layer.depth) }, () =>
+                layer.render(renderer)));
     }
 
     update() {

@@ -4,29 +4,36 @@ $Module.define(() => class Renderer {
         this.ctx = ctx;
         this.width = width;
         this.height = height;
-        this.translateTransformations = [];
+        this.transformations = [];
     }
 
-    pushTranslation(translation) {
-        this.translateTransformations.push(translation);
+    transform(transformation, transformedRendering) {
+        this.pushTransformation(transformation);
+        transformedRendering();
+        this.popTransformation();
     }
 
-    popTranslation() {
-        this.translateTransformations.pop();
+    pushTransformation(transformation) {
+        this.transformations.push(transformation);
+    }
+
+    popTransformation() {
+        this.transformations.pop();
     }
 
     getTranslation() {
-        return this.translateTransformations
+        return this.transformations
+            .map(({ translation }) => translation)
             .reduce((left, right) => left.add(right), new Vector());
     }
 
     circle(position, radius, color) {
         position = this.getTranslation().add(position);
-        this.ctx.beginPath();
         this.ctx.fillStyle = color;
+        this.ctx.beginPath();
         this.ctx.arc(position.x, -position.y, radius, 0, Math.PI * 2);
-        this.ctx.fill();
         this.ctx.closePath();
+        this.ctx.fill();
     }
 
     rectangle(position, size, color) {
@@ -37,6 +44,15 @@ $Module.define(() => class Renderer {
 
     clear() {
         this.ctx.clearRect(-this.width / 2, -this.height / 2, this.width, this.height);
+    }
+
+    polygon(points, color) {
+        this.ctx.beginPath();
+        this.ctx.fillStyle = color;
+        this.ctx.moveTo(points[0]);
+        points.forEach(point => this.ctx.lineTo(this.getTranslation().add(point)));
+        this.ctx.closePath();
+        this.ctx.fill();
     }
 
 });

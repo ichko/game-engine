@@ -75,13 +75,12 @@ $Module.define(({ GameObject }) => class Composite extends GameObject {
     }
 
     render(renderer) {
-        renderer.pushTranslation(this.position);
-        for (let name in this.root) {
-            renderer.pushTranslation(this.root[name].offset);
-            this.root[name].object.render(renderer);
-            renderer.popTranslation();
-        }
-        renderer.popTranslation();
+        renderer.transform({ translation: this.position }, () => {
+            for (let name in this.root) {
+                renderer.transform({ translation: this.root[name].offset }, () =>
+                    this.root[name].object.render(renderer));
+            }
+        });
     }
 
 })
@@ -111,3 +110,17 @@ $Module.define(({ GameObject }) => class SpringyVector extends GameObject {
     }
 
 })
+
+$Module.define(({ GameObject }) => class Polygon extends GameObject {
+
+    constructor(config = {}) {
+        super(config);
+        this.points = config.points || [];
+    }
+
+    render(renderer) {
+        renderer.transform({ translation: this.position }, () =>
+            renderer.polygon(this.points, this.color));
+    }
+
+});
