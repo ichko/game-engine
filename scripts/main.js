@@ -4,17 +4,17 @@ canvas.width = width;
 canvas.height = height;
 let ctx = canvas.getContext('2d');
 ctx.translate(width / 2, height / 2);
-ctx.scale(0.95, 0.95);
+ctx.scale(1, 1);
 
 $Module.load().useIn(window);
 
 let io = new IO();
 let renderer = new Renderer(ctx, width, height);
 
-let player = new Circle({ position: new Vector(-600, 100), radius: 15, color: '#ff9' });
+let player = new Rectangle({ position: new Vector(-600, 100), size: { width: 15, height: 15 }, color: '#ff9' });
 let camera = new SpringyVector({
-    position: new Vector(-600, 250),
-    elasticity: 0.01,
+    position: new Vector(-1500, 110),
+    elasticity: 0.005,
     target: () => player.position.add(new Vector(300, 10))
 });
 
