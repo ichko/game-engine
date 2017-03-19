@@ -55,7 +55,7 @@ let time = 0;
     io.callHandlers();
     EventManager.triggerEvents();
 
-    player.position.x += 5; // Math.sin(time / 100) * 2;
+    player.position.x += Math.sin(time / 100) * 4;
     player.position.y += Math.sin(time / 20) * 2;
 
     requestAnimationFrame(animation);
