@@ -5,13 +5,13 @@ $Module.define(() => class Generator {
     }
 
     single(generationConfig = {}) {
-        let { config, cls, set } = this.paramExecutor(generationConfig);
+        let { config, cls, set, postProcess = (x => x) } = this.paramExecutor(generationConfig);
         let result = new cls(config);
         for (let name in set) {
             result[name] = set[name]();
         }
 
-        return result;
+        return postProcess(result);
     }
 
     make(size = 1, config) {
