@@ -18,21 +18,32 @@ let camera = new SpringyVector({
     target: () => player.position.add(new Vector(300, 10))
 });
 
+EventManager.register('outOfBounds', element =>
+    element.position.subtract(player.position).length() > innerWidth
+);
+
 let circleGenerator = new Generator(({ color, size = 20 }) => ({
     cls: Circle,
     set: {
         position: () => Vector.random(-width, width, -height, height),
         radius: () => _.random(1, size),
         color: () => color
+    },
+    postProcess: element => {
+        EventManager.on([element], 'outOfBounds', element => {
+            // element.position.x = camera.position.x;
+        });
+
+        return element;
     }
 }));
 
 let world = new Parallax(() => camera.position)
-    .addLayer({ depth: 1.5, objects: circleGenerator.make(150, { color: 'rgba(50, 100, 200, 0.8)', size: 2 }) })
-    .addLayer({ depth: 1.25, objects: circleGenerator.make(100, { color: 'rgba(240, 120, 0, 0.8)', size: 8 }) })
-    .addLayer({ objects: [ player ] })
-    .addLayer({ depth: 0.85, objects: circleGenerator.make(90, { color: 'rgba(0, 200, 100, 0.8)', size: 16 }) })
-    .addLayer({ depth: 0.5, objects: circleGenerator.make(80, { color: 'rgba(220, 0, 100, 0.8)', size: 32 }) })
+    .addLayer({ depth: 1.5, objects: circleGenerator.make(50, { color: 'rgba(50, 100, 200, 0.8)', size: 2 }) })
+    .addLayer({ depth: 1.25, objects: circleGenerator.make(50, { color: 'rgba(240, 120, 0, 0.8)', size: 8 }) })
+    .addLayer({ objects: [player] })
+    .addLayer({ depth: 0.85, objects: circleGenerator.make(50, { color: 'rgba(0, 200, 100, 0.8)', size: 16 }) })
+    .addLayer({ depth: 0.5, objects: circleGenerator.make(50, { color: 'rgba(220, 0, 100, 0.8)', size: 32 }) })
     .add(camera);
 
 let time = 0;
@@ -42,8 +53,9 @@ let time = 0;
     world.render(renderer);
     world.update();
     io.callHandlers();
+    EventManager.triggerEvents();
 
-    player.position.x += Math.sin(time / 100) * 2;
+    player.position.x += 5; // Math.sin(time / 100) * 2;
     player.position.y += Math.sin(time / 20) * 2;
 
     requestAnimationFrame(animation);

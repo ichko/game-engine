@@ -5,6 +5,10 @@ $Module.define(({ _ }) => class Vector {
         this.y = y;
     }
 
+    length() {
+        return Math.sqrt(this.x * this.x + this.y * this.y);
+    }
+
     add(vector) {
         return new Vector(this.x + vector.x, this.y + vector.y);
     }
