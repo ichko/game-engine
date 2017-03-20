@@ -18,16 +18,18 @@ let camera = new SpringyVector({
     target: () => player.position.add(new Vector(300, 10))
 });
 
-EventManager.register('outOfBounds', element =>
-    element.position.subtract(player.position).length() > innerWidth
+EventManager.register('outOfBounds', ({ element }) =>
+    element.position.subtract(player.position).length() * element.depth > innerWidth
 );
 
-let circleGenerator = new Generator(({ color, size = 20 }) => ({
-    cls: Circle,
+let circleGenerator = new Generator(({ color, size = 20, depth }) => ({
+    cls: Rectangle,
     set: {
         position: () => Vector.random(-width, width, -height, height),
         radius: () => _.random(1, size),
-        color: () => color
+        size: () => { let side = _.random(1, size); return { width: side, height: side }; },
+        color: () => color,
+        depth: () => depth
     },
     postProcess: element => {
         EventManager.on([element], 'outOfBounds', element => {

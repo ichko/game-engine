@@ -11,7 +11,7 @@ $Module.define(() => class Generator {
             result[name] = set[name]();
         }
 
-        return postProcess(result);
+        return result;
     }
 
     make(size = 1, config) {
