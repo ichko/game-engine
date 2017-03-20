@@ -43,13 +43,8 @@ $Module.define(() => class Renderer {
 
     rectangle(position, size, color) {
         position = this.getTranslation().add(position);
-        this.angle += 0.0001
-        this.ctx.translate(position.x - size.width / 2, -position.y + size.height / 2);
-        this.ctx.rotate(this.angle);
         this.ctx.fillStyle = color;
-        this.ctx.fillRect(0, 0, size.width, size.height);
-        this.ctx.rotate(-this.angle);
-        this.ctx.translate(-position.x + size.width / 2, position.y - size.height / 2);
+        this.ctx.fillRect(position.x - size.width / 2, -position.y + size.height / 2, size.width, size.height);
     }
 
     clear() {

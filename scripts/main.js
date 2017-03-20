@@ -18,34 +18,32 @@ let camera = new SpringyVector({
     target: () => player.position.add(new Vector(300, 10))
 });
 
-EventManager.register('outOfBounds', ({ element }) =>
-    element.position.subtract(player.position).length() * element.depth > innerWidth
+EventManager.register('outOfBounds', element =>
+    element.position.subtract(camera.position).scale(-1 / element.depth).length() > innerWidth
 );
 
-let circleGenerator = new Generator(({ color, size = 20, depth }) => ({
-    cls: Rectangle,
-    set: {
+let circleGenerator = new Generator({
+    cls: Circle,
+    set: ({ color, size = 20, depth }) => ({
         position: () => Vector.random(-width, width, -height, height),
         radius: () => _.random(1, size),
         size: () => { let side = _.random(1, size); return { width: side, height: side }; },
         color: () => color,
         depth: () => depth
-    },
-    postProcess: element => {
-        EventManager.on([element], 'outOfBounds', element => {
-            // element.position.x = camera.position.x;
+    }),
+    postProcess: elements => {
+        EventManager.on(elements, 'outOfBounds', element => {
+            // element.position.x = (camera.position.x - element.position.x) + innerWidth * (-1 / element.depth);
         });
-
-        return element;
     }
-}));
+});
 
 let world = new Parallax(() => camera.position)
-    .addLayer({ depth: 1.5, objects: circleGenerator.make(50, { color: 'rgba(50, 100, 200, 0.8)', size: 2 }) })
-    .addLayer({ depth: 1.25, objects: circleGenerator.make(50, { color: 'rgba(240, 120, 0, 0.8)', size: 8 }) })
+    .addLayer({ depth: 1.5, objects: circleGenerator.make(50, { color: 'rgba(50, 100, 200, 0.8)', size: 2, depth: 1.5 }) })
+    .addLayer({ depth: 1.25, objects: circleGenerator.make(50, { color: 'rgba(240, 120, 0, 0.8)', size: 8 , depth: 1.25 }) })
     .addLayer({ objects: [player] })
-    .addLayer({ depth: 0.85, objects: circleGenerator.make(50, { color: 'rgba(0, 200, 100, 0.8)', size: 16 }) })
-    .addLayer({ depth: 0.5, objects: circleGenerator.make(50, { color: 'rgba(220, 0, 100, 0.8)', size: 32 }) })
+    .addLayer({ depth: 0.85, objects: circleGenerator.make(50, { color: 'rgba(0, 200, 100, 0.8)', size: 16, depth: 0.85 }) })
+    .addLayer({ depth: 0.5, objects: circleGenerator.make(50, { color: 'rgba(220, 0, 100, 0.8)', size: 32, depth: 0.5 }) })
     .add(camera);
 
 let time = 0;
