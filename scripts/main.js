@@ -18,9 +18,7 @@ let camera = new SpringyVector({
     target: () => player.position.add(new Vector(300, 10))
 });
 
-EventManager.register('outOfBounds', element =>
-    element.position.subtract(camera.position).scale(-1 / element.depth).length() > innerWidth
-);
+EventManager.register('outOfBounds', element => true);
 
 let circleGenerator = new Generator({
     cls: Circle,
@@ -30,20 +28,31 @@ let circleGenerator = new Generator({
         size: () => { let side = _.random(1, size); return { width: side, height: side }; },
         color: () => color,
         depth: () => depth
-    }),
-    postProcess: elements => {
-        EventManager.on(elements, 'outOfBounds', element => {
-            // element.position.x = (camera.position.x - element.position.x) + innerWidth * (-1 / element.depth);
-        });
-    }
+    })
 });
 
+let enviroment = {
+    frontBig: { elements: circleGenerator.make(50, { color: 'rgba(220, 0, 100, 0.8)', size: 32 }), depth: 0.5 },
+    frontSmall: { elements: circleGenerator.make(50, { color: 'rgba(0, 200, 100, 0.8)', size: 16 }), depth: 0.85 },
+    backBig: { elements: circleGenerator.make(50, { color: 'rgba(240, 120, 0, 0.8)', size: 8 }), depth: 1.25 },
+    backSmall: { elements: circleGenerator.make(50, { color: 'rgba(50, 100, 200, 0.8)', size: 4 }), depth: 1.5 }
+}
+
+for (let name in enviroment) {
+    let layer = enviroment[name];
+    EventManager.on(layer.elements, 'outOfBounds', element => {
+        if (camera.position.x * (1 / layer.depth) - element.position.x > width / 2) {
+            element.position.x = camera.position.x * (1 / layer.depth) + width / 2;
+        }
+    });
+}
+
 let world = new Parallax(() => camera.position)
-    .addLayer({ depth: 1.5, objects: circleGenerator.make(50, { color: 'rgba(50, 100, 200, 0.8)', size: 2, depth: 1.5 }) })
-    .addLayer({ depth: 1.25, objects: circleGenerator.make(50, { color: 'rgba(240, 120, 0, 0.8)', size: 8 , depth: 1.25 }) })
+    .addLayer({ depth: enviroment.backSmall.depth, objects: enviroment.backSmall.elements })
+    .addLayer({ depth: enviroment.backBig.depth, objects: enviroment.backBig.elements })
     .addLayer({ objects: [player] })
-    .addLayer({ depth: 0.85, objects: circleGenerator.make(50, { color: 'rgba(0, 200, 100, 0.8)', size: 16, depth: 0.85 }) })
-    .addLayer({ depth: 0.5, objects: circleGenerator.make(50, { color: 'rgba(220, 0, 100, 0.8)', size: 32, depth: 0.5 }) })
+    .addLayer({ depth: enviroment.frontSmall.depth, objects: enviroment.frontSmall.elements })
+    .addLayer({ depth: enviroment.frontBig.depth, objects: enviroment.frontBig.elements })
     .add(camera);
 
 let time = 0;
@@ -55,7 +64,7 @@ let time = 0;
     io.callHandlers();
     EventManager.triggerEvents();
 
-    player.position.x += Math.sin(time / 100) * 4;
+    player.position.x += 5;
     player.position.y += Math.sin(time / 20) * 2;
 
     requestAnimationFrame(animation);

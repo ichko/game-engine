@@ -35,8 +35,9 @@ $Module.define(() => class Parallax {
 
     render(renderer) {
         this.layers.forEach(layer =>
-            renderer.transform({ translation: this.reference().scale(-layer.depth) }, () =>
-                layer.render(renderer)));
+            renderer.transform({
+                translation: this.reference().scale(-layer.depth)
+            }, () => layer.render(renderer)));
     }
 
     update() {
