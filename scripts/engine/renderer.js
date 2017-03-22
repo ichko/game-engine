@@ -31,8 +31,8 @@ $Module.define(() => class Renderer {
     circle(position, radius, color) {
         position = this.getTranslation().add(position);
 
-        this.ctx.shadowColor = color;
-        this.ctx.shadowBlur = 10;
+        // this.ctx.shadowColor = color;
+        // this.ctx.shadowBlur = 10;
         this.ctx.fillStyle = color;
 
         this.ctx.beginPath();
@@ -52,12 +52,18 @@ $Module.define(() => class Renderer {
     }
 
     polygon(points, color) {
-        this.ctx.beginPath();
-        this.ctx.fillStyle = color;
-        this.ctx.moveTo(points[0]);
-        points.forEach(point => this.ctx.lineTo(this.getTranslation().add(point)));
-        this.ctx.closePath();
-        this.ctx.fill();
+        if (points.length > 2) {
+            this.ctx.beginPath();
+            this.ctx.fillStyle = color;
+            let position = this.getTranslation().add(points[0]);
+            this.ctx.moveTo(position.x, position.y);
+            points.forEach(point => {
+                let position = this.getTranslation().add(point);
+                this.ctx.lineTo(position.x, position.y);
+            });
+            this.ctx.closePath();
+            this.ctx.fill();
+        }
     }
 
 });
