@@ -4,7 +4,7 @@ canvas.width = width;
 canvas.height = height;
 let ctx = canvas.getContext('2d');
 ctx.translate(width / 2, height / 2);
-ctx.scale(1, 1);
+ctx.scale(1, -1);
 
 $Module.load().useIn(window);
 
@@ -16,16 +16,17 @@ let anchorTarget = new Vector();
 let playerAnchor = new SpringyVector({ elasticity: 0.005, target: () => anchorTarget });
 
 let player = new Polygon({
-    position: new Vector(0, 100),
+    position: new Vector(0, 0),
     size: { width: 15, height: 15 },
     color: '#ff9',
-    points: [new Vector(), new Vector(20, 0), new Vector(10, -30)]
+    points: [new Vector(), new Vector(10, -5), new Vector(20, 0), new Vector(10, 30)]
 });
 
 let camera = new SpringyVector({
-    position: new Vector(0, -1000),
+    position: new Vector(0, -500),
     elasticity: 0.005,
-    target: () => player.position.add(new Vector(0, -height / 2 + 200))
+    damping: 0.1,
+    target: () => player.position.add(new Vector(0, height / 2 - 50))
 });
 
 EventManager.register('outOfBounds', element => true);
@@ -42,23 +43,28 @@ let circleGenerator = new Generator({
 });
 
 let enviroment = {
-    frontBig: { elements: circleGenerator.make(20, { color: 'rgba(220, 0, 100, 0.8)', size: 32 }), depth: 0.5 },
-    frontSmall: { elements: circleGenerator.make(30, { color: 'rgba(0, 200, 100, 0.8)', size: 16 }), depth: 0.85 },
-    backBig: { elements: circleGenerator.make(40, { color: 'rgba(240, 120, 0, 0.8)', size: 8 }), depth: 1.25 },
-    backSmall: { elements: circleGenerator.make(50, { color: 'rgba(50, 100, 200, 0.8)', size: 4 }), depth: 1.5 }
+    frontBig: { elements: circleGenerator.make(80, { color: 'rgba(220, 0, 100, 0.8)', size: 16 }), depth: 0.5 },
+    frontSmall: { elements: circleGenerator.make(80, { color: 'rgba(0, 200, 100, 0.8)', size: 8 }), depth: 0.85 },
+    backBig: { elements: circleGenerator.make(80, { color: 'rgba(240, 120, 0, 0.8)', size: 4 }), depth: 1.25 },
+    backSmall: { elements: circleGenerator.make(80, { color: 'rgba(50, 100, 200, 0.8)', size: 2 }), depth: 1.5 }
 }
 
 for (let name in enviroment) {
     let layer = enviroment[name];
     EventManager.on(layer.elements, 'outOfBounds', element => {
-        if (camera.position.x * (1 / layer.depth) - element.position.x > width / 2) {
-            element.position.x = camera.position.x * (1 / layer.depth) + width / 2;
+        let cameraPos = camera.position.scale(1 / layer.depth);
+
+        if (cameraPos.x - element.position.x > width / 2) {
+            element.position.x = cameraPos.x + width / 2 - (cameraPos.x - element.position.x) % (width / 2);
         }
-        if (element.position.x - camera.position.x * (1 / layer.depth) > width / 2) {
-            element.position.x = camera.position.x * (1 / layer.depth) - width / 2;
+        if (element.position.x - cameraPos.x > width / 2) {
+            element.position.x = cameraPos.x - width / 2 + (cameraPos.x - element.position.x) % (width / 2);
         }
-        if (camera.position.y * (1 / layer.depth) - element.position.y > height / 2) {
-            element.position.y = camera.position.y * (1 / layer.depth) + height / 2;
+        if (cameraPos.y - element.position.y > height / 2) {
+            element.position.y = cameraPos.y + height - (cameraPos.y - element.position.y) % (height);
+        }
+        if (element.position.y - cameraPos.y > height / 2) {
+            element.position.y = cameraPos.y + (cameraPos.y - element.position.y) % (height);
         }
     });
 }
@@ -82,28 +88,32 @@ let time = 0;
     EventManager.triggerEvents();
 
     player.position.x = playerAnchor.position.x;
-
-    player.position.y += speed;
-    // player.position.x += Math.sin(time / 20) * 2;
+    player.position.y += 5;
 
     requestAnimationFrame(animation);
 })();
 
+let finished = true;
 var xhttp = new XMLHttpRequest();
 xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
         let [ orientation, translation ] = this.responseText
                 .split('\n')
+                .map(s => s.replace('nan', 0))
                 .map(JSON.parse);
-        speed = orientation[0] * -10;
-        speed = Math.min(Math.max(2, speed), 50);
-        anchorTarget.x += orientation[2] * 300;
+        speed += orientation[1] * -0.5;
+        speed = Math.min(Math.max(0, speed), 100);
+        anchorTarget.x += orientation[2] * -300;
+        finished = true;
     }
 };
 
 
 setInterval(() => {
-    xhttp.open("GET", "http://10.110.201.236", true);
-    xhttp.send();
-}, 150);
+    if (finished) {
+        xhttp.open("GET", "http://192.168.43.18", true);
+        xhttp.send();
+        finished = false;
+    }
+}, 0);
 

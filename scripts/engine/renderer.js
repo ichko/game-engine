@@ -5,7 +5,6 @@ $Module.define(() => class Renderer {
         this.width = width;
         this.height = height;
         this.transformations = [];
-        this.angle = 0;
     }
 
     transform(transformation, transformedRendering) {
@@ -36,7 +35,7 @@ $Module.define(() => class Renderer {
         this.ctx.fillStyle = color;
 
         this.ctx.beginPath();
-        this.ctx.arc(position.x, -position.y, radius, 0, Math.PI * 2);
+        this.ctx.arc(position.x, position.y, radius, 0, Math.PI * 2);
         this.ctx.closePath();
         this.ctx.fill();
     }
@@ -44,7 +43,7 @@ $Module.define(() => class Renderer {
     rectangle(position, size, color) {
         position = this.getTranslation().add(position);
         this.ctx.fillStyle = color;
-        this.ctx.fillRect(position.x - size.width / 2, -position.y + size.height / 2, size.width, size.height);
+        this.ctx.fillRect(position.x - size.width / 2, position.y - size.height / 2, size.width, size.height);
     }
 
     clear() {

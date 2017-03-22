@@ -4,12 +4,15 @@ $Module.define(() => class GameObject {
         position = new Vector(),
         color = '#f00',
         velocityDamping = 0.1,
-        velocity = new Vector()
+        velocity = new Vector(),
+        rotation = 0
     } = {}) {
         this.position = position;
         this.velocity = velocity;
         this.velocityDamping = velocityDamping;
         this.color = color;
+        this.rotation = rotation;
+        this.rotationCenter = position;
     }
 
     render(renderer) {
