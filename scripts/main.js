@@ -11,10 +11,6 @@ $Module.load().useIn(window);
 let io = new IO();
 let renderer = new Renderer(ctx, width, height);
 
-let speed = 5;
-let anchorTarget = new Vector();
-let playerAnchor = new SpringyVector({ elasticity: 0.005, target: () => anchorTarget });
-
 let player = new Polygon({
     position: new Vector(0, 0),
     size: { width: 15, height: 15 },
@@ -75,7 +71,6 @@ let world = new Parallax(() => camera.position)
     .addLayer({ objects: [player] })
     .addLayer({ depth: enviroment.frontSmall.depth, objects: enviroment.frontSmall.elements })
     .addLayer({ depth: enviroment.frontBig.depth, objects: enviroment.frontBig.elements })
-    .add(playerAnchor)
     .add(camera);
 
 let time = 0;
@@ -87,33 +82,7 @@ let time = 0;
     io.callHandlers();
     EventManager.triggerEvents();
 
-    player.position.x = playerAnchor.position.x;
     player.position.y += 5;
 
     requestAnimationFrame(animation);
 })();
-
-let finished = true;
-var xhttp = new XMLHttpRequest();
-xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-        let [ orientation, translation ] = this.responseText
-                .split('\n')
-                .map(s => s.replace('nan', 0))
-                .map(JSON.parse);
-        speed += orientation[1] * -0.5;
-        speed = Math.min(Math.max(0, speed), 100);
-        anchorTarget.x += orientation[2] * -300;
-        finished = true;
-    }
-};
-
-
-setInterval(() => {
-    if (finished) {
-        xhttp.open("GET", "http://192.168.43.18", true);
-        xhttp.send();
-        finished = false;
-    }
-}, 0);
-
