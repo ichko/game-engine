@@ -3,7 +3,7 @@ $Module.define(() => class GameObject {
     constructor({
         position = new Vector(),
         color = '#f00',
-        velocityDamping = 0.1,
+        velocityDamping = 0.99,
         velocity = new Vector(),
         rotation = 0
     } = {}) {
@@ -13,6 +13,11 @@ $Module.define(() => class GameObject {
         this.color = color;
         this.rotation = rotation;
         this.rotationCenter = position;
+        this.alive = true;
+    }
+
+    alive() {
+        return this.alive;
     }
 
     render(renderer) {
@@ -124,6 +129,62 @@ $Module.define(({ GameObject }) => class Polygon extends GameObject {
     render(renderer) {
         renderer.transform({ translation: this.position }, () =>
             renderer.polygon(this.points, this.color));
+    }
+
+});
+
+$Module.define(({ GameObject, Circle, _ }) => class Explosion {
+
+    constructor(config) {
+        this.particles = [];
+        this.config = config;
+    }
+
+    fire() {
+        this.init(this.config);
+        return this;
+    }
+
+    init({
+        size = 2,
+        magnitude = 10,
+        color = "#f00",
+        particleSize = 20,
+        position = new Vector(),
+        fromAngle = 0,
+        toAngle = Math.PI * 2
+    } = {}) {
+        this.particles = this.particles.concat(_.range(size, () => new Circle({
+            color,
+            position: position.copy(),
+            radius: particleSize,
+            velocity: Vector.randomPolar(1, fromAngle, toAngle)
+                .scale(_.random(magnitude / 2, magnitude))
+        })));
+    }
+
+    recycle() {
+        this.particles = this.particles.filter(particle => particle.size > 0.5);
+    }
+
+    alive() {
+        return this.particles.length > 0;
+    }
+
+    render(renderer) {
+        this.particles.forEach(particle => particle.render(renderer));
+    }
+
+    applyForce(force) {
+        this.particles.forEach(particle => particle.applyForce(force));
+    }
+
+    update(dt) {
+        this.particles.forEach(particle => {
+            particle.size /= _.random(1.02, 1.05);
+            particle.update(dt)
+        });
+        // this.recycle();
     }
 
 });

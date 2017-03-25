@@ -4,4 +4,8 @@ $Module.defineSingle(() => class _ {
         return Math.random() * (max - min) + min;
     }
 
+    range(size, handler) {
+        return Array.from(Array(size).keys()).map(handler);
+    }
+
 });

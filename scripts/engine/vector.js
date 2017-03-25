@@ -25,12 +25,24 @@ $Module.define(({ _ }) => class Vector {
         return new Vector(this.x * factor, this.y * factor);
     }
 
+    copy() {
+        return new Vector(this.x, this.y);
+    }
+
     vectorScale(vector) {
         return new Vector(this.x * vector.x, this.y * vector.y);
     }
 
     static random(minx, maxx, miny, maxy) {
         return new Vector(_.random(minx, maxx), _.random(miny, maxy));
+    }
+
+    static polar(angle = 0, length = 1) {
+        return new Vector(Math.cos(angle) * length, Math.sin(angle) * length);
+    }
+
+    static randomPolar(length = 1, minAngle = 0, maxAngle = Math.PI * 2) {
+        return Vector.polar(_.random(minAngle, maxAngle), length);
     }
 
 });

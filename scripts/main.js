@@ -19,13 +19,11 @@ let player = new Polygon({
 });
 
 let camera = new SpringyVector({
-    position: new Vector(0, -500),
+    position: new Vector(0, 0),
     elasticity: 0.005,
     damping: 0.1,
-    target: () => player.position.add(new Vector(0, height / 2 - 50))
+    target: () => player.position.add(new Vector(0, 0))
 });
-
-EventManager.register('outOfBounds', element => true);
 
 let circleGenerator = new Generator({
     cls: Circle,
@@ -45,41 +43,44 @@ let enviroment = {
     backSmall: { elements: circleGenerator.make(80, { color: 'rgba(50, 100, 200, 0.8)', size: 2 }), depth: 1.5 }
 }
 
-for (let name in enviroment) {
-    let layer = enviroment[name];
-    EventManager.on(layer.elements, 'outOfBounds', element => {
-        let cameraPos = camera.position.scale(1 / layer.depth);
+let outOfBounds = () => {
+    for (let name in enviroment) {
+        let layer = enviroment[name];
+        layer.elements.forEach(element => {
+            let cameraPos = camera.position.scale(1 / layer.depth);
 
-        if (cameraPos.x - element.position.x > width / 2) {
-            element.position.x = cameraPos.x + width / 2 - (cameraPos.x - element.position.x) % (width / 2);
-        }
-        if (element.position.x - cameraPos.x > width / 2) {
-            element.position.x = cameraPos.x - width / 2 + (cameraPos.x - element.position.x) % (width / 2);
-        }
-        if (cameraPos.y - element.position.y > height / 2) {
-            element.position.y = cameraPos.y + height - (cameraPos.y - element.position.y) % (height);
-        }
-        if (element.position.y - cameraPos.y > height / 2) {
-            element.position.y = cameraPos.y + (cameraPos.y - element.position.y) % (height);
-        }
-    });
-}
+            if (cameraPos.x - element.position.x > width / 2) {
+                element.position.x = cameraPos.x + width / 2 - (cameraPos.x - element.position.x) % (width / 2);
+            }
+            if (element.position.x - cameraPos.x > width / 2) {
+                element.position.x = cameraPos.x - width / 2 + (cameraPos.x - element.position.x) % (width / 2);
+            }
+            if (cameraPos.y - element.position.y > height / 2) {
+                element.position.y = cameraPos.y + height - (cameraPos.y - element.position.y) % (height);
+            }
+            if (element.position.y - cameraPos.y > height / 2) {
+                element.position.y = cameraPos.y + (cameraPos.y - element.position.y) % (height);
+            }
+        });
+    }
+};
 
 let world = new Parallax(() => camera.position)
     .addLayer({ depth: enviroment.backSmall.depth, objects: enviroment.backSmall.elements })
     .addLayer({ depth: enviroment.backBig.depth, objects: enviroment.backBig.elements })
-    .addLayer({ objects: [player] })
+    .addLayer({ objects: [player, new Explosion({
+        size: 50
+    }).fire()] })
     .addLayer({ depth: enviroment.frontSmall.depth, objects: enviroment.frontSmall.elements })
     .addLayer({ depth: enviroment.frontBig.depth, objects: enviroment.frontBig.elements })
     .add(camera);
 
-let time = 0;
 (function animation() {
-    time++;
     renderer.clear();
     world.render(renderer);
     world.update();
     io.callHandlers();
+    outOfBounds();
     EventManager.triggerEvents();
 
     player.position.y += 5;
