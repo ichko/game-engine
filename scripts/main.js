@@ -23,12 +23,11 @@ let camera = new SpringyVector({
     target: () => player.position.add(new Vector(0, height / 2 - 150))
 });
 
-let circleGenerator = (count, { size, color, depth } = {}) =>
-    Utils.range(count, () => new Circle({
-        position: Vector.random(-width / 2, width / 2, -height / 2, height / 2),
-        radius: Utils.random(1, size),
-        color
-    }));
+let circleGenerator = (count, { size, color, depth } = {}) => Utils.range(count, () => new Circle({
+    position: Vector.random(-width / 2, width / 2, -height / 2, height / 2),
+    radius: Utils.random(1, size),
+    color
+}));
 
 let enviroment = {
     frontBig: { elements: circleGenerator(40, { color: 'rgba(220, 0, 100, 0.8)', size: 8 }), depth: 1 },
@@ -68,6 +67,7 @@ let fire = new Fountain({
     color: '#6cf'
 });
 
+
 let world = new Parallax(() => camera.position)
     .addLayer({ depth: enviroment.backSmall.depth, objects: enviroment.backSmall.elements })
     .addLayer({ depth: enviroment.backBig.depth, objects: enviroment.backBig.elements })
@@ -76,14 +76,16 @@ let world = new Parallax(() => camera.position)
     .addLayer({ objects: [fire, player] })
     .add(camera);
 
+let scene = new Scene()
+    .add(world);
+let engine = new Engine(renderer, scene);
+
+
 (function animation() {
-    renderer.clear();
-    world.render(renderer);
-    world.update();
+    engine.clear().render().update();
     io.callHandlers();
     outOfBounds();
-    EventManager.triggerEvents();
-
+    
     fire.config.position = player.position.add(new Vector(10, 10));
     player.position.y += 3;
 
