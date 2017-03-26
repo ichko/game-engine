@@ -173,7 +173,7 @@ App.define(({ GameObject, Circle, Utils }) => class Explosion extends GameObject
     }
 
     recycle() {
-        this.particles = this.particles.filter(particle => particle.radius > 0.7);
+        this.particles = this.particles.filter(particle => particle.radius > 0.5);
     }
 
     alive() {
@@ -191,7 +191,7 @@ App.define(({ GameObject, Circle, Utils }) => class Explosion extends GameObject
 
     update(dt) {
         this.particles.forEach(particle => {
-            particle.radius /= Utils.random(1.02, 1.05);
+            particle.radius /= Utils.random(1.05, 1.1);
             particle.update(dt)
         });
         this.recycle();

@@ -5,6 +5,13 @@ App.define(({ Utils }) => class Vector {
         this.y = y;
     }
 
+    set(x, y) {
+        this.x = x;
+        this.y = y;
+
+        return this;
+    }
+
     length() {
         return Math.sqrt(this.x * this.x + this.y * this.y);
     }

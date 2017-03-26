@@ -23,6 +23,9 @@ class IO {
         window.addEventListener('mousedown', downHandler);
         window.addEventListener('mouseup', upHandler);
 
+        window.addEventListener('touchstart', downHandler);
+        window.addEventListener('touchend', upHandler);
+
         return this;
     }
 
@@ -32,23 +35,17 @@ class IO {
     }
 
     bindEvents() {
-        window.addEventListener('mousemove', ({ x, y }) => {
-            this.mouse.x = x - this.width / 2;
-            this.mouse.y = -y + this.height / 2 ;
-        });
-        window.addEventListener('mousedown', ({ x, y }) => {
-            this.mouseDown = true;
-        });
-        window.addEventListener('mouseup', ({ x, y }) => {
-            this.mouseDown = false;
+        window.addEventListener('mousemove', ({ x, y }) => this.mouse.set(x - this.width / 2, -y + this.height / 2));
+        window.addEventListener('touchmove', ({ changedTouches }) => {
+            this.mouse.set(changedTouches[0].pageX - this.width / 2,
+                           -changedTouches[0].pageY + this.height / 2)
         });
 
-        window.addEventListener('keydown', ({ key }) => {
-            this.keyStates[key] = true;
-        });
-        window.addEventListener('keyup', ({ key }) => {
-            this.keyStates[key] = false;
-        });
+        window.addEventListener('mousedown', ({ x, y }) => this.mouseDown = true);
+        window.addEventListener('mouseup', ({ x, y }) => this.mouseDown = false);
+
+        window.addEventListener('keydown', ({ key }) => this.keyStates[key] = true);
+        window.addEventListener('keyup', ({ key }) => this.keyStates[key] = false);
     }
 
 }
