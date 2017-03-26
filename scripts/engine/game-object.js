@@ -137,6 +137,7 @@ $Module.define(({ GameObject, Circle, _ }) => class Explosion {
 
     constructor(config) {
         this.particles = [];
+        this.position = [];
         this.config = config;
     }
 
@@ -164,7 +165,7 @@ $Module.define(({ GameObject, Circle, _ }) => class Explosion {
     }
 
     recycle() {
-        this.particles = this.particles.filter(particle => particle.size > 0.5);
+        this.particles = this.particles.filter(particle => particle.radius > 0.9);
     }
 
     alive() {
@@ -181,10 +182,23 @@ $Module.define(({ GameObject, Circle, _ }) => class Explosion {
 
     update(dt) {
         this.particles.forEach(particle => {
-            particle.size /= _.random(1.02, 1.05);
+            particle.radius /= _.random(1.02, 1.05);
             particle.update(dt)
         });
-        // this.recycle();
+        this.recycle();
+    }
+
+});
+
+$Module.define(({ Explosion }) => class Fountain extends Explosion {
+
+    constructor(config) {
+        super(config);
+    }
+
+    update(dt) {
+        this.fire();
+        super.update(dt);
     }
 
 });
