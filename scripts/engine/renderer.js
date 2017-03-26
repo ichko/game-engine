@@ -13,18 +13,23 @@ $Module.define(() => class Renderer {
         this.popTransformation();
     }
 
-    pushTransformation(transformation) {
-        this.transformations.push(transformation);
+    pushTransformation({
+        scale = new Vector(1, 1),
+        rotation = 0,
+        translation = new Vector()
+    } = {}) {
+        this.ctx.save();
+        this.ctx.translate(translation.x, translation.y);
+        this.ctx.rotate(rotation);
+        this.ctx.scale(scale.x, scale.y);
     }
 
     popTransformation() {
-        this.transformations.pop();
+        this.ctx.restore();
     }
 
     getTranslation() {
-        return this.transformations
-            .map(({ translation }) => translation)
-            .reduce((left, right) => left.add(right), new Vector());
+        return new Vector();
     }
 
     circle(position, radius, color) {

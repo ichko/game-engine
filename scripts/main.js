@@ -67,11 +67,11 @@ let outOfBounds = () => {
 
 let fire = new Fountain({
     size: 4,
-    particleSize: 2,
-    magnitude: 5,
-    fromAngle: Math.PI / 2 * 3 - 0.5,
-    toAngle: Math.PI / 2 * 3 + 0.5,
-    color: '#f93'
+    particleSize: 3.5,
+    magnitude: 2,
+    fromAngle: Math.PI / 2 * 3 - 0.8,
+    toAngle: Math.PI / 2 * 3 + 0.8,
+    color: '#6cf'
 });
 
 let world = new Parallax(() => camera.position)
@@ -92,8 +92,6 @@ let world = new Parallax(() => camera.position)
 
     fire.config.position = player.position.add(new Vector(10, 10));
     player.position.y += 3;
-
-    
 
 
     requestAnimationFrame(animation);

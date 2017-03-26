@@ -165,7 +165,7 @@ $Module.define(({ GameObject, Circle, _ }) => class Explosion {
     }
 
     recycle() {
-        this.particles = this.particles.filter(particle => particle.radius > 0.9);
+        this.particles = this.particles.filter(particle => particle.radius > 0.7);
     }
 
     alive() {
