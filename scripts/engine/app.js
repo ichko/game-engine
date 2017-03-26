@@ -1,4 +1,4 @@
-let $Module = new class $Module {
+let App = new class App {
 
     constructor() {
         this.definitions = [];

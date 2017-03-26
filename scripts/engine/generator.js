@@ -1,4 +1,4 @@
-$Module.define(() => class Generator {
+App.define(() => class Generator {
 
     constructor({ set = (() => {}), postProcess = (x => x), cls }) {
         this.cls = cls;

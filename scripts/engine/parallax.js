@@ -1,4 +1,4 @@
-$Module.define(() => class Layer {
+App.define(() => class Layer {
 
     constructor(objects = [], depth = 1, position = new Vector()) {
         this.objects = objects;
@@ -13,7 +13,7 @@ $Module.define(() => class Layer {
 
 });
 
-$Module.define(() => class Parallax {
+App.define(() => class Parallax {
 
     constructor(reference = () => new Vector()) {
         this.reference = reference;

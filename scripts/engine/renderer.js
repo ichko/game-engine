@@ -1,4 +1,4 @@
-$Module.define(() => class Renderer {
+App.define(() => class Renderer {
 
     constructor(ctx, width, height) {
         this.ctx = ctx;

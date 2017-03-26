@@ -6,7 +6,7 @@ let ctx = canvas.getContext('2d');
 ctx.translate(width / 2, height / 2);
 ctx.scale(1, -1);
 
-$Module.load().useIn(window);
+App.load().useIn(window);
 
 let io = new IO();
 let renderer = new Renderer(ctx, width, height);

@@ -1,4 +1,4 @@
-$Module.defineSingle(() => class EventManager {
+App.defineSingle(() => class EventManager {
 
     constructor() {
         this.container = {};

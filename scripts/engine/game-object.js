@@ -1,4 +1,4 @@
-$Module.define(() => class GameObject {
+App.define(() => class GameObject {
 
     constructor({
         position = new Vector(),
@@ -41,7 +41,7 @@ $Module.define(() => class GameObject {
 
 });
 
-$Module.define(({ GameObject }) => class Circle extends GameObject {
+App.define(({ GameObject }) => class Circle extends GameObject {
 
     constructor(config = {}) {
         super(config);
@@ -54,7 +54,7 @@ $Module.define(({ GameObject }) => class Circle extends GameObject {
 
 });
 
-$Module.define(({ GameObject }) => class Rectangle extends GameObject {
+App.define(({ GameObject }) => class Rectangle extends GameObject {
 
     constructor(config = {}) {
         super(config);
@@ -67,7 +67,7 @@ $Module.define(({ GameObject }) => class Rectangle extends GameObject {
 
 });
 
-$Module.define(({ GameObject }) => class Composite extends GameObject {
+App.define(({ GameObject }) => class Composite extends GameObject {
 
     constructor(config = {}) {
         super(config);
@@ -95,7 +95,7 @@ $Module.define(({ GameObject }) => class Composite extends GameObject {
 
 })
 
-$Module.define(({ GameObject }) => class SpringyVector extends GameObject {
+App.define(({ GameObject }) => class SpringyVector extends GameObject {
 
     constructor({
         damping = 0.1,
@@ -121,7 +121,7 @@ $Module.define(({ GameObject }) => class SpringyVector extends GameObject {
 
 })
 
-$Module.define(({ GameObject }) => class Polygon extends GameObject {
+App.define(({ GameObject }) => class Polygon extends GameObject {
 
     constructor(config = {}) {
         super(config);
@@ -135,7 +135,7 @@ $Module.define(({ GameObject }) => class Polygon extends GameObject {
 
 });
 
-$Module.define(({ GameObject, Circle, Utils }) => class Explosion {
+App.define(({ GameObject, Circle, Utils }) => class Explosion {
 
     constructor(config) {
         this.particles = [];
@@ -192,7 +192,7 @@ $Module.define(({ GameObject, Circle, Utils }) => class Explosion {
 
 });
 
-$Module.define(({ Explosion }) => class Fountain extends Explosion {
+App.define(({ Explosion }) => class Fountain extends Explosion {
 
     constructor(config) {
         super(config);
