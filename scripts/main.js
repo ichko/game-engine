@@ -22,7 +22,7 @@ let camera = new SpringyVector({
     position: new Vector(0, 0),
     elasticity: 0.005,
     damping: 0.1,
-    target: () => player.position.add(new Vector(0, 0))
+    target: () => player.position.add(new Vector(0, height / 2 - 150))
 });
 
 let circleGenerator = new Generator({
@@ -37,10 +37,10 @@ let circleGenerator = new Generator({
 });
 
 let enviroment = {
-    frontBig: { elements: circleGenerator.make(80, { color: 'rgba(220, 0, 100, 0.8)', size: 16 }), depth: 0.5 },
-    frontSmall: { elements: circleGenerator.make(80, { color: 'rgba(0, 200, 100, 0.8)', size: 8 }), depth: 0.85 },
-    backBig: { elements: circleGenerator.make(80, { color: 'rgba(240, 120, 0, 0.8)', size: 4 }), depth: 1.25 },
-    backSmall: { elements: circleGenerator.make(80, { color: 'rgba(50, 100, 200, 0.8)', size: 2 }), depth: 1.5 }
+    frontBig: { elements: circleGenerator.make(40, { color: 'rgba(220, 0, 100, 0.8)', size: 8 }), depth: 1 },
+    frontSmall: { elements: circleGenerator.make(40, { color: 'rgba(0, 200, 100, 0.8)', size: 6 }), depth: 1.25 },
+    backBig: { elements: circleGenerator.make(40, { color: 'rgba(240, 120, 0, 0.8)', size: 4 }), depth: 1.5 },
+    backSmall: { elements: circleGenerator.make(40, { color: 'rgba(50, 100, 200, 0.8)', size: 2 }), depth: 1.85 }
 }
 
 let outOfBounds = () => {
@@ -65,14 +65,21 @@ let outOfBounds = () => {
     }
 };
 
+let fire = new Fountain({
+    size: 4,
+    particleSize: 2,
+    magnitude: 5,
+    fromAngle: Math.PI / 2 * 3 - 0.5,
+    toAngle: Math.PI / 2 * 3 + 0.5,
+    color: '#f93'
+});
+
 let world = new Parallax(() => camera.position)
     .addLayer({ depth: enviroment.backSmall.depth, objects: enviroment.backSmall.elements })
     .addLayer({ depth: enviroment.backBig.depth, objects: enviroment.backBig.elements })
-    .addLayer({ objects: [player, new Explosion({
-        size: 50
-    }).fire()] })
     .addLayer({ depth: enviroment.frontSmall.depth, objects: enviroment.frontSmall.elements })
     .addLayer({ depth: enviroment.frontBig.depth, objects: enviroment.frontBig.elements })
+    .addLayer({ objects: [fire, player] })
     .add(camera);
 
 (function animation() {
@@ -83,7 +90,11 @@ let world = new Parallax(() => camera.position)
     outOfBounds();
     EventManager.triggerEvents();
 
-    player.position.y += 5;
+    fire.config.position = player.position.add(new Vector(10, 10));
+    player.position.y += 3;
+
+    
+
 
     requestAnimationFrame(animation);
 })();
