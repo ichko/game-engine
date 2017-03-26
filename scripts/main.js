@@ -12,35 +12,29 @@ let io = new IO();
 let renderer = new Renderer(ctx, width, height);
 
 let player = new Polygon({
-    position: new Vector(0, 0),
-    size: { width: 15, height: 15 },
     color: '#ff9',
     points: [new Vector(), new Vector(10, -5), new Vector(20, 0), new Vector(10, 30)]
 });
 
 let camera = new SpringyVector({
-    position: new Vector(0, 0),
+    position: new Vector(0, height / 2 - 150),
     elasticity: 0.005,
     damping: 0.1,
     target: () => player.position.add(new Vector(0, height / 2 - 150))
 });
 
-let circleGenerator = new Generator({
-    cls: Rectangle,
-    set: ({ color, size = 20, depth }) => ({
-        position: () => Vector.random(-width / 2, width / 2, -height / 2, height / 2),
-        radius: () => Utils.random(1, size),
-        size: () => { let side = Utils.random(1, size) * 2; return { width: side, height: side }; },
-        color: () => color,
-        depth: () => depth
-    })
-});
+let circleGenerator = (count, { size, color, depth } = {}) =>
+    Utils.range(count, () => new Circle({
+        position: Vector.random(-width / 2, width / 2, -height / 2, height / 2),
+        radius: Utils.random(1, size),
+        color
+    }));
 
 let enviroment = {
-    frontBig: { elements: circleGenerator.make(40, { color: 'rgba(220, 0, 100, 0.8)', size: 8 }), depth: 1 },
-    frontSmall: { elements: circleGenerator.make(40, { color: 'rgba(0, 200, 100, 0.8)', size: 6 }), depth: 1.25 },
-    backBig: { elements: circleGenerator.make(40, { color: 'rgba(240, 120, 0, 0.8)', size: 4 }), depth: 1.5 },
-    backSmall: { elements: circleGenerator.make(40, { color: 'rgba(50, 100, 200, 0.8)', size: 2 }), depth: 1.85 }
+    frontBig: { elements: circleGenerator(40, { color: 'rgba(220, 0, 100, 0.8)', size: 8 }), depth: 1 },
+    frontSmall: { elements: circleGenerator(40, { color: 'rgba(0, 200, 100, 0.8)', size: 6 }), depth: 1.25 },
+    backBig: { elements: circleGenerator(40, { color: 'rgba(240, 120, 0, 0.8)', size: 4 }), depth: 1.5 },
+    backSmall: { elements: circleGenerator(40, { color: 'rgba(50, 100, 200, 0.8)', size: 2 }), depth: 1.85 }
 }
 
 let outOfBounds = () => {

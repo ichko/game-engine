@@ -26,16 +26,16 @@ App.define(() => class GameObject {
         renderer.circle(this.position, 1, this.color);
     }
 
-    update() {
-        this.updateVelocity();
-        this.updatePosition();
+    update(context) {
+        this.updateVelocity(context);
+        this.updatePosition(context);
     }
 
-    updatePosition() {
-        this.position = this.position.add(this.velocity);
+    updatePosition({ dt = 1 } = {}) {
+        this.position = this.position.add(this.velocity.scale(dt));
     }
 
-    updateVelocity() {
+    updateVelocity({ dt = 1 } = {}) {
         this.velocity = this.velocity.scale(this.velocityDamping);
     }
 

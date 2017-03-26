@@ -4,7 +4,6 @@ App.define(() => class Renderer {
         this.ctx = ctx;
         this.width = width;
         this.height = height;
-        this.transformations = [];
     }
 
     transform(transformation, transformedRendering) {
@@ -28,13 +27,7 @@ App.define(() => class Renderer {
         this.ctx.restore();
     }
 
-    getTranslation() {
-        return new Vector();
-    }
-
     circle(position, radius, color) {
-        position = this.getTranslation().add(position);
-
         // this.ctx.shadowColor = color;
         // this.ctx.shadowBlur = 10;
         this.ctx.fillStyle = color;
@@ -46,7 +39,6 @@ App.define(() => class Renderer {
     }
 
     rectangle(position, size, color) {
-        position = this.getTranslation().add(position);
         this.ctx.fillStyle = color;
         this.ctx.fillRect(position.x - size.width / 2, position.y - size.height / 2, size.width, size.height);
     }
@@ -59,11 +51,9 @@ App.define(() => class Renderer {
         if (points.length > 2) {
             this.ctx.beginPath();
             this.ctx.fillStyle = color;
-            let position = this.getTranslation().add(points[0]);
-            this.ctx.moveTo(position.x, position.y);
+            this.ctx.moveTo(points[0].x, points[0].y);
             points.forEach(point => {
-                let position = this.getTranslation().add(point);
-                this.ctx.lineTo(position.x, position.y);
+                this.ctx.lineTo(point.x, point.y);
             });
             this.ctx.closePath();
             this.ctx.fill();
