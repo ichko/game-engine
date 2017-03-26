@@ -1,4 +1,4 @@
-App.define(() => class Renderer {
+App.define(() => class CanvasRenderer {
 
     constructor(ctx, width, height) {
         this.ctx = ctx;

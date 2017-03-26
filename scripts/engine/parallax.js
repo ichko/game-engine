@@ -21,6 +21,11 @@ App.define(() => class Parallax {
         this.objects = [];
     }
 
+    target(reference) {
+        this.reference = reference;
+        return this;
+    }
+
     add(...objects) {
         this.objects = this.objects.concat(objects);
         return this;

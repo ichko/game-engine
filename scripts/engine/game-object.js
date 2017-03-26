@@ -93,6 +93,12 @@ App.define(({ GameObject }) => class Composite extends GameObject {
         });
     }
 
+    update() {
+        for (let name in this.root) {
+            this.root[name].object.update();
+        }
+    }
+
 })
 
 App.define(({ GameObject }) => class SpringyVector extends GameObject {

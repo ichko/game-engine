@@ -6,14 +6,23 @@ let ctx = canvas.getContext('2d');
 ctx.translate(width / 2, height / 2);
 ctx.scale(1, -1);
 
+
 App.load().useIn(window);
 
 let io = new IO();
-let renderer = new Renderer(ctx, width, height);
+let renderer = new CanvasRenderer(ctx, width, height);
+let scene = new Scene();
+let engine = new Engine(renderer, scene);
 
-let player = new Polygon({
-    color: '#ff9',
-    points: [new Vector(), new Vector(10, -5), new Vector(20, 0), new Vector(10, 30)]
+
+let player = new Composite().add({
+    object: new Fountain({ size: 4, particleSize: 3.5, magnitude: 5, color: '#6cf',
+        fromAngle: Math.PI / 2 * 3 - 0.3, toAngle: Math.PI / 2 * 3 + 0.3 }),
+    offset: new Vector(10, 2)
+})
+.add({
+    object: new Polygon({ color: '#ff9',
+    points: [new Vector(), new Vector(10, -5), new Vector(20, 0), new Vector(10, 30)] })
 });
 
 let camera = new SpringyVector({
@@ -22,6 +31,8 @@ let camera = new SpringyVector({
     damping: 0.1,
     target: () => player.position.add(new Vector(0, height / 2 - 150))
 });
+
+let parallax = new Parallax(() => camera.position);
 
 let circleGenerator = (count, { size, color, depth } = {}) => Utils.range(count, () => new Circle({
     position: Vector.random(-width / 2, width / 2, -height / 2, height / 2),
@@ -36,7 +47,29 @@ let enviroment = {
     backSmall: { elements: circleGenerator(40, { color: 'rgba(50, 100, 200, 0.8)', size: 2 }), depth: 1.85 }
 }
 
-let outOfBounds = () => {
+parallax
+    .addLayer({ depth: enviroment.backSmall.depth, objects: enviroment.backSmall.elements })
+    .addLayer({ depth: enviroment.backBig.depth, objects: enviroment.backBig.elements })
+    .addLayer({ depth: enviroment.frontSmall.depth, objects: enviroment.frontSmall.elements })
+    .addLayer({ depth: enviroment.frontBig.depth, objects: enviroment.frontBig.elements })
+    .addLayer({ objects: [player] })
+    .add(camera);
+
+scene.add(parallax);
+
+
+(function animation() {
+    engine.clear().render().update();
+    io.callHandlers();
+    outOfBounds();
+
+    player.position.y += 3;
+
+    requestAnimationFrame(animation);
+})();
+
+
+function outOfBounds() {
     for (let name in enviroment) {
         let layer = enviroment[name];
         layer.elements.forEach(element => {
@@ -57,38 +90,3 @@ let outOfBounds = () => {
         });
     }
 };
-
-let fire = new Fountain({
-    size: 4,
-    particleSize: 3.5,
-    magnitude: 2,
-    fromAngle: Math.PI / 2 * 3 - 0.8,
-    toAngle: Math.PI / 2 * 3 + 0.8,
-    color: '#6cf'
-});
-
-
-let world = new Parallax(() => camera.position)
-    .addLayer({ depth: enviroment.backSmall.depth, objects: enviroment.backSmall.elements })
-    .addLayer({ depth: enviroment.backBig.depth, objects: enviroment.backBig.elements })
-    .addLayer({ depth: enviroment.frontSmall.depth, objects: enviroment.frontSmall.elements })
-    .addLayer({ depth: enviroment.frontBig.depth, objects: enviroment.frontBig.elements })
-    .addLayer({ objects: [fire, player] })
-    .add(camera);
-
-let scene = new Scene()
-    .add(world);
-let engine = new Engine(renderer, scene);
-
-
-(function animation() {
-    engine.clear().render().update();
-    io.callHandlers();
-    outOfBounds();
-    
-    fire.config.position = player.position.add(new Vector(10, 10));
-    player.position.y += 3;
-
-
-    requestAnimationFrame(animation);
-})();
