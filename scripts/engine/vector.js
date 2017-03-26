@@ -15,7 +15,20 @@ App.define(({ Utils }) => class Vector {
 
     noramlize() {
         let length = this.length();
-        return new Vector(this.x / length, this.y / length);
+        if (length !== 0) {
+            return new Vector(this.x / length, this.y / length);
+        }
+
+        return new Vector();
+    }
+
+    rotate(angle) {
+        let [ sin, cos ] = [ Math.sin(angle), Math.cos(angle) ];
+        return new Vector(this.x * cos - this.y * sin, this.x * sin + this.y * cos);
+    }
+
+    angle() {
+        return Math.atan2(this.y, this.x);
     }
 
     scaleTo(size = 1) {

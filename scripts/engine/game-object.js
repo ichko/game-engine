@@ -3,9 +3,10 @@ App.define(() => class GameObject {
     constructor({
         position = new Vector(),
         color = '#f00',
-        velocityDamping = 0.99,
+        velocityDamping = 1,
         velocity = new Vector(),
-        rotation = 0
+        rotation = 0,
+        rotationCenter = position
     } = {}) {
         this.position = position;
         this.velocity = velocity;
@@ -13,7 +14,7 @@ App.define(() => class GameObject {
         this.color = color;
 
         this.rotation = rotation;
-        this.rotationCenter = position;
+        this.rotationCenter = rotationCenter;
     }
 
     alive() {
@@ -81,7 +82,10 @@ App.define(({ GameObject }) => class Composite extends GameObject {
     }
 
     render(renderer) {
-        renderer.transform({ translation: this.position }, () => {
+        renderer.transform({
+            translation: this.position,
+            rotation: this.rotation },
+        () => {
             for (let name in this.root) {
                 renderer.transform({ translation: this.root[name].offset }, () =>
                     this.root[name].object.render(renderer));
@@ -90,6 +94,7 @@ App.define(({ GameObject }) => class Composite extends GameObject {
     }
 
     update() {
+        super.update();
         for (let name in this.root) {
             this.root[name].object.update();
         }
@@ -131,15 +136,16 @@ App.define(({ GameObject }) => class Polygon extends GameObject {
     }
 
     render(renderer) {
-        renderer.transform({ translation: this.position }, () =>
+        renderer.transform({ translation: this.position, rotation: this.rotation }, () =>
             renderer.polygon(this.points, this.color));
     }
 
 });
 
-App.define(({ GameObject, Circle, Utils }) => class Explosion {
+App.define(({ GameObject, Circle, Utils }) => class Explosion extends GameObject {
 
     constructor(config) {
+        super(config);
         this.particles = [];
         this.position = [];
         this.config = config;
@@ -157,12 +163,10 @@ App.define(({ GameObject, Circle, Utils }) => class Explosion {
         particleSize = 20,
         position = new Vector(),
         fromAngle = 0,
-        toAngle = Math.PI * 2
+        toAngle = Math.PI * 2,
     } = {}) {
         this.particles = this.particles.concat(Utils.range(size, () => new Circle({
-            color,
-            position: position.copy(),
-            radius: particleSize,
+            color, position, radius: particleSize,
             velocity: Vector.randomPolar(1, fromAngle, toAngle)
                 .scale(Utils.random(magnitude / 2, magnitude))
         })));
@@ -177,7 +181,8 @@ App.define(({ GameObject, Circle, Utils }) => class Explosion {
     }
 
     render(renderer) {
-        this.particles.forEach(particle => particle.render(renderer));
+        renderer.transform({ rotation: this.rotation }, () =>
+            this.particles.forEach(particle => particle.render(renderer)));
     }
 
     applyForce(force) {
