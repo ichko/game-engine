@@ -13,16 +13,31 @@ App.define(({ Utils }) => class Vector {
         return new Vector(this.x + vector.x, this.y + vector.y);
     }
 
+    noramlize() {
+        let length = this.length();
+        return new Vector(this.x / length, this.y / length);
+    }
+
+    scaleTo(size = 1) {
+        return this.noramlize().scale(size);
+    }
+
     subtract(vector) {
         return new Vector(this.x - vector.x, this.y - vector.y);
+    }
+
+    distance(vector) {
+        let dx = this.x - vector.x;
+        let dy = this.y - vector.y;
+        return Math.sqrt(dx * dx + dy * dy);
     }
 
     reverse() {
         return new Vector(-this.x, -this.y);
     }
 
-    scale(factor) {
-        return new Vector(this.x * factor, this.y * factor);
+    scale(size) {
+        return new Vector(this.x * size, this.y * size);
     }
 
     copy() {

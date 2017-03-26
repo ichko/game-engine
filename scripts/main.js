@@ -15,15 +15,16 @@ let scene = new Scene();
 let engine = new Engine(renderer, scene);
 
 
-let player = new Composite().add({
-    object: new Fountain({ size: 4, particleSize: 3.5, magnitude: 5, color: '#6cf',
-        fromAngle: Math.PI / 2 * 3 - 0.3, toAngle: Math.PI / 2 * 3 + 0.3 }),
-    offset: new Vector(10, 2)
-})
-.add({
-    object: new Polygon({ color: '#ff9',
-    points: [new Vector(), new Vector(10, -5), new Vector(20, 0), new Vector(10, 30)] })
-});
+let player = new Composite()
+    .add({
+        object: new Fountain({ size: 4, particleSize: 3.5, magnitude: 5, color: '#6cf',
+            fromAngle: Math.PI / 2 * 3 - 0.3, toAngle: Math.PI / 2 * 3 + 0.3 }),
+        offset: new Vector(10, 2)
+    })
+    .add({
+        object: new Polygon({ color: '#ff9',
+        points: [new Vector(), new Vector(10, -5), new Vector(20, 0), new Vector(10, 30)] })
+    });
 
 let camera = new SpringyVector({
     position: new Vector(0, height / 2 - 150),
@@ -33,12 +34,6 @@ let camera = new SpringyVector({
 });
 
 let parallax = new Parallax(() => camera.position);
-
-let circleGenerator = (count, { size, color, depth } = {}) => Utils.range(count, () => new Circle({
-    position: Vector.random(-width / 2, width / 2, -height / 2, height / 2),
-    radius: Utils.random(1, size),
-    color
-}));
 
 let enviroment = {
     frontBig: { elements: circleGenerator(40, { color: 'rgba(220, 0, 100, 0.8)', size: 8 }), depth: 1 },
@@ -52,10 +47,11 @@ parallax
     .addLayer({ depth: enviroment.backBig.depth, objects: enviroment.backBig.elements })
     .addLayer({ depth: enviroment.frontSmall.depth, objects: enviroment.frontSmall.elements })
     .addLayer({ depth: enviroment.frontBig.depth, objects: enviroment.frontBig.elements })
-    .addLayer({ objects: [player] })
-    .add(camera);
+    .addLayer({ objects: [player] });
 
-scene.add(parallax);
+scene
+    .add(parallax)
+    .add(camera);
 
 
 (function animation() {
@@ -69,6 +65,14 @@ scene.add(parallax);
 })();
 
 
+function circleGenerator(count, { size, color } = {}) {
+    return Utils.range(count, () => new Circle({
+        position: Vector.random(-width / 2, width / 2, -height / 2, height / 2),
+        radius: Utils.random(1, size),
+        color
+    }));
+}
+
 function outOfBounds() {
     for (let name in enviroment) {
         let layer = enviroment[name];
@@ -81,6 +85,7 @@ function outOfBounds() {
             if (element.position.x - cameraPos.x > width / 2) {
                 element.position.x = cameraPos.x - width / 2 + (cameraPos.x - element.position.x) % (width / 2);
             }
+
             if (cameraPos.y - element.position.y > height / 2) {
                 element.position.y = cameraPos.y + height - (cameraPos.y - element.position.y) % (height);
             }

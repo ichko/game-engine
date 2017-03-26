@@ -12,7 +12,7 @@ App.define(() => class Scene {
     recycle() {
         this.container = this.container.filter(object => {
             if (typeof object.alive !== "undefined") {
-                object.alive()
+                object.alive();
             }
 
             return true;
@@ -20,11 +20,11 @@ App.define(() => class Scene {
     }
 
     render(renderer) {
-        this.container.forEach(object => object.render(renderer));
+        this.container.forEach(object => object.render && object.render(renderer));
     }
 
     update(params) {
-        this.container.forEach(object => object.update(params));
+        this.container.forEach(object => object.update && object.update(params));
         this.recycle();
     }
 

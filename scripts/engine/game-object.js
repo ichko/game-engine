@@ -14,17 +14,13 @@ App.define(() => class GameObject {
 
         this.rotation = rotation;
         this.rotationCenter = position;
-
-        this.alive = true;
     }
 
     alive() {
-        return this.alive;
+        return true;
     }
 
-    render(renderer) {
-        renderer.circle(this.position, 1, this.color);
-    }
+    render(renderer) { }
 
     update(context) {
         this.updateVelocity(context);
