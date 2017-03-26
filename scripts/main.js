@@ -26,11 +26,11 @@ let camera = new SpringyVector({
 });
 
 let circleGenerator = new Generator({
-    cls: Circle,
+    cls: Rectangle,
     set: ({ color, size = 20, depth }) => ({
         position: () => Vector.random(-width / 2, width / 2, -height / 2, height / 2),
-        radius: () => _.random(1, size),
-        size: () => { let side = _.random(1, size); return { width: side, height: side }; },
+        radius: () => Utils.random(1, size),
+        size: () => { let side = Utils.random(1, size) * 2; return { width: side, height: side }; },
         color: () => color,
         depth: () => depth
     })

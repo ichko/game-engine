@@ -11,8 +11,10 @@ $Module.define(() => class GameObject {
         this.velocity = velocity;
         this.velocityDamping = velocityDamping;
         this.color = color;
+
         this.rotation = rotation;
         this.rotationCenter = position;
+
         this.alive = true;
     }
 
@@ -133,7 +135,7 @@ $Module.define(({ GameObject }) => class Polygon extends GameObject {
 
 });
 
-$Module.define(({ GameObject, Circle, _ }) => class Explosion {
+$Module.define(({ GameObject, Circle, Utils }) => class Explosion {
 
     constructor(config) {
         this.particles = [];
@@ -155,12 +157,12 @@ $Module.define(({ GameObject, Circle, _ }) => class Explosion {
         fromAngle = 0,
         toAngle = Math.PI * 2
     } = {}) {
-        this.particles = this.particles.concat(_.range(size, () => new Circle({
+        this.particles = this.particles.concat(Utils.range(size, () => new Circle({
             color,
             position: position.copy(),
             radius: particleSize,
             velocity: Vector.randomPolar(1, fromAngle, toAngle)
-                .scale(_.random(magnitude / 2, magnitude))
+                .scale(Utils.random(magnitude / 2, magnitude))
         })));
     }
 
@@ -182,7 +184,7 @@ $Module.define(({ GameObject, Circle, _ }) => class Explosion {
 
     update(dt) {
         this.particles.forEach(particle => {
-            particle.radius /= _.random(1.02, 1.05);
+            particle.radius /= Utils.random(1.02, 1.05);
             particle.update(dt)
         });
         this.recycle();

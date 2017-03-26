@@ -1,4 +1,4 @@
-$Module.define(({ _ }) => class Vector {
+$Module.define(({ Utils }) => class Vector {
 
     constructor(x = 0, y = 0) {
         this.x = x;
@@ -34,7 +34,7 @@ $Module.define(({ _ }) => class Vector {
     }
 
     static random(minx, maxx, miny, maxy) {
-        return new Vector(_.random(minx, maxx), _.random(miny, maxy));
+        return new Vector(Utils.random(minx, maxx), Utils.random(miny, maxy));
     }
 
     static polar(angle = 0, length = 1) {
@@ -42,7 +42,7 @@ $Module.define(({ _ }) => class Vector {
     }
 
     static randomPolar(length = 1, minAngle = 0, maxAngle = Math.PI * 2) {
-        return Vector.polar(_.random(minAngle, maxAngle), length);
+        return Vector.polar(Utils.random(minAngle, maxAngle), length);
     }
 
 });
