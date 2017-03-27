@@ -23,13 +23,13 @@ let player = new Composite()
     .add({ object: fuel })
     .add({ object: ship });
 
-let speedScale = 1;
+let speedScale = 0.001;
 
 let camera = new SpringyVector({
     position: new Vector(0, height / 2 - 150),
-    elasticity: 0.1,
-    damping: 0.5,
-    target: () => player.position.add(io.mouse.scaleTo(150))
+    elasticity: 0.08,
+    damping: 0.3,
+    target: () => player.position.add(player.velocity.scale(3)).add(io.mouse.scaleTo(80))
 });
 
 let parallax = new Parallax(() => camera.position);
@@ -50,22 +50,25 @@ parallax
 
 scene.add(parallax).add(camera);
 
-io.onMouse(() => speedScale = 4, () => speedScale = 1);
+io.onMouse(() => speedScale = 4, () => speedScale = 0.001);
 
 (function animation() {
     engine.clear().render().update();
     io.callHandlers();
     outOfBounds();
 
-    let speed = player.velocity.length();
-    let forwardAngle = player.velocity.angle() + Math.PI;
+    let speed = speedScale * 5;
+    let forwardAngle = io.mouse.angle() + Math.PI;
     ship.rotation = forwardAngle + Math.PI / 2;
     fuel.config.fromAngle = forwardAngle - 1 / speed;
     fuel.config.toAngle = forwardAngle + 1 / speed;
     fuel.config.magnitude = speed;
     fuel.config.size = speed;
 
-    player.velocity= io.mouse.scale(1 / 50 * speedScale);
+    let newVelocity = player.velocity.add(io.mouse.scale(1 / 2500 * speedScale));
+    if (newVelocity.length() < 100) {
+        player.velocity = newVelocity;
+    }
 
     requestAnimationFrame(animation);
 })();
