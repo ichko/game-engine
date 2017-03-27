@@ -27,18 +27,18 @@ let speedScale = 1;
 
 let camera = new SpringyVector({
     position: new Vector(0, height / 2 - 150),
-    elasticity: 0.005,
-    damping: 0.1,
-    target: () => player.position.add(io.mouse)
+    elasticity: 0.1,
+    damping: 0.5,
+    target: () => player.position.add(io.mouse.scaleTo(150))
 });
 
 let parallax = new Parallax(() => camera.position);
 
 let enviroment = {
-    frontBig: { elements: circleGenerator(40, { color: 'rgba(220, 0, 100, 0.8)', size: 8 }), depth: 1.5 },
-    frontSmall: { elements: circleGenerator(40, { color: 'rgba(0, 200, 100, 0.8)', size: 6 }), depth: 2 },
-    backBig: { elements: circleGenerator(40, { color: 'rgba(240, 120, 0, 0.8)', size: 4 }), depth: 3 },
-    backSmall: { elements: circleGenerator(40, { color: 'rgba(50, 100, 200, 0.8)', size: 2 }), depth: 4 }
+    frontBig: { elements: circleGenerator(40, { color: 'rgba(220, 0, 100, 0.8)', size: 8 }), depth: 3.1 },
+    frontSmall: { elements: circleGenerator(40, { color: 'rgba(0, 200, 100, 0.8)', size: 6 }), depth: 3.2 },
+    backBig: { elements: circleGenerator(40, { color: 'rgba(240, 120, 0, 0.8)', size: 4 }), depth: 3.4 },
+    backSmall: { elements: circleGenerator(40, { color: 'rgba(50, 100, 200, 0.8)', size: 2 }), depth: 3.8 }
 }
 
 parallax
@@ -50,7 +50,7 @@ parallax
 
 scene.add(parallax).add(camera);
 
-io.onMouse(() => speedScale = 2, () => speedScale = 1);
+io.onMouse(() => speedScale = 4, () => speedScale = 1);
 
 (function animation() {
     engine.clear().render().update();

@@ -4,8 +4,10 @@ class IO {
         this.width = width;
         this.height = height;
         this.mouse = new Vector(0, 300);
-        this.keyHandlers = { };
-        this.keyStates = { };
+
+        this.keyHandlers = {};
+        this.keyStates = {};
+
         this.bindEvents();
     }
 
