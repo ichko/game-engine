@@ -29,7 +29,7 @@ let camera = new SpringyVector({
     position: new Vector(0, height / 2 - 150),
     elasticity: 0.08,
     damping: 0.3,
-    target: () => player.position.add(player.velocity.scale(3)).add(io.mouse.scaleTo(80))
+    target: () => player.position.add(player.velocity.scale(3)).add(io.mouse.scaleTo(0))
 });
 
 let parallax = new Parallax(() => camera.position);
