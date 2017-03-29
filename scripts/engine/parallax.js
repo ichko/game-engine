@@ -6,6 +6,10 @@ App.define(() => class Layer {
         this.position = position;
     }
 
+    recycle() {
+        this.objects = this.objects.filter(object => object.alive());
+    }
+
     render(renderer) {
         renderer.transform({ translation: this.position }, () =>
             this.objects.forEach(object => object.render(renderer)));
@@ -41,8 +45,14 @@ App.define(() => class Parallax {
             }, () => layer.render(renderer)));
     }
 
+    recycle() {
+        this.objects = this.objects.filter(object => object.alive());
+    }
+
     update() {
         this.objects.forEach(object => object.update());
+        this.recycle();
+        this.layers.forEach(layer => layer.recycle());
     }
 
 });

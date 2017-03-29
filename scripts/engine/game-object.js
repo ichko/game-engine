@@ -36,6 +36,11 @@ App.define(() => class GameObject {
         this.velocity = this.velocity.scale(this.velocityDamping);
     }
 
+    extend(func) {
+        this[func.name] = func;
+        return this;
+    }
+
 });
 
 App.define(({ GameObject }) => class Circle extends GameObject {
@@ -208,6 +213,36 @@ App.define(({ Explosion }) => class Fountain extends Explosion {
     update(dt) {
         this.fire();
         super.update(dt);
+    }
+
+});
+
+App.define(() => class Spawner {
+
+    constructor(creator = (() => [])) {
+        this.creator = creator;
+        this.items = [];
+    }
+
+    alive() {
+        return true;
+    }
+
+    update(context) {
+        this.items.forEach(item => item.update(context)); 
+        let createdItems = this.creator();
+        if (createdItems && createdItems.length) {
+            this.items = this.items.concat(createdItems)
+        }
+        this.recycle();
+    }
+
+    recycle() {
+        this.items = this.items.filter(item => item.alive());
+    }
+
+    render(renderer) {
+        this.items.forEach(item => item.render(renderer)); 
     }
 
 });
