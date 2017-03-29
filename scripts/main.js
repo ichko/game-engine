@@ -66,8 +66,10 @@ io.onMouse(() => speedScale = 4, () => speedScale = 0.001);
     fuel.config.size = speed;
 
     let newVelocity = player.velocity.add(io.mouse.scale(1 / 2500 * speedScale));
-    if (newVelocity.length() < 100) {
-        player.velocity = newVelocity;
+    player.velocity = newVelocity;
+
+    if (newVelocity.length() > 100) {
+        player.velocity = player.velocity.scaleTo(100);
     }
 
     requestAnimationFrame(animation);
