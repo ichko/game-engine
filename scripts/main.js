@@ -47,7 +47,7 @@ let asteroidSpawner = new Spawner(() => {
             position: player.position.add(Vector.polar(
                 Utils.random(0, Math.PI * 2), 999
             )),
-            color: '#96f',
+            color: '#99f',
             size: 30,
             segments: 10,
             velocity: Vector.random(-2, 2, -2, 2)
@@ -97,6 +97,16 @@ function asteroidGenerator({ position, size = 10, segments = 8, color, velocity 
                          Utils.random(size / 2, size)))
     }).extend(function alive() {
         let distance = player.position.distance(this.position);
+        if (distance < size) {
+            // TODO: Refactor
+            parallax.addLayer({ objects: [new Explosion({
+                position: this.position,
+                size: 30,
+                particleSize: 10,
+                color,
+                magnitude: Math.abs(player.velocity.length() + this.velocity.length())
+            }).fire()] });
+        }
         return distance < 1000 && distance > size;
     });
 }
