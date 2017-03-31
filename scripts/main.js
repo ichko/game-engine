@@ -35,10 +35,10 @@ let camera = new SpringyVector({
 let parallax = new Parallax(() => camera.position);
 
 let enviroment = {
-    frontBig: { elements: circleGenerator(40, { color: 'rgba(220, 0, 100, 0.8)', size: 4 }), depth: 3.1 },
-    frontSmall: { elements: circleGenerator(40, { color: 'rgba(0, 200, 100, 0.8)', size: 3 }), depth: 3.2 },
-    backBig: { elements: circleGenerator(40, { color: 'rgba(240, 120, 0, 0.8)', size: 2 }), depth: 3.4 },
-    backSmall: { elements: circleGenerator(40, { color: 'rgba(50, 100, 200, 0.8)', size: 1 }), depth: 3.8 }
+    frontBig: { elements: circleGenerator(40, { color: 'rgba(220, 0, 100, 0.8)', size: 4 }), depth: 1.1 },
+    frontSmall: { elements: circleGenerator(40, { color: 'rgba(0, 200, 100, 0.8)', size: 3 }), depth: 1.2 },
+    backBig: { elements: circleGenerator(40, { color: 'rgba(240, 120, 0, 0.8)', size: 2 }), depth: 1.4 },
+    backSmall: { elements: circleGenerator(40, { color: 'rgba(50, 100, 200, 0.8)', size: 1 }), depth: 1.8 }
 }
 
 let asteroidSpawner = new Spawner(() => {
@@ -50,7 +50,7 @@ let asteroidSpawner = new Spawner(() => {
             color: '#96f',
             size: 30,
             segments: 10,
-            velocity: Vector.random(-4, 4, -4, 4)
+            velocity: Vector.random(-2, 2, -2, 2)
         })];
     }
 });
@@ -64,7 +64,7 @@ parallax
 
 scene.add(parallax).add(camera);
 
-io.onMouse(() => speedScale = 4, () => speedScale = 0.001);
+io.onMouse(() => speedScale = 1.05, () => speedScale = 0.001);
 
 (function animation() {
     engine.clear().render().update();
@@ -82,8 +82,8 @@ io.onMouse(() => speedScale = 4, () => speedScale = 0.001);
     let newVelocity = player.velocity.add(io.mouse.scale(1 / 2500 * speedScale));
     player.velocity = newVelocity;
 
-    if (newVelocity.length() > 100) {
-        player.velocity = player.velocity.scaleTo(100);
+    if (newVelocity.length() > 50) {
+        player.velocity = player.velocity.scaleTo(50);
     }
 
     requestAnimationFrame(animation);
@@ -96,7 +96,8 @@ function asteroidGenerator({ position, size = 10, segments = 8, color, velocity 
             Vector.polar((segment / segments) * Math.PI * 2,
                          Utils.random(size / 2, size)))
     }).extend(function alive() {
-        return player.position.distance(this.position) < 1000
+        let distance = player.position.distance(this.position);
+        return distance < 1000 && distance > size;
     });
 }
 
