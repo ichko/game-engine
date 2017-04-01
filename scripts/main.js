@@ -14,9 +14,9 @@ let renderer = new CanvasRenderer(ctx, width, height);
 let scene = new Scene();
 let engine = new Engine(renderer, scene);
 
-let fuel = new Fountain({ size: 4, particleSize: 3.5, magnitude: 5, color: '#6cf',
+let fuel = new Fountain({ size: 4, particleSize: 10, magnitude: 5, style: { color: 'rgba(255, 68, 51, 0.3)' },
                         fromAngle: Math.PI / 2 * 3 - 0.3, toAngle: Math.PI / 2 * 3 + 0.3 });
-let ship = new Polygon({ color: '#ff9',
+let ship = new Polygon({ style: { color: '#fc0' },
                         points: [new Vector(-10, 0), new Vector(0, -5), new Vector(10, 0), new Vector(0, 30)] });
 
 let player = new Composite()
@@ -35,10 +35,10 @@ let camera = new SpringyVector({
 let parallax = new Parallax(() => camera.position);
 
 let enviroment = {
-    frontBig: { elements: circleGenerator(40, { color: 'rgba(220, 0, 100, 0.8)', size: 4 }), depth: 1.1 },
-    frontSmall: { elements: circleGenerator(40, { color: 'rgba(0, 200, 100, 0.8)', size: 3 }), depth: 1.2 },
-    backBig: { elements: circleGenerator(40, { color: 'rgba(240, 120, 0, 0.8)', size: 2 }), depth: 1.4 },
-    backSmall: { elements: circleGenerator(40, { color: 'rgba(50, 100, 200, 0.8)', size: 1 }), depth: 1.8 }
+    frontBig: { elements: circleGenerator(40, { style: { color: 'rgba(220, 0, 100, 0.8)' }, size: 4 }), depth: 1.1 },
+    frontSmall: { elements: circleGenerator(40, { style: { color: 'rgba(0, 200, 100, 0.8)' }, size: 3 }), depth: 1.2 },
+    backBig: { elements: circleGenerator(40, { style: { color: 'rgba(240, 120, 0, 0.8)' }, size: 2 }), depth: 1.4 },
+    backSmall: { elements: circleGenerator(40, { style: { color: 'rgba(50, 100, 200, 0.8)' }, size: 1 }), depth: 1.8 }
 }
 
 let asteroidSpawner = new Spawner(() => {
@@ -47,7 +47,7 @@ let asteroidSpawner = new Spawner(() => {
             position: player.position.add(Vector.polar(
                 Utils.random(0, Math.PI * 2), 999
             )),
-            color: '#99f',
+            style: { color: '#99f' },
             size: 30,
             segments: 10,
             velocity: Vector.random(-2, 2, -2, 2)
@@ -77,22 +77,22 @@ io.onMouse(() => speedScale = 1.05, () => speedScale = 0.001);
     ship.rotation = forwardAngle + Math.PI / 2;
     fuel.config.fromAngle = forwardAngle - 1 / speed;
     fuel.config.toAngle = forwardAngle + 1 / speed;
-    fuel.config.magnitude = speed;
+    fuel.config.magnitude = speed / 1.5;
     fuel.config.size = speed;
 
     let newVelocity = player.velocity.add(io.mouse.scale(1 / 2500 * speedScale));
     player.velocity = newVelocity;
 
-    if (newVelocity.length() > 50) {
-        player.velocity = player.velocity.scaleTo(50);
+    if (newVelocity.length() > 20) {
+        player.velocity = player.velocity.scaleTo(20);
     }
 
     requestAnimationFrame(animation);
 })();
 
-function asteroidGenerator({ position, size = 10, segments = 8, color, velocity = new Vector() } = {}) {
+function asteroidGenerator({ position, size = 10, segments = 8, style, velocity = new Vector() } = {}) {
     return new Polygon({
-        position, color, velocity,
+        position, style, velocity,
         points: Utils.range(segments, segment =>
             Vector.polar((segment / segments) * Math.PI * 2,
                          Utils.random(size / 2, size)))
@@ -104,7 +104,7 @@ function asteroidGenerator({ position, size = 10, segments = 8, color, velocity 
                 position: this.position,
                 size: 30,
                 particleSize: 10,
-                color,
+                style,
                 magnitude: Math.abs(player.velocity.length() + this.velocity.length())
             }).fire();
             parallax.layers['explosions'].objects.push(explosions);
@@ -114,11 +114,11 @@ function asteroidGenerator({ position, size = 10, segments = 8, color, velocity 
     });
 }
 
-function circleGenerator(count, { size, color } = {}) {
+function circleGenerator(count, { size, style } = {}) {
     return Utils.range(count, () => new Circle({
         position: Vector.random(-width / 2, width / 2, -height / 2, height / 2),
         radius: Utils.random(1, size),
-        color
+        style
     }));
 }
 
