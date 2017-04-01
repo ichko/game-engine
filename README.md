@@ -12,3 +12,5 @@ Simple 2D parallax side scroller
 ![example](assets/trails-in-space.png)
 
 ![example](assets/asteroids.png)
+
+![example](assets/asteroids_exploding2.png)
