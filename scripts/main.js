@@ -47,8 +47,8 @@ let asteroidSpawner = new Spawner(() => {
             position: player.position.add(Vector.polar(
                 Utils.random(0, Math.PI * 2), 999
             )),
-            style: { color: '#99f' },
-            size: 30,
+            style: { color: Utils.randomArray(['#6f6', '#f66', '#66f', '#ff3', '#3ff', '#f3f']) },
+            size: Utils.random(10, 60),
             segments: 10,
             velocity: Vector.random(-2, 2, -2, 2)
         })];
@@ -103,7 +103,7 @@ function asteroidGenerator({ position, size = 10, segments = 8, style, velocity 
             let explosions = new Explosion({
                 position: this.position,
                 size: 30,
-                particleSize: 10,
+                particleSize: size / 2,
                 style,
                 magnitude: Math.abs(player.velocity.length() + this.velocity.length())
             }).fire();
