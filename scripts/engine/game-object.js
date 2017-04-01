@@ -2,7 +2,7 @@ App.define(() => class GameObject {
 
     constructor({
         position = new Vector(),
-        color = '#f00',
+        style = { color: '#f00' },
         velocityDamping = 1,
         velocity = new Vector(),
         rotation = 0,
@@ -11,7 +11,7 @@ App.define(() => class GameObject {
         this.position = position;
         this.velocity = velocity;
         this.velocityDamping = velocityDamping;
-        this.color = color;
+        this.style = style;
 
         this.rotation = rotation;
         this.rotationCenter = rotationCenter;
@@ -51,7 +51,7 @@ App.define(({ GameObject }) => class Circle extends GameObject {
     }
 
     render(renderer)  {
-        renderer.circle(this.position, this.radius, this.color);
+        renderer.circle(this.position, this.radius, this.style);
     }
 
 });
@@ -64,7 +64,7 @@ App.define(({ GameObject }) => class Rectangle extends GameObject {
     }
 
     render(renderer) {
-        renderer.rectangle(this.position, this.size, this.color);
+        renderer.rectangle(this.position, this.size, this.style);
     }
 
 });
@@ -142,7 +142,7 @@ App.define(({ GameObject }) => class Polygon extends GameObject {
 
     render(renderer) {
         renderer.transform({ translation: this.position, rotation: this.rotation }, () =>
-            renderer.polygon(this.points, this.color));
+            renderer.polygon(this.points, this.style));
     }
 
 });
@@ -164,14 +164,14 @@ App.define(({ GameObject, Circle, Utils }) => class Explosion extends GameObject
     init({
         size = 2,
         magnitude = 10,
-        color = "#f00",
+        style = { color: "#f00" },
         particleSize = 20,
         position = new Vector(),
         fromAngle = 0,
         toAngle = Math.PI * 2,
     } = {}) {
         this.particles = this.particles.concat(Utils.range(size, () => new Circle({
-            color, position, radius: particleSize,
+            style, position, radius: particleSize,
             velocity: Vector.randomPolar(1, fromAngle, toAngle)
                 .scale(Utils.random(magnitude / 2, magnitude))
         })));

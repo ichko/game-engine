@@ -27,7 +27,7 @@ App.define(() => class CanvasRenderer {
         this.ctx.restore();
     }
 
-    circle(position, radius, color) {
+    circle(position, radius, { color }) {
         // this.ctx.shadowColor = color;
         // this.ctx.shadowBlur = 10;
         this.ctx.fillStyle = color;
@@ -38,7 +38,7 @@ App.define(() => class CanvasRenderer {
         this.ctx.fill();
     }
 
-    rectangle(position, size, color) {
+    rectangle(position, size, { color }) {
         this.ctx.fillStyle = color;
         this.ctx.fillRect(position.x - size.width / 2, position.y - size.height / 2, size.width, size.height);
     }
@@ -48,7 +48,7 @@ App.define(() => class CanvasRenderer {
         this.ctx.fillRect(-this.width / 2, -this.height / 2, this.width, this.height);
     }
 
-    polygon(points, color) {
+    polygon(points, { color }) {
         if (points.length > 2) {
             this.ctx.beginPath();
             this.ctx.fillStyle = color;
