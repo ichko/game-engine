@@ -32,7 +32,7 @@ App.define(() => class Parallax {
         return this;
     }
 
-    addLayer({ name = 'layer'+ this.nameCnt++, objects, depth = 1 }) {
+    addLayer({ name = 'layer'+ this.nameCnt++, objects = [], depth = 1 }) {
         this.layers[name] = new Layer(objects, 1 / depth);
         this.objects = this.objects.concat(objects);
         return this;

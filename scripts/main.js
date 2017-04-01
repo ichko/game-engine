@@ -60,7 +60,8 @@ parallax
     .addLayer({ depth: enviroment.backBig.depth, objects: enviroment.backBig.elements })
     .addLayer({ depth: enviroment.frontSmall.depth, objects: enviroment.frontSmall.elements })
     .addLayer({ depth: enviroment.frontBig.depth, objects: enviroment.frontBig.elements })
-    .addLayer({ objects: [player, asteroidSpawner] });
+    .addLayer({ objects: [player, asteroidSpawner] })
+    .addLayer({ name: 'explosions', object: [] });
 
 scene.add(parallax).add(camera);
 
@@ -99,13 +100,15 @@ function asteroidGenerator({ position, size = 10, segments = 8, color, velocity 
         let distance = player.position.distance(this.position);
         if (distance < size) {
             // TODO: Refactor
-            parallax.addLayer({ objects: [new Explosion({
+            let explosions = new Explosion({
                 position: this.position,
                 size: 30,
                 particleSize: 10,
                 color,
                 magnitude: Math.abs(player.velocity.length() + this.velocity.length())
-            }).fire()] });
+            }).fire();
+            parallax.layers['explosions'].objects.push(explosions);
+            parallax.objects.push(explosions);
         }
         return distance < 1000 && distance > size;
     });
