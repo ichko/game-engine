@@ -21,9 +21,10 @@ App.define(() => class Parallax {
 
     constructor(reference = () => new Vector()) {
         this.reference = reference;
-        this.layers = [];
+        this.layers = {};
         this.objects = [];
         this.zoom = 1;
+        this.nameCnt = 0;
     }
 
     target(reference) {
@@ -31,14 +32,14 @@ App.define(() => class Parallax {
         return this;
     }
 
-    addLayer({ objects, depth = 1 }) {
-        this.layers.push(new Layer(objects, 1 / depth));
+    addLayer({ name = 'layer'+ this.nameCnt++, objects, depth = 1 }) {
+        this.layers[name] = new Layer(objects, 1 / depth);
         this.objects = this.objects.concat(objects);
         return this;
     }
 
     render(renderer) {
-        this.layers.forEach(layer =>
+        this._forEachLayer(layer =>
             renderer.transform({
                 translation: this.reference().scale(-layer.depth),
                 // scale: new Vector(this.zoom, this.zoom)
@@ -52,7 +53,13 @@ App.define(() => class Parallax {
     update() {
         this.objects.forEach(object => object.update());
         this.recycle();
-        this.layers.forEach(layer => layer.recycle());
+        this._forEachLayer(layer => layer.recycle());
+    }
+
+    _forEachLayer(handler) {
+        for(let name in this.layers) {
+            handler(this.layers[name], name);
+        }
     }
 
 });
