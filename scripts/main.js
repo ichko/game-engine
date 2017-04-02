@@ -67,7 +67,9 @@ scene.add(parallax).add(camera);
 
 io.onMouse(() => speedScale = 1.05, () => speedScale = 0.001);
 
+let time = 0;
 (function animation() {
+    time++;
     engine.clear().render().update();
     io.callHandlers();
     outOfBounds();
@@ -79,6 +81,7 @@ io.onMouse(() => speedScale = 1.05, () => speedScale = 0.001);
     fuel.config.toAngle = forwardAngle + 1 / speed;
     fuel.config.magnitude = speed / 1.5;
     fuel.config.size = speed;
+    parallax.zoom = 30 / (player.velocity.length() + 20);
 
     let newVelocity = player.velocity.add(io.mouse.scale(1 / 2500 * speedScale));
     player.velocity = newVelocity;

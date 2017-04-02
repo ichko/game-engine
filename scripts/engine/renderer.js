@@ -18,9 +18,9 @@ App.define(() => class CanvasRenderer {
         translation = new Vector()
     } = {}) {
         this.ctx.save();
-        this.ctx.translate(translation.x, translation.y);
         this.ctx.rotate(rotation);
         this.ctx.scale(scale.x, scale.y);
+        this.ctx.translate(translation.x, translation.y);
     }
 
     popTransformation() {
@@ -48,13 +48,13 @@ App.define(() => class CanvasRenderer {
         this.ctx.fillRect(-this.width / 2, -this.height / 2, this.width, this.height);
     }
 
-    polygon(points, { color }) {
+    polygon(points, size = 1, { color }) {
         if (points.length > 2) {
             this.ctx.beginPath();
             this.ctx.fillStyle = color;
-            this.ctx.moveTo(points[0].x, points[0].y);
+            this.ctx.moveTo(points[0].x * size, points[0].y * size);
             points.forEach(point => {
-                this.ctx.lineTo(point.x, point.y);
+                this.ctx.lineTo(point.x * size, point.y * size);
             });
             this.ctx.closePath();
             this.ctx.fill();

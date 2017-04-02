@@ -42,7 +42,7 @@ App.define(() => class Parallax {
         this._forEachLayer(layer =>
             renderer.transform({
                 translation: this.reference().scale(-layer.depth),
-                // scale: new Vector(this.zoom, this.zoom)
+                scale: new Vector(this.zoom, this.zoom)
             }, () => layer.render(renderer)));
     }
 

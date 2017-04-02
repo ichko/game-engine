@@ -6,12 +6,14 @@ App.define(() => class GameObject {
         velocityDamping = 1,
         velocity = new Vector(),
         rotation = 0,
-        rotationCenter = position
+        rotationCenter = position,
+        size = 1
     } = {}) {
         this.position = position;
         this.velocity = velocity;
         this.velocityDamping = velocityDamping;
         this.style = style;
+        this.size = size;
 
         this.rotation = rotation;
         this.rotationCenter = rotationCenter;
@@ -89,8 +91,9 @@ App.define(({ GameObject }) => class Composite extends GameObject {
     render(renderer) {
         renderer.transform({
             translation: this.position,
-            rotation: this.rotation },
-        () => {
+            rotation: this.rotation,
+            scale: new Vector(this.size, this.size)
+        }, () => {
             for (let name in this.root) {
                 renderer.transform({ translation: this.root[name].offset }, () =>
                     this.root[name].object.render(renderer));
@@ -142,7 +145,7 @@ App.define(({ GameObject }) => class Polygon extends GameObject {
 
     render(renderer) {
         renderer.transform({ translation: this.position, rotation: this.rotation }, () =>
-            renderer.polygon(this.points, this.style));
+            renderer.polygon(this.points, this.size, this.style));
     }
 
 });
