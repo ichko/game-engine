@@ -35,17 +35,17 @@ let camera = new SpringyVector({
 let parallax = new Parallax(() => camera.position);
 
 let enviroment = {
-    frontBig: { elements: circleGenerator(40, { style: { color: 'rgba(220, 0, 100, 0.8)' }, size: 4 }), depth: 1.1 },
-    frontSmall: { elements: circleGenerator(40, { style: { color: 'rgba(0, 200, 100, 0.8)' }, size: 3 }), depth: 1.2 },
-    backBig: { elements: circleGenerator(40, { style: { color: 'rgba(240, 120, 0, 0.8)' }, size: 2 }), depth: 1.4 },
-    backSmall: { elements: circleGenerator(40, { style: { color: 'rgba(50, 100, 200, 0.8)' }, size: 1 }), depth: 1.8 }
+    frontBig: { elements: circleGenerator(20, { style: { color: 'rgba(220, 0, 100, 0.8)' }, size: 8 }), depth: 1.1 },
+    frontSmall: { elements: circleGenerator(20, { style: { color: 'rgba(0, 200, 100, 0.8)' }, size: 7 }), depth: 1.2 },
+    backBig: { elements: circleGenerator(20, { style: { color: 'rgba(240, 120, 0, 0.8)' }, size: 6 }), depth: 1.4 },
+    backSmall: { elements: circleGenerator(20, { style: { color: 'rgba(50, 100, 200, 0.8)' }, size: 5 }), depth: 1.8 }
 }
 
 let asteroidSpawner = new Spawner(() => {
     if (Math.random() < 0.5) {
         return [asteroidGenerator({
             position: player.position.add(Vector.polar(
-                Utils.random(0, Math.PI * 2), 999
+                Utils.random(0, Math.PI * 2), Math.max(width, height) + 50
             )),
             style: { color: Utils.randomArray(['#6f6', '#f66', '#66f', '#ff3', '#3ff', '#f3f']) },
             size: Utils.random(10, 60),
@@ -80,8 +80,8 @@ let time = 0;
     fuel.config.fromAngle = forwardAngle - 1 / speed;
     fuel.config.toAngle = forwardAngle + 1 / speed;
     fuel.config.magnitude = speed / 1.5;
-    fuel.config.size = speed;
-    parallax.zoom = 30 / (player.velocity.length() + 20);
+    fuel.config.size = speed / 2;
+    parallax.zoom = 50 / (player.velocity.length() + 30);
 
     let newVelocity = player.velocity.add(io.mouse.scale(1 / 2500 * speedScale));
     player.velocity = newVelocity;
@@ -113,7 +113,7 @@ function asteroidGenerator({ position, size = 10, segments = 8, style, velocity 
             parallax.layers['explosions'].objects.push(explosions);
             parallax.objects.push(explosions);
         }
-        return distance < 1000 && distance > size;
+        return distance < Math.max(width, height) + 200 && distance > size;
     });
 }
 
