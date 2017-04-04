@@ -4,7 +4,7 @@ canvas.width = width;
 canvas.height = height;
 let ctx = canvas.getContext('2d');
 ctx.translate(width / 2, height / 2);
-ctx.scale(1.2, -1.2);
+ctx.scale(1.1, -1.1);
 
 
 App.load().useIn(window);
@@ -45,7 +45,7 @@ let asteroidSpawner = new Spawner(() => {
     if (Math.random() < 0.5) {
         return [asteroidGenerator({
             position: player.position.add(Vector.polar(
-                Utils.random(0, Math.PI * 2), Math.max(width, height) + 50
+                Utils.random(0, Math.PI * 2), Math.max(width, height) / 2 + 20
             )),
             style: { color: Utils.randomArray(['#6f6', '#f66', '#66f', '#ff3', '#3ff', '#f3f']) },
             size: Utils.random(10, 60),
@@ -93,7 +93,8 @@ let time = 0;
     requestAnimationFrame(animation);
 })();
 
-function asteroidGenerator({ position, size = 10, segments = 8, style, velocity = new Vector() } = {}) {
+
+function asteroidGenerator({ position, size = 10, segments = 5, style, velocity = new Vector() } = {}) {
     return new Polygon({
         position, style, velocity,
         points: Utils.range(segments, segment =>
@@ -101,8 +102,8 @@ function asteroidGenerator({ position, size = 10, segments = 8, style, velocity 
                          Utils.random(size / 2, size)))
     }).extend(function alive() {
         let distance = player.position.distance(this.position);
+        // TODO: Refactor
         if (distance < size) {
-            // TODO: Refactor
             let explosions = new Explosion({
                 position: this.position,
                 size: 30,
@@ -113,7 +114,7 @@ function asteroidGenerator({ position, size = 10, segments = 8, style, velocity 
             parallax.layers['explosions'].objects.push(explosions);
             parallax.objects.push(explosions);
         }
-        return distance < Math.max(width, height) + 200 && distance > size;
+        return distance < Math.max(width, height) / 2 + 50 && distance > size;
     });
 }
 
