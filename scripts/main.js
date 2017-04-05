@@ -23,7 +23,7 @@ let player = new Composite()
     .add({ object: fuel })
     .add({ object: ship });
 
-let speedScale = 0.001;
+let speedScale = 0;
 
 let camera = new SpringyVector({
     position: new Vector(0, height / 2 - 150),
@@ -65,7 +65,7 @@ parallax
 
 scene.add(parallax).add(camera);
 
-io.onMouse(() => speedScale = 1.05, () => speedScale = 0.001);
+io.onMouse(() => speedScale = 1.05, () => speedScale = 0);
 
 let time = 0;
 (function animation() {
