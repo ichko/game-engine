@@ -95,7 +95,7 @@ let time = 0;
 
 
 function asteroidGenerator({ position, size = 10, segments = 5, style, velocity = new Vector() } = {}) {
-    return new Polygon({
+    let polygon = new Polygon({
         position, style, velocity,
         points: Utils.range(segments, segment =>
             Vector.polar((segment / segments) * Math.PI * 2,
@@ -104,18 +104,24 @@ function asteroidGenerator({ position, size = 10, segments = 5, style, velocity 
         let distance = player.position.distance(this.position);
         // TODO: Refactor
         if (distance < size) {
-            let explosions = new Explosion({
+            this.explode();
+        }
+        return distance < Math.max(width, height) / 2 + 50 && distance > size;
+    });
+
+    polygon.extend(function explode() {
+        let explosions = new Explosion({
                 position: this.position,
                 size: 30,
                 particleSize: size / 2,
                 style,
                 magnitude: Math.abs(player.velocity.length() + this.velocity.length())
             }).fire();
-            parallax.layers['explosions'].objects.push(explosions);
-            parallax.objects.push(explosions);
-        }
-        return distance < Math.max(width, height) / 2 + 50 && distance > size;
+        parallax.layers['explosions'].objects.push(explosions);
+        parallax.objects.push(explosions);
     });
+
+    return polygon;
 }
 
 function circleGenerator(count, { size, style } = {}) {
