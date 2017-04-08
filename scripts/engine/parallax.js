@@ -15,16 +15,20 @@ App.define(() => class Layer {
             this.objects.forEach(object => object.render(renderer)));
     }
 
+    update() {
+        this.objects.forEach(object => {
+            object.update()
+        });
+    }
+
 });
 
 App.define(() => class Parallax {
 
     constructor(reference = () => new Vector()) {
         this.reference = reference;
-        this.layers = {};
-        this.objects = [];
+        this.layers = [];
         this.zoom = 1;
-        this.nameCnt = 0;
     }
 
     target(reference) {
@@ -32,34 +36,24 @@ App.define(() => class Parallax {
         return this;
     }
 
-    addLayer({ name = 'layer'+ this.nameCnt++, objects = [], depth = 1 }) {
-        this.layers[name] = new Layer(objects, 1 / depth);
-        this.objects = this.objects.concat(objects);
+    addLayer({ objects = [], depth = 1 }) {
+        this.layers.push(new Layer(objects, 1 / depth));
         return this;
     }
 
     render(renderer) {
-        this._forEachLayer(layer =>
+        this.layers.forEach(layer =>
             renderer.transform({
                 translation: this.reference().scale(-layer.depth),
                 scale: new Vector(this.zoom, this.zoom)
             }, () => layer.render(renderer)));
     }
 
-    recycle() {
-        this.objects = this.objects.filter(object => object.alive());
-    }
-
     update() {
-        this.objects.forEach(object => object.update());
-        this.recycle();
-        this._forEachLayer(layer => layer.recycle());
-    }
-
-    _forEachLayer(handler) {
-        for(let name in this.layers) {
-            handler(this.layers[name], name);
-        }
+        this.layers.forEach(layer => {
+            layer.update();
+            layer.recycle();
+        });
     }
 
 });

@@ -24,7 +24,15 @@ App.define(() => class Scene {
     }
 
     update(params) {
-        this.container.forEach(object => object.update && object.update(params));
+        this.container.forEach(object => {
+            if (object.update) {
+                object.update(params);
+            }
+            if (object.emision) {
+                let emision = object.emision();
+                this.container.push(...emision);
+            }
+        });
         this.recycle();
     }
 

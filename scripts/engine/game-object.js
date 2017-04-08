@@ -17,10 +17,11 @@ App.define(() => class GameObject {
 
         this.rotation = rotation;
         this.rotationCenter = rotationCenter;
+        this.dead = false;
     }
 
     alive() {
-        return true;
+        return !this.dead;
     }
 
     render(renderer) { }
@@ -38,9 +39,13 @@ App.define(() => class GameObject {
         this.velocity = this.velocity.scale(this.velocityDamping);
     }
 
-    extend(func) {
-        this[func.name] = func;
+    static extend(func) {
+        this.prototype[func.name] = func;
         return this;
+    }
+
+    emision() {
+        return [];
     }
 
 });
@@ -108,7 +113,7 @@ App.define(({ GameObject }) => class Composite extends GameObject {
         }
     }
 
-})
+});
 
 App.define(({ GameObject }) => class SpringyVector extends GameObject {
 
@@ -132,20 +137,6 @@ App.define(({ GameObject }) => class SpringyVector extends GameObject {
             .subtract(dampingForce);
 
         this.velocity = this.velocity.add(acceleration);
-    }
-
-})
-
-App.define(({ GameObject }) => class Polygon extends GameObject {
-
-    constructor(config = {}) {
-        super(config);
-        this.points = config.points || [];
-    }
-
-    render(renderer) {
-        renderer.transform({ translation: this.position, rotation: this.rotation }, () =>
-            renderer.polygon(this.points, this.size, this.style));
     }
 
 });
@@ -220,15 +211,38 @@ App.define(({ Explosion }) => class Fountain extends Explosion {
 
 });
 
+App.define(({ GameObject, Explosion }) => class Polygon extends GameObject {
+
+    constructor(config = {}) {
+        super(config);
+        this.points = config.points || [];
+        this.emissions = [];
+    }
+
+    render(renderer) {
+        renderer.transform({ translation: this.position, rotation: this.rotation }, () =>
+            renderer.polygon(this.points, this.size, this.style));
+    }
+
+    emision() {
+        return this.emissions.splice(0, this.emissions.length);
+    }
+
+    explode(magnitude = 5) {
+        this.dead = true;
+        this.emissions.push(new Explosion({
+            position: this.position, size: this.size,
+            particleSize: this.size / 2, style: this.style, magnitude
+        }).fire());
+    }
+
+});
+
 App.define(() => class Spawner {
 
     constructor(creator = (() => [])) {
         this.creator = creator;
         this.items = [];
-    }
-
-    alive() {
-        return true;
     }
 
     update(context) {
@@ -246,6 +260,10 @@ App.define(() => class Spawner {
 
     render(renderer) {
         this.items.forEach(item => item.render(renderer)); 
+    }
+
+    alive() {
+        return true;
     }
 
 });

@@ -42,15 +42,16 @@ let enviroment = {
 }
 
 let asteroidSpawner = new Spawner(() => {
-    if (Math.random() < 0.5) {
-        return [asteroidGenerator({
-            position: player.position.add(Vector.polar(
-                Utils.random(0, Math.PI * 2), Math.max(width, height) / 2 + 20
-            )),
+    let size = Utils.random(10, 60);
+    let segments = 8;
+    if (Math.random() < 0.04) {
+        return [new Polygon({
+            position: player.position.add(Vector.polar(Utils.random(0, Math.PI * 2), Math.max(width, height) / 2 + 20)),
             style: { color: Utils.randomArray(['#6f6', '#f66', '#66f', '#ff3', '#3ff', '#f3f']) },
-            size: Utils.random(10, 60),
-            segments: 10,
-            velocity: Vector.random(-2, 2, -2, 2)
+            velocity: Vector.random(-2, 2, -2, 2),
+            points: Utils.range(segments, segment =>
+                Vector.polar((segment / segments) * Math.PI * 2, Utils.random(0.5, 1))),
+            size
         })];
     }
 });
@@ -60,8 +61,7 @@ parallax
     .addLayer({ depth: enviroment.backBig.depth, objects: enviroment.backBig.elements })
     .addLayer({ depth: enviroment.frontSmall.depth, objects: enviroment.frontSmall.elements })
     .addLayer({ depth: enviroment.frontBig.depth, objects: enviroment.frontBig.elements })
-    .addLayer({ objects: [player, asteroidSpawner] })
-    .addLayer({ name: 'explosions', object: [] });
+    .addLayer({ objects: [player, asteroidSpawner] });
 
 scene.add(parallax).add(camera);
 
@@ -93,36 +93,14 @@ let time = 0;
     requestAnimationFrame(animation);
 })();
 
+Polygon.extend(function alive() {
+    let distance = player.position.distance(this.position);
+    if (distance < this.size) {
+        this.explode();
+    }
 
-function asteroidGenerator({ position, size = 10, segments = 5, style, velocity = new Vector() } = {}) {
-    let polygon = new Polygon({
-        position, style, velocity,
-        points: Utils.range(segments, segment =>
-            Vector.polar((segment / segments) * Math.PI * 2,
-                         Utils.random(size / 2, size)))
-    }).extend(function alive() {
-        let distance = player.position.distance(this.position);
-        // TODO: Refactor
-        if (distance < size) {
-            this.explode();
-        }
-        return distance < Math.max(width, height) / 2 + 50 && distance > size;
-    });
-
-    polygon.extend(function explode() {
-        let explosions = new Explosion({
-                position: this.position,
-                size: 30,
-                particleSize: size / 2,
-                style,
-                magnitude: Math.abs(player.velocity.length() + this.velocity.length())
-            }).fire();
-        parallax.layers['explosions'].objects.push(explosions);
-        parallax.objects.push(explosions);
-    });
-
-    return polygon;
-}
+    return distance < Math.max(width, height) / 2 + 50 && distance > this.size;
+});
 
 function circleGenerator(count, { size, style } = {}) {
     return Utils.range(count, () => new Circle({
