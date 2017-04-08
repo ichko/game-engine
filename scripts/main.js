@@ -44,7 +44,7 @@ let enviroment = {
 let asteroidSpawner = new Spawner(() => {
     let size = Utils.random(10, 60);
     let segments = 8;
-    if (Math.random() < 0.04) {
+    if (Math.random() < 0.5) {
         return [new Polygon({
             position: player.position.add(Vector.polar(Utils.random(0, Math.PI * 2), Math.max(width, height) / 2 + 20)),
             style: { color: Utils.randomArray(['#6f6', '#f66', '#66f', '#ff3', '#3ff', '#f3f']) },
