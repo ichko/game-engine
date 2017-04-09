@@ -224,33 +224,21 @@ App.define(({ GameObject, Explosion }) => class Polygon extends GameObject {
             renderer.polygon(this.points, this.size, this.style));
     }
 
-    emision() {
-        return this.emissions.splice(0, this.emissions.length);
-    }
-
-    explode(magnitude = 5) {
-        this.dead = true;
-        this.emissions.push(new Explosion({
-            position: this.position, size: this.size,
-            particleSize: this.size / 2, style: this.style, magnitude
-        }).fire());
-    }
-
 });
 
 App.define(() => class Spawner {
 
-    constructor(creator = (() => [])) {
+    constructor(condition = (() => false), creator = (() => [])) {
         this.creator = creator;
+        this.condition = condition;
         this.items = [];
     }
 
     update(context) {
-        this.items.forEach(item => item.update(context)); 
-        let createdItems = this.creator();
-        if (createdItems && createdItems.length) {
-            this.items = this.items.concat(createdItems)
+        if (this.condition()) {
+            this.items.push(...this.creator())
         }
+        this.items.forEach(item => item.update(context)); 
         this.recycle();
     }
 
@@ -260,6 +248,10 @@ App.define(() => class Spawner {
 
     render(renderer) {
         this.items.forEach(item => item.render(renderer)); 
+    }
+
+    emission() {
+        return [].concat.apply([], this.items.map(item => item.emision()));
     }
 
     alive() {

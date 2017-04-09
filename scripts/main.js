@@ -41,19 +41,27 @@ let enviroment = {
     backSmall: { elements: circleGenerator(20, { style: { color: 'rgba(50, 100, 200, 0.8)' }, size: 5 }), depth: 1.8 }
 }
 
-let asteroidSpawner = new Spawner(() => {
+class Asteroid extends Polygon {
+    constructor(config) {
+        super(config);
+        this.points = Utils.range(config.segments, segment =>
+                Vector.polar((segment / config.segments) * Math.PI * 2, Utils.random(0.5, 1)))
+    }
+
+    alive() {
+        let distance = player.position.distance(this.position);
+        return distance < Math.max(width, height) / 2 + 50  && distance > this.size;
+    }
+}
+
+let asteroidSpawner = new Spawner(() => Math.random() < 0.5, () => {
     let size = Utils.random(10, 60);
     let segments = 8;
-    if (Math.random() < 0.5) {
-        return [new Polygon({
-            position: player.position.add(Vector.polar(Utils.random(0, Math.PI * 2), Math.max(width, height) / 2 + 20)),
-            style: { color: Utils.randomArray(['#6f6', '#f66', '#66f', '#ff3', '#3ff', '#f3f']) },
-            velocity: Vector.random(-2, 2, -2, 2),
-            points: Utils.range(segments, segment =>
-                Vector.polar((segment / segments) * Math.PI * 2, Utils.random(0.5, 1))),
-            size
-        })];
-    }
+    return [new Asteroid({
+        position: player.position.add(Vector.polar(Utils.random(0, Math.PI * 2), Math.max(width, height) / 2 + 20)),
+        style: { color: Utils.randomArray(['#6f6', '#f66', '#66f', '#ff3', '#3ff', '#f3f']) },
+        velocity: Vector.random(-2, 2, -2, 2), segments, size
+    })];
 });
 
 parallax
@@ -92,15 +100,6 @@ let time = 0;
 
     requestAnimationFrame(animation);
 })();
-
-Polygon.extend(function alive() {
-    let distance = player.position.distance(this.position);
-    if (distance < this.size) {
-        this.explode();
-    }
-
-    return distance < Math.max(width, height) / 2 + 50 && distance > this.size;
-});
 
 function circleGenerator(count, { size, style } = {}) {
     return Utils.range(count, () => new Circle({
