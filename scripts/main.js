@@ -41,6 +41,10 @@ let enviroment = {
     backSmall: { elements: circleGenerator(20, { style: { color: 'rgba(50, 100, 200, 0.8)' }, size: 5 }), depth: 1.8 }
 }
 
+let explosions = [];
+let explosionSpawner = new Spawner(() => explosions.length > 0,
+    () => explosions.splice(0, explosions.length));
+
 class Asteroid extends Polygon {
     constructor(config) {
         super(config);
@@ -50,6 +54,13 @@ class Asteroid extends Polygon {
 
     alive() {
         let distance = player.position.distance(this.position);
+        if (distance < this.size) {
+            explosions.push(new Explosion({
+                position: this.position, size: this.size,
+                particleSize: this.size / 2, style: this.style, magnitude: player.velocity.length() / 2
+            }).fire());
+        }
+
         return distance < Math.max(width, height) / 2 + 50  && distance > this.size;
     }
 }
@@ -69,7 +80,7 @@ parallax
     .addLayer({ depth: enviroment.backBig.depth, objects: enviroment.backBig.elements })
     .addLayer({ depth: enviroment.frontSmall.depth, objects: enviroment.frontSmall.elements })
     .addLayer({ depth: enviroment.frontBig.depth, objects: enviroment.frontBig.elements })
-    .addLayer({ objects: [player, asteroidSpawner] });
+    .addLayer({ objects: [player, asteroidSpawner, explosionSpawner] });
 
 scene.add(parallax).add(camera);
 
