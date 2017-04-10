@@ -28,10 +28,6 @@ App.define(() => class Scene {
             if (object.update) {
                 object.update(params);
             }
-            if (object.emision) {
-                let emision = object.emision();
-                this.container.push(...emision);
-            }
         });
         this.recycle();
     }

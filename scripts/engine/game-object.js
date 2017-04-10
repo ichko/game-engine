@@ -44,10 +44,6 @@ App.define(() => class GameObject {
         return this;
     }
 
-    emision() {
-        return [];
-    }
-
 });
 
 App.define(({ GameObject }) => class Circle extends GameObject {
@@ -248,10 +244,6 @@ App.define(() => class Spawner {
 
     render(renderer) {
         this.items.forEach(item => item.render(renderer)); 
-    }
-
-    emission() {
-        return [].concat.apply([], this.items.map(item => item.emision()));
     }
 
     alive() {
