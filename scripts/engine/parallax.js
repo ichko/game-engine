@@ -1,28 +1,3 @@
-App.define(() => class Layer {
-
-    constructor(objects = [], depth = 1, position = new Vector()) {
-        this.objects = objects;
-        this.depth = depth;
-        this.position = position;
-    }
-
-    recycle() {
-        this.objects = this.objects.filter(object => object.alive());
-    }
-
-    render(renderer) {
-        renderer.transform({ translation: this.position }, () =>
-            this.objects.forEach(object => object.render(renderer)));
-    }
-
-    update() {
-        this.objects.forEach(object => {
-            object.update()
-        });
-    }
-
-});
-
 App.define(() => class Parallax {
 
     constructor(reference = () => new Vector()) {
@@ -37,7 +12,7 @@ App.define(() => class Parallax {
     }
 
     addLayer({ objects = [], depth = 1 }) {
-        this.layers.push(new Layer(objects, 1 / depth));
+        this.layers.push({ objects, depth: 1 / depth });
         return this;
     }
 
@@ -46,13 +21,17 @@ App.define(() => class Parallax {
             renderer.transform({
                 translation: this.reference().scale(-layer.depth),
                 scale: new Vector(this.zoom, this.zoom)
-            }, () => layer.render(renderer)));
+            }, () => {
+                    layer.objects.forEach(object => object.render(renderer));
+            }));
     }
 
     update() {
         this.layers.forEach(layer => {
-            layer.update();
-            layer.recycle();
+            layer.objects.forEach(object => {
+                object.update()
+            });
+            layer.objects = layer.objects.filter(object => object.alive());
         });
     }
 
