@@ -32,11 +32,11 @@ App.define(() => class GameObject {
     }
 
     updatePosition({ dt = 1 } = {}) {
-        this.position = this.position.add(this.velocity.scale(dt));
+        this.position.add(this.velocity.copy().scale(dt));
     }
 
     updateVelocity({ dt = 1 } = {}) {
-        this.velocity = this.velocity.scale(this.velocityDamping);
+        this.velocity.scale(this.velocityDamping);
     }
 
     static extend(func) {
@@ -126,13 +126,14 @@ App.define(({ GameObject }) => class SpringyVector extends GameObject {
     }
 
     updateVelocity() {
-        let dampingForce = this.velocity.scale(this.damping);
+        let dampingForce = this.velocity.copy().scale(this.damping);
         let acceleration = this.target()
+            .copy()
             .subtract(this.position)
             .scale(this.elasticity)
             .subtract(dampingForce);
 
-        this.velocity = this.velocity.add(acceleration);
+        this.velocity.add(acceleration);
     }
 
 });
@@ -161,7 +162,7 @@ App.define(({ GameObject, Circle, Utils }) => class Explosion extends GameObject
         toAngle = Math.PI * 2,
     } = {}) {
         this.particles = this.particles.concat(Utils.range(size, () => new Circle({
-            style, position, radius: particleSize,
+            style, position: position.copy(), radius: particleSize,
             velocity: Vector.randomPolar(1, fromAngle, toAngle)
                 .scale(Utils.random(magnitude / 2, magnitude))
         })));
@@ -178,10 +179,6 @@ App.define(({ GameObject, Circle, Utils }) => class Explosion extends GameObject
     render(renderer) {
         renderer.transform({ rotation: this.rotation }, () =>
             this.particles.forEach(particle => particle.render(renderer)));
-    }
-
-    applyForce(force) {
-        this.particles.forEach(particle => particle.applyForce(force));
     }
 
     update(dt) {

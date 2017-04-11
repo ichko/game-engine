@@ -29,7 +29,7 @@ let camera = new SpringyVector({
     position: new Vector(0, height / 2 - 150),
     elasticity: 0.08,
     damping: 0.3,
-    target: () => player.position.add(player.velocity.scale(3)).add(io.mouse.scaleTo(0))
+    target: () => player.position.copy().add(player.velocity.copy().scale(3)).add(io.mouse.copy().scaleTo(0))
 });
 
 let parallax = new Parallax(() => camera.position);
@@ -69,7 +69,7 @@ let asteroidSpawner = new Spawner(() => Math.random() < 0.5, () => {
     let size = Utils.random(10, 60);
     let segments = 8;
     return [new Asteroid({
-        position: player.position.add(Vector.polar(Utils.random(0, Math.PI * 2), Math.max(width, height) / 2 + 20)),
+        position: player.position.copy().add(Vector.polar(Utils.random(0, Math.PI * 2), Math.max(width, height) / 2 + 20)),
         style: { color: Utils.randomArray(['#6f6', '#f66', '#66f', '#ff3', '#3ff', '#f3f']) },
         velocity: Vector.random(-2, 2, -2, 2), segments, size
     })];
@@ -102,11 +102,9 @@ let time = 0;
     fuel.config.size = speed / 2;
     parallax.zoom = 50 / (player.velocity.length() + 30);
 
-    let newVelocity = player.velocity.add(io.mouse.scale(1 / 2500 * speedScale));
-    player.velocity = newVelocity;
-
-    if (newVelocity.length() > 20) {
-        player.velocity = player.velocity.scaleTo(20);
+    player.velocity.add(io.mouse.copy().scale(1 / 2500 * speedScale));
+    if (player.velocity.length() > 20) {
+        player.velocity.scaleTo(20);
     }
 
     requestAnimationFrame(animation);
@@ -124,7 +122,7 @@ function outOfBounds() {
     for (let name in enviroment) {
         let layer = enviroment[name];
         layer.elements.forEach(element => {
-            let cameraPos = camera.position.scale(1 / layer.depth);
+            let cameraPos = camera.position.copy().scale(1 / layer.depth);
 
             if (cameraPos.x - element.position.x > width / 2) {
                 element.position.x = cameraPos.x + width / 2 - (cameraPos.x - element.position.x) % (width / 2);

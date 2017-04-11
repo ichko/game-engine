@@ -37,7 +37,8 @@ class IO {
     }
 
     bindEvents() {
-        window.addEventListener('mousemove', ({ x, y }) => this.mouse.set(x - this.width / 2, -y + this.height / 2));
+        window.addEventListener('mousemove', ({ x, y }) =>
+            this.mouse.set(x - this.width / 2, -y + this.height / 2));
         window.addEventListener('touchmove', ({ changedTouches }) => {
             this.mouse.set(changedTouches[0].pageX - this.width / 2,
                            -changedTouches[0].pageY + this.height / 2)

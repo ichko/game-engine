@@ -17,21 +17,29 @@ App.define(({ Utils }) => class Vector {
     }
 
     add(vector) {
-        return new Vector(this.x + vector.x, this.y + vector.y);
+        this.x += vector.x;
+        this.y += vector.y;
+
+        return this;
     }
 
     noramlize() {
         let length = this.length();
         if (length !== 0) {
-            return new Vector(this.x / length, this.y / length);
+            this.x /= length;
+            this.y /= length;
         }
 
-        return new Vector();
+        return this;
     }
 
     rotate(angle) {
         let [ sin, cos ] = [ Math.sin(angle), Math.cos(angle) ];
-        return new Vector(this.x * cos - this.y * sin, this.x * sin + this.y * cos);
+        let tmpX = this.x;
+        this.x = this.x * cos - this.y * sin;
+        this.y = tmpX * sin + this.y * cos;
+
+        return this;
     }
 
     angle() {
@@ -43,21 +51,31 @@ App.define(({ Utils }) => class Vector {
     }
 
     subtract(vector) {
-        return new Vector(this.x - vector.x, this.y - vector.y);
+        this.x -= vector.x;
+        this.y -= vector.y;
+
+        return this;
     }
 
     distance(vector) {
         let dx = this.x - vector.x;
         let dy = this.y - vector.y;
+
         return Math.sqrt(dx * dx + dy * dy);
     }
 
     reverse() {
-        return new Vector(-this.x, -this.y);
+        this.x = -this.x;
+        this.y = -this.y;
+
+        return this;
     }
 
     scale(size) {
-        return new Vector(this.x * size, this.y * size);
+        this.x *= size;
+        this.y *= size;
+
+        return this;
     }
 
     copy() {
@@ -65,7 +83,10 @@ App.define(({ Utils }) => class Vector {
     }
 
     vectorScale(vector) {
-        return new Vector(this.x * vector.x, this.y * vector.y);
+        this.x *= vector.x;
+        this.y *= vector.y;
+
+        return this;
     }
 
     static random(minx, maxx, miny, maxy) {
