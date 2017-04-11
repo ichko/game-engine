@@ -216,7 +216,7 @@ App.define(() => class Spawner {
     }
 
     update(context) {
-        if (this.condition()) {
+        if (this.condition(this.items.length)) {
             this.items.push(...this.creator())
         }
 

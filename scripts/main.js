@@ -35,10 +35,10 @@ let camera = new SpringyVector({
 let parallax = new Parallax(() => camera.position);
 
 let enviroment = {
-    frontBig: { elements: circleGenerator(20, { style: { color: 'rgba(220, 0, 100, 0.8)' }, size: 8 }), depth: 1.1 },
-    frontSmall: { elements: circleGenerator(20, { style: { color: 'rgba(0, 200, 100, 0.8)' }, size: 7 }), depth: 1.2 },
-    backBig: { elements: circleGenerator(20, { style: { color: 'rgba(240, 120, 0, 0.8)' }, size: 6 }), depth: 1.4 },
-    backSmall: { elements: circleGenerator(20, { style: { color: 'rgba(50, 100, 200, 0.8)' }, size: 5 }), depth: 1.8 }
+    frontBig: { elements: circleGenerator(10, { style: { color: 'rgba(220, 0, 100, 0.6)' }, size: 9 }), depth: 1.1 },
+    frontSmall: { elements: circleGenerator(10, { style: { color: 'rgba(0, 200, 100, 0.6)' }, size: 7 }), depth: 1.2 },
+    backBig: { elements: circleGenerator(10, { style: { color: 'rgba(240, 120, 0, 0.6)' }, size: 5 }), depth: 1.4 },
+    backSmall: { elements: circleGenerator(10, { style: { color: 'rgba(50, 100, 200, 0.6)' }, size: 3 }), depth: 1.8 }
 }
 
 let explosions = [];
@@ -57,7 +57,8 @@ class Asteroid extends Polygon {
         if (distance < this.size) {
             explosions.push(new Explosion({
                 position: this.position, size: this.size,
-                particleSize: this.size / 2, style: this.style, magnitude: player.velocity.length() / 2
+                particleSize: this.size / 2, style: this.style,
+                magnitude: (player.velocity.length() + this.velocity.length()) / 2
             }).fire());
         }
 
@@ -65,7 +66,7 @@ class Asteroid extends Polygon {
     }
 }
 
-let asteroidSpawner = new Spawner(() => Math.random() < 0.5, () => {
+let asteroidSpawner = new Spawner(numItems => numItems < 20, () => {
     let size = Utils.random(10, 60);
     let segments = 8;
     return [new Asteroid({
