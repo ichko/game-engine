@@ -1,5 +1,9 @@
-window.onresize = init;
+window.onresize = () => {
+    loop = false;
+    init();
+};
 
+let animationFrame;
 function init() {
     let [ width, height ] = [ innerWidth, innerHeight ];
     let canvas = document.getElementById('canvas');
@@ -91,6 +95,7 @@ function init() {
     io.onMouse(() => speedScale = 1.05, () => speedScale = 0);
 
     let time = 0;
+    cancelAnimationFrame(animationFrame);
     (function animation() {
         time++;
         engine.clear().render().update();
@@ -111,7 +116,7 @@ function init() {
             player.velocity.scaleTo(20);
         }
 
-        requestAnimationFrame(animation);
+        animationFrame = requestAnimationFrame(animation);
     })();
 
     function circleGenerator(count, { size, style } = {}) {
