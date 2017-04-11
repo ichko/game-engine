@@ -9,27 +9,21 @@ App.define(() => class Scene {
         return this;
     }
 
-    recycle() {
-        this.container = this.container.filter(object => {
-            if (typeof object.alive !== "undefined") {
-                object.alive();
-            }
-
-            return true;
-        });
-    }
-
     render(renderer) {
         this.container.forEach(object => object.render && object.render(renderer));
     }
 
     update(params) {
-        this.container.forEach(object => {
+        this.container = this.container.filter(object => {
             if (object.update) {
                 object.update(params);
+                if (typeof object.alive !== "undefined") {
+                    return object.alive();
+                }
+
+                return true;
             }
         });
-        this.recycle();
     }
 
 });

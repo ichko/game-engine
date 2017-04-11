@@ -28,10 +28,10 @@ App.define(() => class Parallax {
 
     update() {
         this.layers.forEach(layer => {
-            layer.objects.forEach(object => {
-                object.update()
+            layer.objects = layer.objects.filter(object => {
+                object.update();
+                return object.alive();
             });
-            layer.objects = layer.objects.filter(object => object.alive());
         });
     }
 
