@@ -76,16 +76,11 @@ App.define(({ GameObject }) => class Composite extends GameObject {
 
     constructor(config = {}) {
         super(config);
-        this.root = {};
-        this.nameCounter = 0;
+        this.items = [];
     }
 
-    add({
-        name = 'unnamed' + this.nameCounter++,
-        offset = new Vector(),
-        object
-    }) {
-        this.root[name] = { object, offset };
+    add({ offset = new Vector(), object }) {
+        this.items.push({ object, offset });
         return this;
     }
 
@@ -95,18 +90,15 @@ App.define(({ GameObject }) => class Composite extends GameObject {
             rotation: this.rotation,
             scale: new Vector(this.size, this.size)
         }, () => {
-            for (let name in this.root) {
-                renderer.transform({ translation: this.root[name].offset }, () =>
-                    this.root[name].object.render(renderer));
-            }
+            this.items.forEach(({ object, offset }) => {
+                renderer.transform({ translation: offset }, () => object.render(renderer))
+            });
         });
     }
 
-    update() {
-        super.update();
-        for (let name in this.root) {
-            this.root[name].object.update();
-        }
+    update(ctx) {
+        super.update(ctx);
+        this.items.forEach(({ object }) => object.update(ctx));
     }
 
 });
@@ -168,10 +160,6 @@ App.define(({ GameObject, Circle, Utils }) => class Explosion extends GameObject
         })));
     }
 
-    recycle() {
-        this.particles = this.particles.filter(particle => particle.radius > 0.5);
-    }
-
     alive() {
         return this.particles.length > 0;
     }
@@ -182,11 +170,11 @@ App.define(({ GameObject, Circle, Utils }) => class Explosion extends GameObject
     }
 
     update(dt) {
-        this.particles.forEach(particle => {
+        this.particles = this.particles.filter(particle => {
             particle.radius /= Utils.random(1.05, 1.1);
             particle.update(dt)
+            return particle.radius > 0.5;
         });
-        this.recycle();
     }
 
 });
@@ -231,12 +219,11 @@ App.define(() => class Spawner {
         if (this.condition()) {
             this.items.push(...this.creator())
         }
-        this.items.forEach(item => item.update(context)); 
-        this.recycle();
-    }
 
-    recycle() {
-        this.items = this.items.filter(item => item.alive());
+        this.items = this.items.filter(item => {
+            item.update(context);
+            return item.alive();
+        });
     }
 
     render(renderer) {
