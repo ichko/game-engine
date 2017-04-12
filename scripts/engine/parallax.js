@@ -1,4 +1,4 @@
-App.define(() => class Parallax {
+App.define(({ Utils }) => class Parallax {
 
     constructor(reference = () => new Vector()) {
         this.reference = reference;
@@ -12,27 +12,25 @@ App.define(() => class Parallax {
     }
 
     addLayer({ objects = [], depth = 1 }) {
-        this.layers.push({ objects, depth: 1 / depth });
+        this.layers.push({ objects: new Set(objects), depth: 1 / depth });
         return this;
     }
 
     render(renderer) {
         this.layers.forEach(layer =>
             renderer.transform({
-                translation: this.reference().copy().scale(-layer.depth),
+                translation: this.reference.copy().scale(-layer.depth),
                 scale: new Vector(this.zoom, this.zoom)
             }, () => {
-                    layer.objects.forEach(object => object.render(renderer));
+                layer.objects.forEach(object => object.render(renderer));
             }));
     }
 
     update() {
-        this.layers.forEach(layer => {
-            layer.objects = layer.objects.filter(object => {
-                object.update();
-                return object.alive();
-            });
-        });
+        this.layers.forEach(layer => Utils.filterSet(layer.objects, object => {
+            object.update();
+            return object.alive();
+        }));
     }
 
 });
