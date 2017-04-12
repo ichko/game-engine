@@ -20,22 +20,20 @@ let animationFrame;
     let scene = new Scene();
     let engine = new Engine(renderer, scene);
 
-    let fuel = new Fountain({ size: 4, particleSize: 10, magnitude: 5, style: { color: 'rgba(255, 68, 51, 0.3)' },
+    let fuel = new Fountain({ particleSize: 6, style: { color: 'rgba(255, 68, 51, 0.3)' },
                             fromAngle: Math.PI / 2 * 3 - 0.3, toAngle: Math.PI / 2 * 3 + 0.3 });
     let ship = new Polygon({ style: { color: '#fc0' },
-                            points: [new Vector(-10, 0), new Vector(0, -5), new Vector(10, 0), new Vector(0, 30)] });
+                            points: [new Vector(-6, 0), new Vector(0, -3), new Vector(6, 0), new Vector(0, 20)] });
 
     let player = new Composite()
         .add({ object: fuel })
         .add({ object: ship });
 
-    let speedScale = 0;
-
     let camera = new SpringyVector({
         position: new Vector(0, height / 2 - 150),
         elasticity: 0.08,
         damping: 0.3,
-        target: () => player.position.copy().add(player.velocity.copy().scale(3)).add(io.mouse.copy().scaleTo(0))
+        target: () => player.position.copy().add(player.velocity.copy().scale(3))
     });
 
     let parallax = new Parallax(camera.position);
@@ -51,41 +49,53 @@ let animationFrame;
     let explosionSpawner = new Spawner(() => explosions.length > 0,
         () => explosions.splice(0, explosions.length));
 
-    let asteroidField = new class AsteroidField {
-        constructor() {
+    let asteroidField = new (class AsteroidField {
+        constructor(player) {
             this.alive = () => true;
-            let segments = 8;
-            this.asteroids = Utils.range(30, () => {
-                let size = Utils.random(10, 60);
+            this.player = player;
+            this.asteroids = Utils.range(10, () => {
+                let size = Utils.random(5, 40);
                 return new Polygon({
                     position: this.randomAsteroidPosition(),
-                    style: { color: Utils.randomArray(['#6f6', '#f66', '#66f', '#ff3', '#3ff', '#f3f']) },
+                    style: { color: this.randomAsteroidColor() },
                     velocity: Vector.random(-2, 2, -2, 2), size,
-                    points: Utils.range(segments, segment =>
-                        Vector.polar((segment / segments) * Math.PI * 2, Utils.random(0.5, 1)))
+                    points: this.randomAsteroidShape()
                 });
             });
         }
 
         randomAsteroidPosition() {
-            return player.position.copy().add(Vector.polar(Utils.random(0, Math.PI * 2), Math.max(width, height) / 2 + 20));
+            return this.player.position.copy().add(Vector.polar(Utils.random(0, Math.PI * 2), Math.max(width, height) / 2 + 20));
+        }
+
+        randomAsteroidShape() {
+            let segments = 8;
+            return Utils.range(segments, segment =>
+                Vector.polar((segment / segments) * Math.PI * 2, Utils.random(0.5, 1)));
+        }
+
+        randomAsteroidColor() {
+            return Utils.randomArray(['#6f6', '#f66', '#66f', '#ff3', '#3ff', '#f3f']);
         }
 
         update(ctx) {
-            let playerSpeed = player.velocity.length();
+            let playerSpeed = this.player.velocity.length();
             this.asteroids.forEach(asteroid => {
                 asteroid.update(ctx);
-                let distance = player.position.distance(asteroid.position);
+                let distance = this.player.position.distance(asteroid.position);
 
                 if (distance < asteroid.size) {
                     explosions.push(new Explosion({
                         position: asteroid.position, size: asteroid.size / 1.5,
-                        particleSize: asteroid.size / 1.5, style: asteroid.style,
+                        particleSize: asteroid.size / 1.5, style: { color: asteroid.style.color },
                         magnitude: (asteroid.size + playerSpeed + asteroid.velocity.length()) / 10
                     }).fire());
+                    ship.style.color = asteroid.style.color;
                 }
                 if (distance < asteroid.size || distance > Math.max(width, height) / 2 + 50) {
                     asteroid.position = this.randomAsteroidPosition();
+                    asteroid.points = this.randomAsteroidShape();
+                    asteroid.style.color = this.randomAsteroidColor();
                 }
             });
         }
@@ -94,7 +104,7 @@ let animationFrame;
             this.asteroids.forEach(asteroid => asteroid.render(renderer));
         }
 
-    }
+    })(player);
 
     parallax
         .addLayer({ depth: enviroment.backSmall.depth, objects: enviroment.backSmall.elements })
@@ -105,6 +115,7 @@ let animationFrame;
 
     scene.add(parallax).add(camera);
 
+    let speedScale = 0;
     io.onMouse(() => speedScale = 1.05, () => speedScale = 0);
 
     let time = 0;
@@ -125,8 +136,8 @@ let animationFrame;
         parallax.zoom = 50 / (player.velocity.length() + 30);
 
         player.velocity.add(io.mouse.copy().scale(1 / 2500 * speedScale));
-        if (player.velocity.length() > 15) {
-            player.velocity.scaleTo(15);
+        if (player.velocity.length() > 5) {
+            player.velocity.scaleTo(5);
         }
 
         animationFrame = requestAnimationFrame(animation);

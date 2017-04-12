@@ -18,8 +18,8 @@ App.define(() => class CanvasRenderer {
         translation = new Vector()
     } = {}) {
         this.ctx.save();
-        this.ctx.rotate(rotation);
         this.ctx.scale(scale.x, scale.y);
+        this.ctx.rotate(rotation);
         this.ctx.translate(translation.x, translation.y);
     }
 
