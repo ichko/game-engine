@@ -1,19 +1,42 @@
-App.define(({ Composite, Fountain, Polygon, Utils }) => class Player extends Composite {
+App.define(({
+    Composite, Fountain,
+    Polygon, Utils,
+    Spawner, Explosion
+}) => class Player extends Composite {
 
-    constructor(config) {
-        super(config);
-        this.fuel = new Fountain({ particleSize: 6, style: { color: 'rgba(255, 68, 51, 0.3)', opacity: 0.2 },
+    constructor(colors) {
+        super();
+        this.fuel = new Fountain({ particleSize: 6, style: { opacity: 0.25 },
                         fromAngle: Math.PI / 2 * 3 - 0.3, toAngle: Math.PI / 2 * 3 + 0.3 });
         this.ship = new Polygon({ points: [new Vector(-6, 0), new Vector(0, -3), new Vector(6, 0), new Vector(0, 20)] });
         this.speed = 0;
-        this.color = '#fc0';
+        this.color = Utils.randomArray(colors);
 
         this.add({ object: this.fuel });
         this.add({ object: this.ship });
+
+        this.explosions = [];
+        this.explosionSpawner = new Spawner(() => this.explosions.length > 0,
+            () => this.explosions.splice(0, this.explosions.length));
+    }
+
+    kill() {
+        this.explosions.push(new Explosion({
+            position: this.position, size: 30, particleSize: 20,
+            style: { color: this.color }, magnitude: 5
+        }).fire());
+        this.size = 0;
+    }
+
+    render(renderer) {
+        this.explosionSpawner.render(renderer);
+        super.render(renderer);
     }
 
     update(ctx) {
         super.update(ctx);
+        this.explosionSpawner.update(ctx);
+
         this.ship.style.color = this.color;
         this.fuel.style.color = this.color;
 

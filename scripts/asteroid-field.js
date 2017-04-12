@@ -1,11 +1,12 @@
 App.define(({ Utils, Spawner, Polygon, Explosion }) => class AsteroidField {
 
-    constructor(player, numAsteroids, radius) {
+    constructor(player, colors, numAsteroids, radius) {
         this.alive = () => true;
         this.radius = radius;
         this.player = player;
+        this.colors = colors;
         this.asteroids = Utils.range(numAsteroids, () => {
-            let size = Utils.random(5, 40);
+            let size = Utils.random(20, 40);
             return new Polygon({
                 position: this.randomAsteroidPosition(),
                 style: { color: this.randomAsteroidColor() },
@@ -30,7 +31,7 @@ App.define(({ Utils, Spawner, Polygon, Explosion }) => class AsteroidField {
     }
 
     randomAsteroidColor() {
-        return Utils.randomArray(['#6f6', '#f66', '#66f', '#ff3', '#3ff', '#f3f']);
+        return Utils.randomArray(this.colors);
     }
 
     update(ctx) {
@@ -39,16 +40,20 @@ App.define(({ Utils, Spawner, Polygon, Explosion }) => class AsteroidField {
             asteroid.update(ctx);
             let distance = this.player.position.distance(asteroid.position);
 
-            if (distance < asteroid.size) {
-                this.explosions.push(new Explosion({
-                    position: asteroid.position, size: asteroid.size / 1.5,
-                    particleSize: asteroid.size / 1.5, style: { color: asteroid.style.color },
-                    magnitude: (asteroid.size + playerSpeed + asteroid.velocity.length()) / 10
-                }).fire());
-
-                this.player.color = asteroid.style.color;
+            if (distance < asteroid.size && this.player.size > 0) {
+                if (this.player.color != asteroid.style.color) {
+                    this.player.kill();
+                }
+                else {
+                    this.player.color = this.randomAsteroidColor();
+                    this.explosions.push(new Explosion({
+                        position: asteroid.position, size: asteroid.size / 1.5,
+                        particleSize: asteroid.size / 1.5, style: { color: asteroid.style.color },
+                        magnitude: (asteroid.size + playerSpeed + asteroid.velocity.length()) / 10
+                    }).fire());
+                }
             }
-            if (distance < asteroid.size || distance > this.radius / 2 + 50) {
+            if ((distance < asteroid.size || distance > this.radius / 2 + 50) && this.player.size > 0) {
                 asteroid.position = this.randomAsteroidPosition();
                 asteroid.points = this.randomAsteroidShape();
                 asteroid.style.color = this.randomAsteroidColor();
