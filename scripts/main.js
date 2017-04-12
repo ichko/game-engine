@@ -1,10 +1,10 @@
 window.onresize = () => {
-    loop = false;
-    init();
+    // init();
 };
 
 let animationFrame;
-function init() {
+// function init() {
+
     let [ width, height ] = [ innerWidth, innerHeight ];
     let canvas = document.getElementById('canvas');
     canvas.width = width;
@@ -39,7 +39,7 @@ function init() {
         target: () => player.position.copy().add(player.velocity.copy().scale(3)).add(io.mouse.copy().scaleTo(0))
     });
 
-    let parallax = new Parallax(() => camera.position);
+    let parallax = new Parallax(camera.position);
 
     let enviroment = {
         frontBig: { elements: circleGenerator(10, { style: { color: 'rgba(220, 0, 100, 0.6)' }, size: 9 }), depth: 1.1 },
@@ -52,43 +52,57 @@ function init() {
     let explosionSpawner = new Spawner(() => explosions.length > 0,
         () => explosions.splice(0, explosions.length));
 
-    class Asteroid extends Polygon {
-        constructor(config) {
-            super(config);
-            this.points = Utils.range(config.segments, segment =>
-                    Vector.polar((segment / config.segments) * Math.PI * 2, Utils.random(0.5, 1)))
+    let asteroidField = new class AsteroidField {
+        constructor() {
+            this.alive = () => true;
+            let segments = 8;
+            this.asteroids = Utils.range(30, () => {
+                let size = Utils.random(10, 60);
+                return new Polygon({
+                    position: this.randomAsteroidPosition(),
+                    style: { color: Utils.randomArray(['#6f6', '#f66', '#66f', '#ff3', '#3ff', '#f3f']) },
+                    velocity: Vector.random(-2, 2, -2, 2), size,
+                    points: Utils.range(segments, segment =>
+                        Vector.polar((segment / segments) * Math.PI * 2, Utils.random(0.5, 1)))
+                });
+            });
         }
 
-        alive() {
-            let distance = player.position.distance(this.position);
-            if (distance < this.size) {
-                explosions.push(new Explosion({
-                    position: this.position, size: this.size,
-                    particleSize: this.size / 2, style: this.style,
-                    magnitude: (player.velocity.length() + this.velocity.length()) / 2
-                }).fire());
-            }
-
-            return distance < Math.max(width, height) / 2 + 50  && distance > this.size;
+        randomAsteroidPosition() {
+            return player.position.copy().add(Vector.polar(Utils.random(0, Math.PI * 2), Math.max(width, height) / 2 + 20));
         }
+
+        update(ctx) {
+            let playerSpeed = player.velocity.length();
+            this.asteroids.forEach(asteroid => {
+                asteroid.update(ctx);
+                let distance = player.position.distance(asteroid.position);
+
+                if (distance < asteroid.size) {
+                    explosions.push(new Explosion({
+                        position: asteroid.position, size: asteroid.size / 1.5,
+                        particleSize: asteroid.size / 1.5, style: asteroid.style,
+                        magnitude: (asteroid.size + playerSpeed + asteroid.velocity.length()) / 10
+                    }).fire());
+                }
+                if (distance < asteroid.size || distance > Math.max(width, height) / 2 + 50) {
+                    asteroid.position = this.randomAsteroidPosition();
+                }
+            });
+        }
+
+        render(renderer) {
+            this.asteroids.forEach(asteroid => asteroid.render(renderer));
+        }
+
     }
-
-    let asteroidSpawner = new Spawner(numItems => numItems < 20, () => {
-        let size = Utils.random(10, 60);
-        let segments = 8;
-        return [new Asteroid({
-            position: player.position.copy().add(Vector.polar(Utils.random(0, Math.PI * 2), Math.max(width, height) / 2 + 20)),
-            style: { color: Utils.randomArray(['#6f6', '#f66', '#66f', '#ff3', '#3ff', '#f3f']) },
-            velocity: Vector.random(-2, 2, -2, 2), segments, size
-        })];
-    });
 
     parallax
         .addLayer({ depth: enviroment.backSmall.depth, objects: enviroment.backSmall.elements })
         .addLayer({ depth: enviroment.backBig.depth, objects: enviroment.backBig.elements })
         .addLayer({ depth: enviroment.frontSmall.depth, objects: enviroment.frontSmall.elements })
         .addLayer({ depth: enviroment.frontBig.depth, objects: enviroment.frontBig.elements })
-        .addLayer({ objects: [player, asteroidSpawner, explosionSpawner] });
+        .addLayer({ objects: [player, asteroidField, explosionSpawner] });
 
     scene.add(parallax).add(camera);
 
@@ -112,8 +126,8 @@ function init() {
         parallax.zoom = 50 / (player.velocity.length() + 30);
 
         player.velocity.add(io.mouse.copy().scale(1 / 2500 * speedScale));
-        if (player.velocity.length() > 20) {
-            player.velocity.scaleTo(20);
+        if (player.velocity.length() > 15) {
+            player.velocity.scaleTo(15);
         }
 
         animationFrame = requestAnimationFrame(animation);
@@ -150,5 +164,5 @@ function init() {
         }
     };
 
-}
-init();
+// }
+// init();

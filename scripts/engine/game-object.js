@@ -87,7 +87,6 @@ App.define(({ GameObject }) => class Composite extends GameObject {
     render(renderer) {
         renderer.transform({
             translation: this.position,
-            rotation: this.rotation,
             scale: new Vector(this.size, this.size)
         }, () => {
             this.items.forEach(({ object, offset }) => {

@@ -12,4 +12,14 @@ App.defineSingle(() => class Utils {
         return Array.from(Array(Math.round(size)).keys()).map(handler);
     }
 
+    filterSet(set, predicate) {
+        set.forEach(element => {
+            if (!predicate(element)) {
+                set.delete(element);
+            }
+        });
+
+        return set;
+    }
+
 });
