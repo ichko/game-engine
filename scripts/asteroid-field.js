@@ -1,4 +1,5 @@
-class AsteroidField {
+App.define(({ Utils, Spawner, Polygon, Explosion }) => class AsteroidField {
+
     constructor(player, numAsteroids, radius) {
         this.alive = () => true;
         this.radius = radius;
@@ -12,6 +13,10 @@ class AsteroidField {
                 points: this.randomAsteroidShape()
             });
         });
+
+        this.explosions = [];
+        this.explosionSpawner = new Spawner(() => this.explosions.length > 0,
+            () => this.explosions.splice(0, this.explosions.length));
     }
 
     randomAsteroidPosition() {
@@ -35,11 +40,13 @@ class AsteroidField {
             let distance = this.player.position.distance(asteroid.position);
 
             if (distance < asteroid.size) {
-                explosions.push(new Explosion({
+                this.explosions.push(new Explosion({
                     position: asteroid.position, size: asteroid.size / 1.5,
                     particleSize: asteroid.size / 1.5, style: { color: asteroid.style.color },
                     magnitude: (asteroid.size + playerSpeed + asteroid.velocity.length()) / 10
                 }).fire());
+
+                this.player.color = asteroid.style.color;
             }
             if (distance < asteroid.size || distance > this.radius / 2 + 50) {
                 asteroid.position = this.randomAsteroidPosition();
@@ -47,10 +54,13 @@ class AsteroidField {
                 asteroid.style.color = this.randomAsteroidColor();
             }
         });
+
+        this.explosionSpawner.update(ctx);        
     }
 
     render(renderer) {
         this.asteroids.forEach(asteroid => asteroid.render(renderer));
+        this.explosionSpawner.render(renderer);
     }
 
-}
+});

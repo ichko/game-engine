@@ -27,11 +27,11 @@ App.define(() => class CanvasRenderer {
         this.ctx.restore();
     }
 
-    circle(position, radius, { color }) {
+    circle(position, radius, { color, opacity = 1 }) {
         // this.ctx.shadowColor = color;
         // this.ctx.shadowBlur = 10;
         this.ctx.fillStyle = color;
-
+        this.ctx.globalAlpha = opacity;
         this.ctx.beginPath();
         this.ctx.arc(position.x, position.y, radius, 0, Math.PI * 2);
         this.ctx.closePath();

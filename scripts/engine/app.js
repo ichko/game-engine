@@ -16,6 +16,10 @@ let App = new class App {
         return this;
     }
 
+    get() {
+        return this.container;
+    }
+
     defineSingle(executor) {
         this.definitions.push({ single: true, executor });
         return this;

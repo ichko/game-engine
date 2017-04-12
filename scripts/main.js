@@ -2,18 +2,28 @@ window.onresize = () => {
     // init();
 };
 
-let animationFrame;
+let animationFrame = undefined;
 // function init() {
 
-    let [ width, height ] = [ innerWidth, innerHeight ];
-    let canvas = document.getElementById('canvas');
-    canvas.width = width;
-    canvas.height = height;
-    let ctx = canvas.getContext('2d');
-    ctx.translate(width / 2, height / 2);
-    ctx.scale(1, -1);
+    let [ ctx, width, height ] = (() => {
+        let canvas = document.getElementById('canvas');
+        canvas.width = innerWidth;
+        canvas.height = innerHeight;
+        let ctx = canvas.getContext('2d');
+        ctx.translate(innerWidth / 2, innerHeight / 2);
+        ctx.scale(1, -1);
 
-    App.load().useIn(window);
+        return [ ctx, innerWidth, innerHeight ];
+    })();
+
+    let {
+        Utils, IO, Vector,
+        CanvasRenderer, Scene, Engine,
+        SpringyVector, Parallax, Circle,
+
+        Player, AsteroidField
+    } = App.load().get();
+
 
     let io = new IO(width, height);
     let renderer = new CanvasRenderer(ctx, width, height);
@@ -38,16 +48,12 @@ let animationFrame;
         backSmall: { elements: circleGenerator(10, { style: { color: 'rgba(50, 100, 200, 0.6)' }, size: 3 }), depth: 1.8 }
     }
 
-    let explosions = [];
-    let explosionSpawner = new Spawner(() => explosions.length > 0,
-        () => explosions.splice(0, explosions.length));
-
     parallax
         .addLayer({ depth: enviroment.backSmall.depth, objects: enviroment.backSmall.elements })
         .addLayer({ depth: enviroment.backBig.depth, objects: enviroment.backBig.elements })
         .addLayer({ depth: enviroment.frontSmall.depth, objects: enviroment.frontSmall.elements })
         .addLayer({ depth: enviroment.frontBig.depth, objects: enviroment.frontBig.elements })
-        .addLayer({ objects: [player, new AsteroidField(player, 10, Math.max(width, height)), explosionSpawner] });
+        .addLayer({ objects: [player, new AsteroidField(player, 10, Math.max(width, height))] });
 
     scene.add(parallax).add(camera);
 

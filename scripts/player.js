@@ -1,8 +1,8 @@
-App.define(({ Composite }) => class Player extends Composite {
+App.define(({ Composite, Fountain, Polygon, Utils }) => class Player extends Composite {
 
     constructor(config) {
         super(config);
-        this.fuel = new Fountain({ particleSize: 6, style: { color: 'rgba(255, 68, 51, 0.3)' },
+        this.fuel = new Fountain({ particleSize: 6, style: { color: 'rgba(255, 68, 51, 0.3)', opacity: 0.2 },
                         fromAngle: Math.PI / 2 * 3 - 0.3, toAngle: Math.PI / 2 * 3 + 0.3 });
         this.ship = new Polygon({ points: [new Vector(-6, 0), new Vector(0, -3), new Vector(6, 0), new Vector(0, 20)] });
         this.speed = 0;
@@ -15,6 +15,8 @@ App.define(({ Composite }) => class Player extends Composite {
     update(ctx) {
         super.update(ctx);
         this.ship.style.color = this.color;
+        this.fuel.style.color = this.color;
+
         let forwardAngle = io.mouse.angle() + Math.PI;
         this.ship.rotation = forwardAngle + Math.PI / 2;
         this.fuel.config.fromAngle = forwardAngle - 1 / this.speed;

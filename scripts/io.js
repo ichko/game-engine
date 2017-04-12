@@ -1,4 +1,4 @@
-class IO {
+App.define(({ Vector }) => class IO {
 
     constructor(width, height) {
         this.width = width;
@@ -51,4 +51,4 @@ class IO {
         window.addEventListener('keyup', ({ key }) => this.keyStates[key] = false);
     }
 
-}
+});
