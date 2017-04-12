@@ -17,13 +17,14 @@ App.define(({ Utils }) => class Parallax {
     }
 
     render(renderer) {
-        this.layers.forEach(layer =>
-            renderer.transform({
+        this.layers.forEach(layer => {
+            renderer.push({
                 translation: this.reference.copy().scale(-layer.depth),
                 scale: new Vector(this.zoom, this.zoom)
-            }, () => {
-                layer.objects.forEach(object => object.render(renderer));
-            }));
+            });
+            layer.objects.forEach(object => object.render(renderer));
+            renderer.pop();
+        });
     }
 
     update() {

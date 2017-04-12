@@ -85,14 +85,16 @@ App.define(({ GameObject }) => class Composite extends GameObject {
     }
 
     render(renderer) {
-        renderer.transform({
+        renderer.push({
             translation: this.position,
             scale: new Vector(this.size, this.size)
-        }, () => {
-            this.items.forEach(({ object, offset }) => {
-                renderer.transform({ translation: offset }, () => object.render(renderer))
-            });
         });
+        this.items.forEach(({ object, offset }) => {
+            renderer.push({ translation: offset });
+            object.render(renderer);
+            renderer.pop();
+        });
+        renderer.pop();
     }
 
     update(ctx) {
@@ -164,8 +166,9 @@ App.define(({ GameObject, Circle, Utils }) => class Explosion extends GameObject
     }
 
     render(renderer) {
-        renderer.transform({ rotation: this.rotation }, () =>
-            this.particles.forEach(particle => particle.render(renderer)));
+        renderer.push({ rotation: this.rotation })
+        this.particles.forEach(particle => particle.render(renderer));
+        renderer.pop();
     }
 
     update(dt) {
@@ -200,8 +203,9 @@ App.define(({ GameObject, Explosion }) => class Polygon extends GameObject {
     }
 
     render(renderer) {
-        renderer.transform({ translation: this.position, rotation: this.rotation }, () =>
-            renderer.polygon(this.points, this.size, this.style));
+        renderer.push({ translation: this.position, rotation: this.rotation });
+        renderer.polygon(this.points, this.size, this.style);
+        renderer.pop();
     }
 
 });

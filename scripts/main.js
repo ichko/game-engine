@@ -11,8 +11,7 @@ let animationFrame;
     canvas.height = height;
     let ctx = canvas.getContext('2d');
     ctx.translate(width / 2, height / 2);
-    ctx.scale(1.1, -1.1);
-
+    ctx.scale(1, -1);
 
     App.load().useIn(window);
 

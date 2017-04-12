@@ -7,12 +7,12 @@ App.define(() => class CanvasRenderer {
     }
 
     transform(transformation, transformedRendering) {
-        this.pushTransformation(transformation);
+        this.push(transformation);
         transformedRendering();
-        this.popTransformation();
+        this.pop();
     }
 
-    pushTransformation({
+    push({
         scale = new Vector(1, 1),
         rotation = 0,
         translation = new Vector()
@@ -23,7 +23,7 @@ App.define(() => class CanvasRenderer {
         this.ctx.translate(translation.x, translation.y);
     }
 
-    popTransformation() {
+    pop() {
         this.ctx.restore();
     }
 
