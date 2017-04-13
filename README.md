@@ -2,7 +2,7 @@
 Simple 2D parallax side scroller
 
 # Links
- - [Demo link](https://rawgit.com/ichko/sidescroll/master/game.html)
+ - [Demo link](https://rawgit.com/ichko/sidescroll/master/index.html)
 
 # Screenshots
 ![example](assets/flight.png)
