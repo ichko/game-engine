@@ -10,40 +10,41 @@
     </head>
     <body>
         <canvas id="canvas"></canvas>
-        <script src="es5/engine/app.js"></script>
-        <script src="es5/engine/utils.js"></script>
-        <script src="es5/engine/vector.js"></script>
-        <script src="es5/engine/game-object.js"></script>
-        <script src="es5/engine/primitives.js"></script>
-        <script src="es5/engine/parallax.js"></script>
-        <script src="es5/engine/renderer.js"></script>
-        <script src="es5/engine/event-manager.js"></script>
-        <script src="es5/engine/engine.js"></script>
-        <script src="es5/engine/scene.js"></script>
 
-        <script src="es5/io.js"></script>
-        <script src="es5/asteroid-field.js"></script>
-        <script src="es5/player.js"></script>
-        <script src="es5/environment.js"></script>
-        <script src="es5/main.js"></script>
+        <script src="build/engine/app.js"></script>
+        <script src="build/engine/utils.js"></script>
+        <script src="build/engine/vector.js"></script>
+        <script src="build/engine/game-object.js"></script>
+        <script src="build/engine/primitives.js"></script>
+        <script src="build/engine/parallax.js"></script>
+        <script src="build/engine/renderer.js"></script>
+        <script src="build/engine/event-manager.js"></script>
+        <script src="build/engine/engine.js"></script>
+        <script src="build/engine/scene.js"></script>
+
+        <script src="build/io.js"></script>
+        <script src="build/asteroid-field.js"></script>
+        <script src="build/player.js"></script>
+        <script src="build/environment.js"></script>
+        <script src="build/main.js"></script>
+
         <script>
-            function requestFullScreen(element) {
-                var requestMethod = element.requestFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || element.msRequestFullScreen;
+            // function requestFullScreen(element) {
+            //     var requestMethod = element.requestFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || element.msRequestFullScreen;
 
-                if (requestMethod) { // Native full screen.
-                    requestMethod.call(element);
-                } else if (typeof window.ActiveXObject !== "undefined") { // Older IE.
-                    var wscript = new ActiveXObject("WScript.Shell");
-                    if (wscript !== null) {
-                        wscript.SendKeys("{F11}");
-                    }
-                }
-            }
-            var c = document.getElementById('canvas');
-            c.onclick = () => {
-                // requestFullScreen(c);
-            }
-            
+            //     if (requestMethod) { // Native full screen.
+            //         requestMethod.call(element);
+            //     } else if (typeof window.ActiveXObject !== "undefined") { // Older IE.
+            //         var wscript = new ActiveXObject("WScript.Shell");
+            //         if (wscript !== null) {
+            //             wscript.SendKeys("{F11}");
+            //         }
+            //     }
+            // }
+            // var c = document.getElementById('canvas');
+            // c.onclick = () => {
+            //     requestFullScreen(c);
+            // }
         </script>
     </body>
 </html>
