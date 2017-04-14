@@ -169,7 +169,8 @@ App.define(function (_ref7) {
 App.define(function (_ref9) {
     var GameObject = _ref9.GameObject,
         Circle = _ref9.Circle,
-        Utils = _ref9.Utils;
+        Utils = _ref9.Utils,
+        InstancePool = _ref9.InstancePool;
     return function (_GameObject5) {
         _inherits(Explosion, _GameObject5);
 
@@ -181,6 +182,7 @@ App.define(function (_ref9) {
             _this5.particles = [];
             _this5.position = [];
             _this5.config = config;
+            _this5.circlesPool = new InstancePool(Circle);
             return _this5;
         }
 
@@ -193,6 +195,8 @@ App.define(function (_ref9) {
         }, {
             key: "init",
             value: function init() {
+                var _this6 = this;
+
                 var _ref10 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
                     _ref10$size = _ref10.size,
                     size = _ref10$size === undefined ? 2 : _ref10$size,
@@ -210,7 +214,7 @@ App.define(function (_ref9) {
                     toAngle = _ref10$toAngle === undefined ? Math.PI * 2 : _ref10$toAngle;
 
                 this.particles = this.particles.concat(Utils.range(size, function () {
-                    return new Circle({
+                    return _this6.circlesPool.new({
                         style: style, position: position.copy(), radius: particleSize,
                         velocity: Vector.randomPolar(1, fromAngle, toAngle).scale(Utils.random(magnitude / 2, magnitude))
                     });
@@ -233,10 +237,18 @@ App.define(function (_ref9) {
         }, {
             key: "update",
             value: function update(dt) {
+                var _this7 = this;
+
                 this.particles = this.particles.filter(function (particle) {
                     particle.radius /= Utils.random(1.05, 1.1);
                     particle.update(dt);
-                    return particle.radius > 0.5;
+
+                    var alive = particle.radius > 0.5;
+                    if (!alive) {
+                        _this7.circlesPool.release(particle);
+                    }
+
+                    return alive;
                 });
             }
         }]);
@@ -279,11 +291,11 @@ App.define(function (_ref12) {
 
             _classCallCheck(this, Polygon);
 
-            var _this7 = _possibleConstructorReturn(this, (Polygon.__proto__ || Object.getPrototypeOf(Polygon)).call(this, config));
+            var _this9 = _possibleConstructorReturn(this, (Polygon.__proto__ || Object.getPrototypeOf(Polygon)).call(this, config));
 
-            _this7.points = config.points || [];
-            _this7.emissions = [];
-            return _this7;
+            _this9.points = config.points || [];
+            _this9.emissions = [];
+            return _this9;
         }
 
         _createClass(Polygon, [{

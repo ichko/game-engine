@@ -83,13 +83,14 @@ App.define(({ GameObject }) => class SpringyVector extends GameObject {
 
 });
 
-App.define(({ GameObject, Circle, Utils }) => class Explosion extends GameObject {
+App.define(({ GameObject, Circle, Utils, InstancePool }) => class Explosion extends GameObject {
 
     constructor(config) {
         super(config);
         this.particles = [];
         this.position = [];
         this.config = config;
+        this.circlesPool = new InstancePool(Circle);
     }
 
     fire() {
@@ -106,7 +107,7 @@ App.define(({ GameObject, Circle, Utils }) => class Explosion extends GameObject
         fromAngle = 0,
         toAngle = Math.PI * 2,
     } = {}) {
-        this.particles = this.particles.concat(Utils.range(size, () => new Circle({
+        this.particles = this.particles.concat(Utils.range(size, () => this.circlesPool.new({
             style, position: position.copy(), radius: particleSize,
             velocity: Vector.randomPolar(1, fromAngle, toAngle)
                 .scale(Utils.random(magnitude / 2, magnitude))
@@ -127,7 +128,13 @@ App.define(({ GameObject, Circle, Utils }) => class Explosion extends GameObject
         this.particles = this.particles.filter(particle => {
             particle.radius /= Utils.random(1.05, 1.1);
             particle.update(dt)
-            return particle.radius > 0.5;
+
+            let alive = particle.radius > 0.5;
+            if (!alive) {
+                this.circlesPool.release(particle);
+            }
+
+            return alive;
         });
     }
 

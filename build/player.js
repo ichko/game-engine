@@ -72,7 +72,7 @@ App.define(function (_ref) {
                 this.fuel.config.fromAngle = forwardAngle - 1 / this.speed;
                 this.fuel.config.toAngle = forwardAngle + 1 / this.speed;
                 this.fuel.config.magnitude = this.speed / 1.5;
-                this.fuel.config.size = this.speed / 2;
+                this.fuel.config.size = this.speed / 3;
 
                 this.velocity.add(io.mouse.copy().scale(1 / 10000 * this.speed));
                 if (this.velocity.length() > 4) {
