@@ -1,7 +1,7 @@
 App.define(({ GameObject }) => class Circle extends GameObject {
 
-    constructor(config = {}) {
-        super(config);
+    set(config = {}) {
+        super.set(config);
         this.radius = config.radius || 5;
     }
 

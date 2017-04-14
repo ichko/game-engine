@@ -6,37 +6,42 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 App.define(function () {
     return function () {
-        function GameObject() {
-            var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-                _ref$position = _ref.position,
-                position = _ref$position === undefined ? new Vector() : _ref$position,
-                _ref$style = _ref.style,
-                style = _ref$style === undefined ? { color: '#f00' } : _ref$style,
-                _ref$velocityDamping = _ref.velocityDamping,
-                velocityDamping = _ref$velocityDamping === undefined ? 1 : _ref$velocityDamping,
-                _ref$velocity = _ref.velocity,
-                velocity = _ref$velocity === undefined ? new Vector() : _ref$velocity,
-                _ref$rotation = _ref.rotation,
-                rotation = _ref$rotation === undefined ? 0 : _ref$rotation,
-                _ref$rotationCenter = _ref.rotationCenter,
-                rotationCenter = _ref$rotationCenter === undefined ? position : _ref$rotationCenter,
-                _ref$size = _ref.size,
-                size = _ref$size === undefined ? 1 : _ref$size;
-
+        function GameObject(config) {
             _classCallCheck(this, GameObject);
 
-            this.position = position;
-            this.velocity = velocity;
-            this.velocityDamping = velocityDamping;
-            this.style = style;
-            this.size = size;
-
-            this.rotation = rotation;
-            this.rotationCenter = rotationCenter;
-            this.dead = false;
+            this.set(config);
         }
 
         _createClass(GameObject, [{
+            key: 'set',
+            value: function set() {
+                var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+                    _ref$position = _ref.position,
+                    position = _ref$position === undefined ? new Vector() : _ref$position,
+                    _ref$style = _ref.style,
+                    style = _ref$style === undefined ? { color: '#f00' } : _ref$style,
+                    _ref$velocityDamping = _ref.velocityDamping,
+                    velocityDamping = _ref$velocityDamping === undefined ? 1 : _ref$velocityDamping,
+                    _ref$velocity = _ref.velocity,
+                    velocity = _ref$velocity === undefined ? new Vector() : _ref$velocity,
+                    _ref$rotation = _ref.rotation,
+                    rotation = _ref$rotation === undefined ? 0 : _ref$rotation,
+                    _ref$rotationCenter = _ref.rotationCenter,
+                    rotationCenter = _ref$rotationCenter === undefined ? position : _ref$rotationCenter,
+                    _ref$size = _ref.size,
+                    size = _ref$size === undefined ? 1 : _ref$size;
+
+                this.position = position;
+                this.velocity = velocity;
+                this.velocityDamping = velocityDamping;
+                this.style = style;
+                this.size = size;
+
+                this.rotation = rotation;
+                this.rotationCenter = rotationCenter;
+                this.dead = false;
+            }
+        }, {
             key: 'alive',
             value: function alive() {
                 return !this.dead;

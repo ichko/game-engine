@@ -2,13 +2,18 @@ App.define(() => class  InstancePool {
 
     constructor(type) {
         this.type = type;
-        this.released = [];
+        this.released = new Set();
         this.alocated = new Set();
     }
 
     new(...config) {
-        if (this.released.length > 0) {
-            return this.released[0].set(...config);
+        if (this.released.size > 0) {
+            let instance = this.released.values().next().value;
+            instance.set(...config);
+            this.released.delete(instance);
+            this.alocated.add(instance);
+
+            return instance;
         }
 
         let instance = new this.type(...config);
@@ -19,7 +24,7 @@ App.define(() => class  InstancePool {
     release(instance) {
         if (this.alocated.has(instance)) {
             this.alocated.delete(instance);
-            this.released.push(instance);
+            this.released.add(instance);
         }
     }
 

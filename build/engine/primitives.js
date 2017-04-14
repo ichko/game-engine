@@ -1,8 +1,8 @@
 "use strict";
 
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
@@ -18,17 +18,20 @@ App.define(function (_ref) {
         _inherits(Circle, _GameObject);
 
         function Circle() {
-            var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
             _classCallCheck(this, Circle);
 
-            var _this = _possibleConstructorReturn(this, (Circle.__proto__ || Object.getPrototypeOf(Circle)).call(this, config));
-
-            _this.radius = config.radius || 5;
-            return _this;
+            return _possibleConstructorReturn(this, (Circle.__proto__ || Object.getPrototypeOf(Circle)).apply(this, arguments));
         }
 
         _createClass(Circle, [{
+            key: "set",
+            value: function set() {
+                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+                _get(Circle.prototype.__proto__ || Object.getPrototypeOf(Circle.prototype), "set", this).call(this, config);
+                this.radius = config.radius || 5;
+            }
+        }, {
             key: "render",
             value: function render(renderer) {
                 renderer.circle(this.position, this.radius, this.style);

@@ -10,7 +10,7 @@ App.define(function () {
             _classCallCheck(this, InstancePool);
 
             this.type = type;
-            this.released = [];
+            this.released = new Set();
             this.alocated = new Set();
         }
 
@@ -21,10 +21,13 @@ App.define(function () {
                     config[_key] = arguments[_key];
                 }
 
-                if (this.released.length > 0) {
-                    var _released$;
+                if (this.released.size > 0) {
+                    var _instance = this.released.values().next().value;
+                    _instance.set.apply(_instance, config);
+                    this.released.delete(_instance);
+                    this.alocated.add(_instance);
 
-                    return (_released$ = this.released[0]).set.apply(_released$, config);
+                    return _instance;
                 }
 
                 var instance = new (Function.prototype.bind.apply(this.type, [null].concat(config)))();
@@ -36,7 +39,7 @@ App.define(function () {
             value: function release(instance) {
                 if (this.alocated.has(instance)) {
                     this.alocated.delete(instance);
-                    this.released.push(instance);
+                    this.released.add(instance);
                 }
             }
         }]);

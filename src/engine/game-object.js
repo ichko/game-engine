@@ -1,6 +1,10 @@
 App.define(() => class GameObject {
 
-    constructor({
+    constructor(config) {
+        this.set(config);
+    }
+
+    set({
         position = new Vector(),
         style = { color: '#f00' },
         velocityDamping = 1,
