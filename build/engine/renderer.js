@@ -98,3 +98,4 @@ App.define(function () {
         return CanvasRenderer;
     }();
 });
+//# sourceMappingURL=renderer.js.map

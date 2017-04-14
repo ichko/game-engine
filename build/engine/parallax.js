@@ -67,3 +67,4 @@ App.define(function (_ref) {
         return Parallax;
     }();
 });
+//# sourceMappingURL=parallax.js.map

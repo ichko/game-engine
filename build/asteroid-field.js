@@ -101,3 +101,4 @@ App.define(function (_ref) {
         return AsteroidField;
     }();
 });
+//# sourceMappingURL=asteroid-field.js.map

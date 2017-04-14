@@ -48,3 +48,4 @@ App.define(function () {
         return Scene;
     }();
 });
+//# sourceMappingURL=scene.js.map

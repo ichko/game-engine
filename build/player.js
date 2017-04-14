@@ -84,3 +84,4 @@ App.define(function (_ref) {
         return Player;
     }(Composite);
 });
+//# sourceMappingURL=player.js.map

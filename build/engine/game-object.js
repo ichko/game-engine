@@ -79,3 +79,4 @@ App.define(function () {
         return GameObject;
     }();
 });
+//# sourceMappingURL=game-object.js.map

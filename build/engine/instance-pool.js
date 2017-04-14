@@ -44,3 +44,4 @@ App.define(function () {
         return InstancePool;
     }();
 });
+//# sourceMappingURL=instance-pool.js.map

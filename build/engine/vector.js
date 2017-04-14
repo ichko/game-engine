@@ -146,3 +146,4 @@ App.define(function (_ref) {
         return Vector;
     }();
 });
+//# sourceMappingURL=vector.js.map

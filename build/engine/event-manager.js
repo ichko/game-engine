@@ -58,3 +58,4 @@ App.defineSingle(function () {
         return EventManager;
     }();
 });
+//# sourceMappingURL=event-manager.js.map

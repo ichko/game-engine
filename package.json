@@ -11,7 +11,7 @@
   },
   "scripts": {
     "test": "echo Error: no test specified",
-    "build": "babel src --out-dir build --presets=babel-preset-es2015"
+    "build": "babel src --out-dir build --presets=babel-preset-es2015 --source-maps"
   },
   "repository": {
     "type": "git",
