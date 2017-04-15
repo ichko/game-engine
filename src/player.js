@@ -6,10 +6,10 @@ App.define(({
 
     constructor(colors) {
         super();
-        this.fuel = new Fountain({ particleSize: 6, style: { opacity: 0.25 },
+        this.fuel = new Fountain({ particleSize: 4, style: { opacity: 0.2 },
                         fromAngle: Math.PI / 2 * 3 - 0.3, toAngle: Math.PI / 2 * 3 + 0.3 });
-        this.ship = new Polygon({ points: [new Vector(-6, 0), new Vector(0, -3), 
-                                           new Vector(6, 0), new Vector(0, 20)] });
+        this.ship = new Polygon({ points: [new Vector(-4, 0), new Vector(0, -2), 
+                                           new Vector(4, 0), new Vector(0, 12)] });
         this.speed = 0;
         this.color = Utils.randomArray(colors);
 
@@ -46,11 +46,11 @@ App.define(({
         this.fuel.config.fromAngle = forwardAngle - 1 / this.speed;
         this.fuel.config.toAngle = forwardAngle + 1 / this.speed;
         this.fuel.config.magnitude = this.speed / 1.5;
-        this.fuel.config.size = this.speed / 3;
+        this.fuel.config.size = this.speed * 1.1;
 
-        this.velocity.add(io.mouse.copy().scale((1 / 10000) * this.speed));
-        if (this.velocity.length() > 4) {
-            this.velocity.scaleTo(4);
+        this.velocity.add(io.mouse.copy().scale((1 / 20000) * this.speed));
+        if (this.velocity.length() > 2) {
+            this.velocity.scaleTo(2);
         }
     }
 

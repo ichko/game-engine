@@ -6,11 +6,11 @@ App.define(({ Utils, Spawner, Polygon, Explosion }) => class AsteroidField {
         this.player = player;
         this.colors = colors;
         this.asteroids = Utils.range(numAsteroids, () => {
-            let size = Utils.random(20, 40);
+            let size = Utils.random(10, 20);
             return new Polygon({
                 position: this.randomAsteroidPosition(),
                 style: { color: this.randomAsteroidColor() },
-                velocity: Vector.random(-2, 2, -2, 2), size,
+                velocity: Vector.random(-1, 1, -1, 1), size,
                 points: this.randomAsteroidShape()
             });
         });
