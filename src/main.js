@@ -53,21 +53,19 @@ let animationFrame = undefined;
         });
     }
 
-    parallax.addLayer({ objects: [player, new AsteroidField(player, colors, 10, Math.max(width, height))] });
+    parallax.addLayer({ objects: [player, new AsteroidField(player, colors, 20, Math.max(width, height))] });
 
     scene.add(parallax, controller, camera);
 
     io.onMouse(() => player.speed = 5, () => player.speed = 0);
 
-    let time = 0;
     cancelAnimationFrame(animationFrame);
     (function animation() {
-        time++;
         engine.clear().render().update();
         io.callHandlers();
         enviroment.outOfBounds();
 
-        parallax.zoom = 50 / (player.velocity.length() + 30);
+        // parallax.zoom = 30 / (player.velocity.length() + 20);
 
         animationFrame = requestAnimationFrame(animation);
     })();
