@@ -10,7 +10,7 @@ App.define(({ Utils, Spawner, Polygon, Explosion }) => class AsteroidField {
             return new Polygon({
                 position: this.randomAsteroidPosition(),
                 style: { color: this.randomAsteroidColor() },
-                velocity: Vector.random(-1, 1, -1, 1), size,
+                velocity: Vector.random(-0.5, 0.5, -0.5, 0.5), size,
                 points: this.randomAsteroidShape()
             });
         });

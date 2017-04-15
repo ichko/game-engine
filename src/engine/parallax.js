@@ -1,6 +1,6 @@
 App.define(({ Utils }) => class Parallax {
 
-    constructor(reference = () => new Vector()) {
+    constructor(reference = new Vector()) {
         this.reference = reference;
         this.layers = [];
         this.zoom = 1;

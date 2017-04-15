@@ -27,7 +27,7 @@ App.define(({
             position: this.position, size: 30, particleSize: 20,
             style: { color: this.color }, magnitude: 5
         }).fire());
-        this.size = 0;
+        // this.size = 0;
     }
 
     render(renderer) {
@@ -48,11 +48,11 @@ App.define(({
         this.fuel.config.fromAngle = forwardAngle - 1 / this.speed;
         this.fuel.config.toAngle = forwardAngle + 1 / this.speed;
         this.fuel.config.magnitude = this.speed / 1.5;
-        this.fuel.config.size = this.speed * 1.1;
+        this.fuel.config.size = this.speed / 1.5;
 
-        this.velocity.add(controller.direction.copy().scale((1 / 1000) * this.speed));
-        if (this.velocity.length() > 2) {
-            this.velocity.scaleTo(2);
+        this.velocity.add(controller.direction.copy().scale((1 / 5000) * this.speed));
+        if (this.velocity.length() > 1) {
+            this.velocity.scaleTo(1);
         }
     }
 
