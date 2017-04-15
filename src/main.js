@@ -21,7 +21,8 @@ let animationFrame = undefined;
         CanvasRenderer, Scene, Engine,
         SpringyVector, Parallax, Circle,
 
-        Player, AsteroidField, Environment
+        Player, AsteroidField,
+        Environment, Controller
     } = App.load().get();
 
 
@@ -29,10 +30,11 @@ let animationFrame = undefined;
     let renderer = new CanvasRenderer(ctx, width, height);
     let scene = new Scene();
     let engine = new Engine(renderer, scene);
+    let controller = new Controller(io, width, height);
 
 
     let colors = ['#6f6', '#f66', '#66f', '#ff3', '#3ff', '#f3f'];
-    let player = new Player(colors);
+    let player = new Player(colors, controller);
 
     let camera = new SpringyVector({
         position: new Vector(0, height / 2 - 150),
@@ -53,7 +55,7 @@ let animationFrame = undefined;
 
     parallax.addLayer({ objects: [player, new AsteroidField(player, colors, 10, Math.max(width, height))] });
 
-    scene.add(parallax).add(camera);
+    scene.add(parallax, controller, camera);
 
     io.onMouse(() => player.speed = 5, () => player.speed = 0);
 

@@ -39,20 +39,23 @@ App.define(() => class CanvasRenderer {
         this.ctx.fill();
     }
 
-    rectangle(position, size, { color }) {
+    rectangle(position, size, { color, opacity = 1 }) {
         this.ctx.fillStyle = color;
+        this.ctx.globalAlpha = opacity;
         this.ctx.fillRect(position.x - size.width / 2, position.y - size.height / 2, size.width, size.height);
     }
 
     clear() {
         this.ctx.fillStyle = "rgba(0,0,0,1)";
+        this.ctx.globalAlpha = 1;
         this.ctx.fillRect(-this.width / 2, -this.height / 2, this.width, this.height);
     }
 
-    polygon(points, size = 1, { color }) {
+    polygon(points, size = 1, { color, opacity = 1 }) {
         if (points.length > 2) {
             this.ctx.beginPath();
             this.ctx.fillStyle = color;
+            this.ctx.globalAlpha = opacity;
             this.ctx.moveTo(points[0].x * size, points[0].y * size);
             points.forEach(point => {
                 this.ctx.lineTo(point.x * size, point.y * size);

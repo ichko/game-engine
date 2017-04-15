@@ -46,6 +46,15 @@ App.define(({ Utils }) => class Vector {
         return Math.atan2(this.y, this.x);
     }
 
+    cut(size) {
+        let length = this.length();
+        if (length > size) {
+            this.scaleTo(size);
+        }
+
+        return this;
+    }
+
     scaleTo(size = 1) {
         return this.noramlize().scale(size);
     }

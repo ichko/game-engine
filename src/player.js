@@ -4,8 +4,9 @@ App.define(({
     Spawner, Explosion
 }) => class Player extends Composite {
 
-    constructor(colors) {
+    constructor(colors, controller) {
         super();
+        this.controller = controller;
         this.fuel = new Fountain({ particleSize: 4, style: { opacity: 0.2 },
                         fromAngle: Math.PI / 2 * 3 - 0.3, toAngle: Math.PI / 2 * 3 + 0.3 });
         this.ship = new Polygon({ points: [new Vector(-4, 0), new Vector(0, -2), 
@@ -40,15 +41,16 @@ App.define(({
 
         this.ship.style.color = this.color;
         this.fuel.style.color = this.color;
+        this.controller.color = this.color;
 
-        let forwardAngle = io.mouse.angle() + Math.PI;
+        let forwardAngle = this.controller.direction.angle() + Math.PI;
         this.ship.rotation = forwardAngle + Math.PI / 2;
         this.fuel.config.fromAngle = forwardAngle - 1 / this.speed;
         this.fuel.config.toAngle = forwardAngle + 1 / this.speed;
         this.fuel.config.magnitude = this.speed / 1.5;
         this.fuel.config.size = this.speed * 1.1;
 
-        this.velocity.add(io.mouse.copy().scale((1 / 20000) * this.speed));
+        this.velocity.add(controller.direction.copy().scale((1 / 1000) * this.speed));
         if (this.velocity.length() > 2) {
             this.velocity.scaleTo(2);
         }

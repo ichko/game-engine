@@ -36,13 +36,17 @@ App.define(({ Vector }) => class IO {
         return this;
     }
 
+    changeTouch({ changedTouches }) {
+        this.mouse.set(changedTouches[0].pageX - this.width / 2,
+                        -changedTouches[0].pageY + this.height / 2)
+    }
+
     bindEvents() {
         window.addEventListener('mousemove', ({ x, y }) =>
             this.mouse.set(x - this.width / 2, -y + this.height / 2));
-        window.addEventListener('touchmove', ({ changedTouches }) => {
-            this.mouse.set(changedTouches[0].pageX - this.width / 2,
-                           -changedTouches[0].pageY + this.height / 2)
-        });
+
+        window.addEventListener('touchmove', (e) => this.changeTouch(e));
+        window.addEventListener('touchstart', (e) => this.changeTouch(e));
 
         window.addEventListener('mousedown', ({ x, y }) => this.mouseDown = true);
         window.addEventListener('mouseup', ({ x, y }) => this.mouseDown = false);
