@@ -7,17 +7,18 @@ App.define(() => class  InstancePool {
     }
 
     new(...config) {
-        if (this.released.size > 0) {
-            let instance = this.released.values().next().value;
-            instance.set(...config);
-            this.released.delete(instance);
-            this.alocated.add(instance);
+        let instance = undefined;
 
-            return instance;
+        if (this.released.size > 0) {
+            instance = this.released.values().next().value;
+            instance.set(...config);
+        } else {
+            instance = new this.type(...config);            
         }
 
-        let instance = new this.type(...config);
+        this.released.delete(instance);
         this.alocated.add(instance);
+
         return instance;
     }
 
