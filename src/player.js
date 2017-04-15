@@ -50,9 +50,9 @@ App.define(({
         this.fuel.config.magnitude = this.speed / 1.5;
         this.fuel.config.size = this.speed / 1.5;
 
-        this.velocity.add(controller.direction.copy().scale((1 / 8000) * this.speed));
-        if (this.velocity.length() > 2) {
-            this.velocity.scaleTo(2);
+        this.velocity.add(controller.direction.copy().scale((1 / 1000) * this.speed));
+        if (this.velocity.length() > 2.5) {
+            this.velocity.scaleTo(2.5);
         }
     }
 

@@ -47,9 +47,9 @@ App.define(({ Utils, Spawner, Polygon, Explosion }) => class AsteroidField {
                 else {
                     this.player.color = this.randomAsteroidColor();
                     this.explosions.push(new Explosion({
-                        position: asteroid.position, size: asteroid.size / 1.5,
+                        position: asteroid.position, size: asteroid.size,
                         particleSize: asteroid.size / 1.5, style: { color: asteroid.style.color },
-                        magnitude: (asteroid.size + playerSpeed + asteroid.velocity.length()) / 10
+                        magnitude: (asteroid.size + playerSpeed + asteroid.velocity.length()) / 5
                     }).fire());
                 }
             }

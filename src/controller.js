@@ -6,9 +6,9 @@ App.define(({
     constructor(io, width, height) {
         this.radius = Math.min(width, height) / 5;
 
-        this.color = 'rgba(255, 20, 100, 0.3)'
+        this.color = 'rgba(255, 20, 100)'
         this.io = io;
-        this.center = new Vector(-width / 2 + this.radius + 30, -height / 2 + this.radius + 30);
+        this.center = new Vector(-width / 2 + this.radius + 50, -height / 2 + this.radius + 50);
         this.bigCircle = new Circle({
             radius: this.radius,
             position: this.center,
