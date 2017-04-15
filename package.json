@@ -11,7 +11,8 @@
   },
   "scripts": {
     "test": "echo Error: no test specified",
-    "build": "babel src --out-dir build --presets=babel-preset-es2015 --source-maps"
+    "build": "babel src --out-dir build --presets=babel-preset-es2015 --source-maps inline",
+    "browserify": "browserify babel.js -o browserify.js"
   },
   "repository": {
     "type": "git",
