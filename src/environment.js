@@ -1,23 +1,22 @@
-App.define(({ Utils, Circle }) => class Environment {
+App.define(({ Utils, Circle, Config }) => class Environment {
 
     constructor(camera) {
         this.camera = camera;
         this.width = width;
         this.height = height;
 
-        let color = '#36f';
         this.container = [
-            { objects: this.circleGenerator(10, { style: { color, opacity: 0.8 }, size: 3 }), depth: 0.5 },
-            { objects: this.circleGenerator(10, { style: { color, opacity: 0.6 }, size: 3 }), depth: 0.8 },
-            { objects: this.circleGenerator(10, { style: { color, opacity: 0.4 }, size: 2 }), depth: 1.2 },
-            { objects: this.circleGenerator(10, { style: { color, opacity: 0.2 }, size: 2 }), depth: 1.5 }
+            { objects: this.circleGenerator(10, { size: 4 }), depth: 0.8 },
+            { objects: this.circleGenerator(10, { size: 3 }), depth: 0.9 },
+            { objects: this.circleGenerator(10, { size: 2 }), depth: 1.1 },
+            { objects: this.circleGenerator(10, { size: 1 }), depth: 1.2 }
         ];
     }
 
-    circleGenerator(count, { size, style } = {}) {
+    circleGenerator(count, { size } = {}) {
         return Utils.range(count, () => new Circle({
             position: Vector.random(-width / 2, width / 2, -this.height / 2, this.height / 2),
-            radius: Utils.random(1, size), style
+            radius: Utils.random(1, size), style: { color: Utils.randomArray(Config.colors), opacity: 0.7 }
         }));
     }
 

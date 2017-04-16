@@ -9,8 +9,8 @@ App.define(({
         this.controller = controller;
         this.fuel = new Fountain({ particleSize: 4, style: { opacity: 0.2 },
                         fromAngle: Math.PI / 2 * 3 - 0.3, toAngle: Math.PI / 2 * 3 + 0.3 });
-        this.ship = new Polygon({ points: [new Vector(-4, 0), new Vector(0, -2), 
-                                           new Vector(4, 0), new Vector(0, 12)] });
+        this.ship = new Polygon({ points: [new Vector(-5, 0), new Vector(0, -3), 
+                                           new Vector(5, 0), new Vector(0, 15)] });
         this.speed = 0;
         this.color = Utils.randomArray(Config.colors);
 

@@ -1,6 +1,7 @@
 App.define(({ Utils, Spawner, Polygon, Explosion, Config }) => class AsteroidField {
 
-    constructor(player, numAsteroids, radius) {
+    constructor(player, radius) {
+        let numAsteroids = 15;
         this.alive = () => true;
         this.radius = radius;
         this.player = player;

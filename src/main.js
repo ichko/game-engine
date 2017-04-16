@@ -11,7 +11,7 @@ let animationFrame = undefined;
         canvas.height = innerHeight;
         let ctx = canvas.getContext('2d');
         ctx.translate(innerWidth / 2, innerHeight / 2);
-        ctx.scale(1, -1);
+        ctx.scale(1.05, -1.05);
 
         return [ ctx, innerWidth, innerHeight ];
     })();
@@ -45,7 +45,7 @@ let animationFrame = undefined;
 
     io.onMouse(() => player.speed = 5, () => player.speed = 0);
     enviroment.container.forEach(layer => parallax.addLayer({ depth: layer.depth, objects: layer.objects }));
-    parallax.addLayer({ objects: [player, new AsteroidField(player, 20, Math.max(width, height))] });
+    parallax.addLayer({ objects: [player, new AsteroidField(player, Math.max(width, height))] });
     scene.add(parallax, controller, camera);
 
 
@@ -54,7 +54,7 @@ let animationFrame = undefined;
         engine.clear().render().update();
         enviroment.outOfBounds();
 
-        parallax.zoom = 30 / (player.velocity.length() + 20);
+        parallax.zoom = 50 / (player.velocity.length() * 3 + 30);
 
         animationFrame = requestAnimationFrame(animation);
     })();
