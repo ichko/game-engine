@@ -1,10 +1,10 @@
 App.define(({
     Composite, Fountain,
     Polygon, Utils,
-    Spawner, Explosion
+    Spawner, Explosion, Config
 }) => class Player extends Composite {
 
-    constructor(colors, controller) {
+    constructor(controller) {
         super();
         this.controller = controller;
         this.fuel = new Fountain({ particleSize: 4, style: { opacity: 0.2 },
@@ -12,7 +12,7 @@ App.define(({
         this.ship = new Polygon({ points: [new Vector(-4, 0), new Vector(0, -2), 
                                            new Vector(4, 0), new Vector(0, 12)] });
         this.speed = 0;
-        this.color = Utils.randomArray(colors);
+        this.color = Utils.randomArray(Config.colors);
 
         this.add({ object: this.fuel });
         this.add({ object: this.ship });

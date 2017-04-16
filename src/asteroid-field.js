@@ -1,10 +1,9 @@
-App.define(({ Utils, Spawner, Polygon, Explosion }) => class AsteroidField {
+App.define(({ Utils, Spawner, Polygon, Explosion, Config }) => class AsteroidField {
 
-    constructor(player, colors, numAsteroids, radius) {
+    constructor(player, numAsteroids, radius) {
         this.alive = () => true;
         this.radius = radius;
         this.player = player;
-        this.colors = colors;
         this.asteroids = Utils.range(numAsteroids, () => {
             let size = Utils.random(10, 20);
             return new Polygon({
@@ -31,7 +30,7 @@ App.define(({ Utils, Spawner, Polygon, Explosion }) => class AsteroidField {
     }
 
     randomAsteroidColor() {
-        return Utils.randomArray(this.colors);
+        return Utils.randomArray(Config.colors);
     }
 
     update(ctx) {

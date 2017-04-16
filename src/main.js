@@ -16,6 +16,7 @@ let animationFrame = undefined;
         return [ ctx, innerWidth, innerHeight ];
     })();
 
+
     let {
         Utils, IO, Vector,
         CanvasRenderer, Scene, Engine,
@@ -31,43 +32,29 @@ let animationFrame = undefined;
     let scene = new Scene();
     let engine = new Engine(renderer, scene);
 
-    let controllerSpring = new SpringyVector({ elasticity: 0.1, damping: 0.5, target: () => io.mouse });
-    let controller = new Controller(controllerSpring, width, height);
-
-
-    let colors = ['#6f6', '#f66', '#66f', '#ff3', '#3ff', '#f3f'];
-    let player = new Player(colors, controller);
-
+    let controller = new Controller(io, width, height);
+    let player = new Player(controller);
     let camera = new SpringyVector({
-        position: new Vector(0, height / 2 - 150),
-        elasticity: 0.08,
-        damping: 0.3,
+        position: new Vector(0, 50), elasticity: 0.08, damping: 0.3,
         target: () => player.position.copy().add(player.velocity.copy().scale(3))
     });
 
     let parallax = new Parallax(camera.position);
-
     let enviroment = new Environment(camera, width, height);
-    for (let name in enviroment.container) {
-        parallax.addLayer({
-            depth: enviroment.container[name].depth,
-            objects: enviroment.container[name].elements
-        });
-    }
 
-    parallax.addLayer({ objects: [player, new AsteroidField(player, colors, 20, Math.max(width, height))] });
-
-    scene.add(parallax, controller, camera, controllerSpring);
 
     io.onMouse(() => player.speed = 5, () => player.speed = 0);
+    enviroment.container.forEach(layer => parallax.addLayer({ depth: layer.depth, objects: layer.objects }));
+    parallax.addLayer({ objects: [player, new AsteroidField(player, 20, Math.max(width, height))] });
+    scene.add(parallax, controller, camera);
+
 
     cancelAnimationFrame(animationFrame);
     (function animation() {
         engine.clear().render().update();
-        io.callHandlers();
         enviroment.outOfBounds();
 
-        // parallax.zoom = 30 / (player.velocity.length() + 20);
+        parallax.zoom = 30 / (player.velocity.length() + 20);
 
         animationFrame = requestAnimationFrame(animation);
     })();

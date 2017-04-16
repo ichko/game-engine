@@ -3,12 +3,17 @@ App.define(({
     Circle
 }) => class Controller {
 
-    constructor(mouse, width, height) {
+    constructor(io, width, height) {
         this.radius = Math.min(width, height) / 5;
-
         this.color = 'red'
-        this.mouse = mouse;
-        this.center = new Vector(-width / 2 + this.radius + 50, -height / 2 + this.radius + 50);
+        this.center = new Vector(-width / 2 + this.radius + 40, -height / 2 + this.radius + 40);
+        this.direction = new Vector();
+
+        this.controllerSpring = new SpringyVector({
+            elasticity: 0.1,
+            damping: 0.5,
+            target: () => io.mouse
+        });
         this.bigCircle = new Circle({
             radius: this.radius,
             position: this.center,
@@ -19,7 +24,6 @@ App.define(({
             position: this.center,
             style: { color: this.color, opacity: 0.5 }
         });
-        this.direction = new Vector();
     }
 
     render(renderer) {
@@ -30,8 +34,9 @@ App.define(({
     update() {
         this.bigCircle.style.color = this.color;
         this.smallCircle.style.color = this.color;
+        this.controllerSpring.update();
 
-        this.direction = this.mouse.position.copy().subtract(this.center).cut(this.radius / 2);
+        this.direction = this.controllerSpring.position.copy().subtract(this.center).cut(this.radius / 2);
         this.smallCircle.position = this.center.copy().add(this.direction);
     }
 

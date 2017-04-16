@@ -108,7 +108,7 @@ App.define(({ GameObject, Circle, Utils, InstancePool }) => class Explosion exte
         toAngle = Math.PI * 2,
     } = {}) {
         this.particles = this.particles.concat(Utils.range(size, () => this.circlesPool.new({
-            style, position: position.copy(), radius: particleSize,
+            style, position: position.copy(), radius: particleSize, velocityDamping: 0.97,
             velocity: Vector.randomPolar(1, fromAngle, toAngle)
                 .scale(Utils.random(magnitude / 2, magnitude))
         })));
