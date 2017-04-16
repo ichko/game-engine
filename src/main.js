@@ -30,7 +30,9 @@ let animationFrame = undefined;
     let renderer = new CanvasRenderer(ctx, width, height);
     let scene = new Scene();
     let engine = new Engine(renderer, scene);
-    let controller = new Controller(io, width, height);
+
+    let controllerSpring = new SpringyVector({ elasticity: 0.1, damping: 0.5, target: () => io.mouse });
+    let controller = new Controller(controllerSpring, width, height);
 
 
     let colors = ['#6f6', '#f66', '#66f', '#ff3', '#3ff', '#f3f'];
@@ -55,7 +57,7 @@ let animationFrame = undefined;
 
     parallax.addLayer({ objects: [player, new AsteroidField(player, colors, 20, Math.max(width, height))] });
 
-    scene.add(parallax, controller, camera);
+    scene.add(parallax, controller, camera, controllerSpring);
 
     io.onMouse(() => player.speed = 5, () => player.speed = 0);
 

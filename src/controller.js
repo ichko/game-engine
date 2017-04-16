@@ -3,16 +3,16 @@ App.define(({
     Circle
 }) => class Controller {
 
-    constructor(io, width, height) {
+    constructor(mouse, width, height) {
         this.radius = Math.min(width, height) / 5;
 
-        this.color = 'rgba(255, 20, 100)'
-        this.io = io;
+        this.color = 'red'
+        this.mouse = mouse;
         this.center = new Vector(-width / 2 + this.radius + 50, -height / 2 + this.radius + 50);
         this.bigCircle = new Circle({
             radius: this.radius,
             position: this.center,
-            style: { color: this.color, opacity: 0.4 }
+            style: { color: this.color, opacity: 0.5 }
         });
         this.smallCircle = new Circle({
             radius: this.radius / 1.5,
@@ -31,7 +31,7 @@ App.define(({
         this.bigCircle.style.color = this.color;
         this.smallCircle.style.color = this.color;
 
-        this.direction = this.io.mouse.copy().subtract(this.center).cut(this.radius / 2);
+        this.direction = this.mouse.position.copy().subtract(this.center).cut(this.radius / 2);
         this.smallCircle.position = this.center.copy().add(this.direction);
     }
 
