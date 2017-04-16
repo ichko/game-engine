@@ -6,10 +6,10 @@ App.define(({ Utils, Circle }) => class Environment {
         this.height = height;
 
         this.container = {
-            frontBig: { elements: this.circleGenerator(10, { style: { color: 'rgba(220, 0, 100, 0.4)' }, size: 5 }), depth: 1.1 },
-            frontSmall: { elements: this.circleGenerator(10, { style: { color: 'rgba(0, 200, 100, 0.4)' }, size: 4 }), depth: 1.2 },
-            backBig: { elements: this.circleGenerator(10, { style: { color: 'rgba(240, 120, 0, 0.4)' }, size: 3 }), depth: 1.4 },
-            backSmall: { elements: this.circleGenerator(10, { style: { color: 'rgba(50, 100, 200, 0.4)' }, size: 2 }), depth: 1.8 }
+            frontBig: { elements: this.circleGenerator(10, { style: { color: 'rgba(220, 0, 100, 0.8)' }, size: 3 }), depth: 0.5 },
+            frontSmall: { elements: this.circleGenerator(10, { style: { color: 'rgba(0, 200, 100, 0.8)' }, size: 3 }), depth: 0.8 },
+            backBig: { elements: this.circleGenerator(10, { style: { color: 'rgba(240, 120, 0, 0.8)' }, size: 2 }), depth: 1.2 },
+            backSmall: { elements: this.circleGenerator(10, { style: { color: 'rgba(50, 100, 200, 0.8)' }, size: 2 }), depth: 1.5 }
         };
     }
 
