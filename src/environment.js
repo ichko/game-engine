@@ -16,7 +16,7 @@ App.define(({ Utils, Circle, Config }) => class Environment {
     circleGenerator(count, { size } = {}) {
         return Utils.range(count, () => new Circle({
             position: Vector.random(-width / 2, width / 2, -this.height / 2, this.height / 2),
-            radius: Utils.random(1, size), style: { color: Utils.randomArray(Config.colors), opacity: 0.7 }
+            radius: Utils.random(1, size), style: { color: Utils.randomArray(Config.colors), opacity: 0.6 }
         }));
     }
 

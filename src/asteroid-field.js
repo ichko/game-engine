@@ -6,7 +6,7 @@ App.define(({ Utils, Spawner, Polygon, Explosion, Config }) => class AsteroidFie
         this.radius = radius;
         this.player = player;
         this.asteroids = Utils.range(numAsteroids, () => {
-            let size = Utils.random(10, 20);
+            let size = Utils.random(10, 40);
             return new Polygon({
                 position: this.randomAsteroidPosition(),
                 style: { color: this.randomAsteroidColor() },
@@ -25,7 +25,7 @@ App.define(({ Utils, Spawner, Polygon, Explosion, Config }) => class AsteroidFie
     }
 
     randomAsteroidShape() {
-        let segments = 8;
+        let segments = 5;
         return Utils.range(segments, segment =>
             Vector.polar((segment / segments) * Math.PI * 2, Utils.random(0.5, 1)));
     }
