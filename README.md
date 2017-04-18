@@ -1,5 +1,5 @@
-# sidescroll
-Simple 2D parallax side scroller
+# Game engine
+Simple 2D JS game engine
 
 # Links
  - [Demo link](https://rawgit.com/ichko/sidescroll/master/index.html)
