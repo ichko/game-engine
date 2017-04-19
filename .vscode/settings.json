@@ -1,5 +1,6 @@
 {
     "cSpell.enabled": true,
+    "cSpell.ignoreWords": ["Iliya", "Zhechev", "devtool"],
     "files.exclude": {
         "**/.git": true,
         "**/.svn": true,

@@ -3,6 +3,7 @@ import {
     Scene, Engine, SpringyVector,
     Parallax, Circle
 } from 'engine';
+
 import { IO } from './io';
 import { Player } from './player';
 import { AsteroidField } from './asteroid-field';

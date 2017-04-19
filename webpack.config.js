@@ -2,6 +2,14 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
+  module: {
+    rules: [{
+      use: {
+        loader: 'babel-loader',
+        options: { presets: ['env'] }
+      }
+    }]
+  },
   context: path.resolve(__dirname, './example/src'),
   resolve: {
     modules: ['./node_modules', './'],
