@@ -1,4 +1,4 @@
-import { Vector } from './engine';
+import { Vector } from 'engine';
 
 
 export class IO {

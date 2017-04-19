@@ -1,7 +1,7 @@
 import {
     Vector, Composite, Fountain, Polygon,
     Utils, Spawner, Explosion
-} from './engine';
+} from 'engine';
 import { colors } from './config';
 
 

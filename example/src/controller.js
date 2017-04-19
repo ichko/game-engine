@@ -1,4 +1,4 @@
-import { Vector, Circle, SpringyVector } from './engine';
+import { Vector, Circle, SpringyVector } from 'engine';
 
 
 export class Controller {

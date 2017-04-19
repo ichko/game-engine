@@ -1,4 +1,4 @@
-import { Spawner, Polygon, Explosion, Utils, Vector } from './engine';
+import { Spawner, Polygon, Explosion, Utils, Vector } from 'engine';
 import { colors } from './config';
 
 

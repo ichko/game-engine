@@ -1,4 +1,4 @@
-import { Utils, Circle, Vector } from './engine';
+import { Utils, Circle, Vector } from 'engine';
 import { colors } from './config';
 
 

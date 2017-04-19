@@ -2,7 +2,7 @@ import {
     Utils, Vector, CanvasRenderer,
     Scene, Engine, SpringyVector,
     Parallax, Circle
-} from './engine';
+} from 'engine';
 import { IO } from './io';
 import { Player } from './player';
 import { AsteroidField } from './asteroid-field';
