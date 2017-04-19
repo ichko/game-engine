@@ -1,4 +1,4 @@
-App.define(() => class Engine {
+export default class Engine {
 
     constructor(renderer, scene) {
         this.renderer = renderer;
@@ -20,4 +20,4 @@ App.define(() => class Engine {
         return this;
     }
 
-});
+}
