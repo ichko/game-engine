@@ -13,9 +13,7 @@ import { Controller } from './controller';
 
 let init = (canvas) => {
 
-    let [ width, height ] = [ innerWidth, innerHeight ];
-    canvas.width = width;
-    canvas.height = height;
+    let [ width, height ] = [ canvas.width, canvas.height ] = [ innerWidth, innerHeight ];
     let ctx = canvas.getContext('2d');
     ctx.translate(width / 2, height / 2);
     ctx.scale(1.05, -1.05);
