@@ -17,7 +17,7 @@ export class IO {
     callHandlers() {
         for (let name in this.keyHandlers) {
             if (this.keyStates[name]) {
-                this.keyHandlers[name].handeler();
+                this.keyHandlers[name].handler();
             } else {
                 this.keyHandlers[name].reverseHandler && this.keyHandlers[name].reverseHandler();
             }
@@ -34,8 +34,8 @@ export class IO {
         return this;
     }
 
-    onKey(key, handeler, reverseHandler) {
-        this.keyHandlers[key] = { handeler, reverseHandler };
+    onKey(key, handler, reverseHandler) {
+        this.keyHandlers[key] = { handler, reverseHandler };
         return this;
     }
 
