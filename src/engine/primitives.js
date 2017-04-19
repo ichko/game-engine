@@ -1,4 +1,10 @@
-App.define(({ GameObject }) => class Circle extends GameObject {
+import { GameObject } from './game-object';
+import { InstancePool } from './instance-pool';
+import { Utils } from './utils';
+import { Vector } from './vector';
+
+
+export class Circle extends GameObject {
 
     set(config = {}) {
         super.set(config);
@@ -9,9 +15,9 @@ App.define(({ GameObject }) => class Circle extends GameObject {
         renderer.circle(this.position, this.radius, this.style);
     }
 
-});
+}
 
-App.define(({ GameObject }) => class Rectangle extends GameObject {
+export class Rectangle extends GameObject {
 
     constructor(config = {}) {
         super(config);
@@ -22,9 +28,9 @@ App.define(({ GameObject }) => class Rectangle extends GameObject {
         renderer.rectangle(this.position, this.size, this.style);
     }
 
-});
+}
 
-App.define(({ GameObject }) => class Composite extends GameObject {
+export class Composite extends GameObject {
 
     constructor(config = {}) {
         super(config);
@@ -54,9 +60,9 @@ App.define(({ GameObject }) => class Composite extends GameObject {
         this.items.forEach(({ object }) => object.update(ctx));
     }
 
-});
+}
 
-App.define(({ GameObject }) => class SpringyVector extends GameObject {
+export class SpringyVector extends GameObject {
 
     constructor({
         damping = 0.1,
@@ -81,9 +87,9 @@ App.define(({ GameObject }) => class SpringyVector extends GameObject {
         this.velocity.add(acceleration);
     }
 
-});
+}
 
-App.define(({ GameObject, Circle, Utils, InstancePool }) => class Explosion extends GameObject {
+export class Explosion extends GameObject {
 
     constructor(config) {
         super(config);
@@ -138,9 +144,9 @@ App.define(({ GameObject, Circle, Utils, InstancePool }) => class Explosion exte
         });
     }
 
-});
+}
 
-App.define(({ Explosion }) => class Fountain extends Explosion {
+export class Fountain extends Explosion {
 
     constructor(config) {
         super(config);
@@ -151,9 +157,9 @@ App.define(({ Explosion }) => class Fountain extends Explosion {
         super.update(dt);
     }
 
-});
+}
 
-App.define(({ GameObject, Explosion }) => class Polygon extends GameObject {
+export class Polygon extends GameObject {
 
     constructor(config = {}) {
         super(config);
@@ -167,9 +173,9 @@ App.define(({ GameObject, Explosion }) => class Polygon extends GameObject {
         renderer.pop();
     }
 
-});
+}
 
-App.define(() => class Spawner {
+export class Spawner {
 
     constructor(condition = (() => false), creator = (() => [])) {
         this.creator = creator;
@@ -196,4 +202,4 @@ App.define(() => class Spawner {
         return true;
     }
 
-});
+}

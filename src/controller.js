@@ -1,7 +1,7 @@
-App.define(({
-    Vector,
-    Circle
-}) => class Controller {
+import { Vector, Circle, SpringyVector } from './engine';
+
+
+export class Controller {
 
     constructor(io, width, height) {
         this.radius = Math.min(width, height) / 6;
@@ -40,4 +40,4 @@ App.define(({
         this.smallCircle.position = this.center.copy().add(this.direction);
     }
 
-});
+}

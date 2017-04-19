@@ -1,4 +1,4 @@
-export default class Engine {
+export class Engine {
 
     constructor(renderer, scene) {
         this.renderer = renderer;

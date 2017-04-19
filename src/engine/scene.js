@@ -1,4 +1,4 @@
-App.define(() => class Scene {
+export class Scene {
 
     constructor() {
         this.container = [];
@@ -26,4 +26,4 @@ App.define(() => class Scene {
         });
     }
 
-});
+}

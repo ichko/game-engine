@@ -1,4 +1,4 @@
-App.defineSingle(() => class EventManager {
+export class EventManager {
 
     constructor() {
         this.container = {};
@@ -28,4 +28,4 @@ App.defineSingle(() => class EventManager {
         }
     }
 
-});
+}

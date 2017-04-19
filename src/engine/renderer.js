@@ -1,4 +1,7 @@
-App.define(() => class CanvasRenderer {
+import { Vector } from './vector';
+
+
+export class CanvasRenderer {
 
     constructor(ctx, width, height) {
         this.ctx = ctx;
@@ -65,4 +68,4 @@ App.define(() => class CanvasRenderer {
         }
     }
 
-});
+}
