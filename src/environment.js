@@ -1,6 +1,10 @@
-App.define(({ Utils, Circle, Config }) => class Environment {
+import { Utils, Circle, Vector } from './engine';
+import { colors } from './config';
 
-    constructor(camera) {
+
+export class Environment {
+
+    constructor(camera, width, height) {
         this.camera = camera;
         this.width = width;
         this.height = height;
@@ -15,8 +19,8 @@ App.define(({ Utils, Circle, Config }) => class Environment {
 
     circleGenerator(count, { size } = {}) {
         return Utils.range(count, () => new Circle({
-            position: Vector.random(-width / 2, width / 2, -this.height / 2, this.height / 2),
-            radius: Utils.random(1, size), style: { color: Utils.randomArray(Config.colors), opacity: 0.6 }
+            position: Vector.random(-this.width / 2, this.width / 2, -this.height / 2, this.height / 2),
+            radius: Utils.random(1, size), style: { color: Utils.randomArray(colors), opacity: 0.6 }
         }));
     }
 
@@ -42,4 +46,4 @@ App.define(({ Utils, Circle, Config }) => class Environment {
         });
     }
 
-});
+}

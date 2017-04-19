@@ -1,4 +1,7 @@
-App.define(() => class GameObject {
+import { Vector } from './vector';
+
+
+export class GameObject {
 
     constructor(config) {
         this.set(config);
@@ -48,4 +51,4 @@ App.define(() => class GameObject {
         return this;
     }
 
-});
+}

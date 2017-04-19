@@ -1,4 +1,8 @@
-App.define(({ Utils }) => class Parallax {
+import { Utils } from './utils';
+import { Vector } from './vector';
+
+
+export class Parallax {
 
     constructor(reference = new Vector()) {
         this.reference = reference;
@@ -34,4 +38,4 @@ App.define(({ Utils }) => class Parallax {
         }));
     }
 
-});
+}

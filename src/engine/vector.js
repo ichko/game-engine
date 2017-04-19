@@ -1,4 +1,7 @@
-App.define(({ Utils }) => class Vector {
+import { Utils } from './utils';
+
+
+export class Vector {
 
     constructor(x = 0, y = 0) {
         this.x = x;
@@ -23,7 +26,7 @@ App.define(({ Utils }) => class Vector {
         return this;
     }
 
-    noramlize() {
+    normalize() {
         let length = this.length();
         if (length !== 0) {
             this.x /= length;
@@ -56,7 +59,7 @@ App.define(({ Utils }) => class Vector {
     }
 
     scaleTo(size = 1) {
-        return this.noramlize().scale(size);
+        return this.normalize().scale(size);
     }
 
     subtract(vector) {
@@ -98,8 +101,8 @@ App.define(({ Utils }) => class Vector {
         return this;
     }
 
-    static random(minx, maxx, miny, maxy) {
-        return new Vector(Utils.random(minx, maxx), Utils.random(miny, maxy));
+    static random(minX, maxX, minY, maxY) {
+        return new Vector(Utils.random(minX, maxX), Utils.random(minY, maxY));
     }
 
     static polar(angle = 0, length = 1) {
@@ -110,4 +113,4 @@ App.define(({ Utils }) => class Vector {
         return Vector.polar(Utils.random(minAngle, maxAngle), length);
     }
 
-});
+}

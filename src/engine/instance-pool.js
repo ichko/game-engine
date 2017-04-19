@@ -1,9 +1,9 @@
-App.define(() => class  InstancePool {
+export class InstancePool {
 
     constructor(type) {
         this.type = type;
         this.released = new Set();
-        this.alocated = new Set();
+        this.allocated = new Set();
     }
 
     new(...config) {
@@ -17,16 +17,16 @@ App.define(() => class  InstancePool {
         }
 
         this.released.delete(instance);
-        this.alocated.add(instance);
+        this.allocated.add(instance);
 
         return instance;
     }
 
     release(instance) {
-        if (this.alocated.has(instance)) {
-            this.alocated.delete(instance);
+        if (this.allocated.has(instance)) {
+            this.allocated.delete(instance);
             this.released.add(instance);
         }
     }
 
-});
+}

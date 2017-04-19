@@ -1,8 +1,11 @@
-App.define(({
-    Composite, Fountain,
-    Polygon, Utils,
-    Spawner, Explosion, Config
-}) => class Player extends Composite {
+import {
+    Vector, Composite, Fountain, Polygon,
+    Utils, Spawner, Explosion
+} from './engine';
+import { colors } from './config';
+
+
+export class Player extends Composite {
 
     constructor(controller) {
         super();
@@ -12,7 +15,7 @@ App.define(({
         this.ship = new Polygon({ points: [new Vector(-5, 0), new Vector(0, -3), 
                                            new Vector(5, 0), new Vector(0, 15)] });
         this.speed = 0;
-        this.color = Utils.randomArray(Config.colors);
+        this.color = Utils.randomArray(colors);
 
         this.add({ object: this.fuel });
         this.add({ object: this.ship });
@@ -50,10 +53,10 @@ App.define(({
         this.fuel.config.magnitude = this.speed / 1.5;
         this.fuel.config.size = this.speed / 1.5;
 
-        this.velocity.add(controller.direction.copy().scale((1 / 3000) * this.speed));
+        this.velocity.add(this.controller.direction.copy().scale((1 / 3000) * this.speed));
         if (this.velocity.length() > 2.5) {
             this.velocity.scaleTo(2.5);
         }
     }
 
-});
+}

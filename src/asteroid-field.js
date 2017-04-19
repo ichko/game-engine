@@ -1,4 +1,8 @@
-App.define(({ Utils, Spawner, Polygon, Explosion, Config }) => class AsteroidField {
+import { Spawner, Polygon, Explosion, Utils, Vector } from './engine';
+import { colors } from './config';
+
+
+export class AsteroidField {
 
     constructor(player, radius) {
         let numAsteroids = 15;
@@ -31,7 +35,7 @@ App.define(({ Utils, Spawner, Polygon, Explosion, Config }) => class AsteroidFie
     }
 
     randomAsteroidColor() {
-        return Utils.randomArray(Config.colors);
+        return Utils.randomArray(colors);
     }
 
     update(ctx) {
@@ -68,4 +72,4 @@ App.define(({ Utils, Spawner, Polygon, Explosion, Config }) => class AsteroidFie
         this.explosionSpawner.render(renderer);
     }
 
-});
+}

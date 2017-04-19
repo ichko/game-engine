@@ -1,4 +1,7 @@
-App.define(({ Vector }) => class IO {
+import { Vector } from './engine';
+
+
+export class IO {
 
     constructor(width, height) {
         this.width = width;
@@ -55,4 +58,4 @@ App.define(({ Vector }) => class IO {
         window.addEventListener('keyup', ({ key }) => this.keyStates[key] = false);
     }
 
-});
+}
