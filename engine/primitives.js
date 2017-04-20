@@ -125,7 +125,7 @@ export class Explosion extends GameObject {
     }
 
     render(renderer) {
-        renderer.push({ rotation: this.rotation })
+        renderer.push({ rotation: this.rotation });
         this.particles.forEach(particle => particle.render(renderer));
         renderer.pop();
     }
@@ -133,7 +133,7 @@ export class Explosion extends GameObject {
     update(dt) {
         this.particles = this.particles.filter(particle => {
             particle.radius /= Utils.random(1.05, 1.1);
-            particle.update(dt)
+            particle.update(dt);
 
             let alive = particle.radius > 0.5;
             if (!alive) {
@@ -185,7 +185,7 @@ export class Spawner {
 
     update(context) {
         if (this.condition(this.items.length)) {
-            this.items.push(...this.creator())
+            this.items.push(...this.creator());
         }
 
         this.items = this.items.filter(item => {

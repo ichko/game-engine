@@ -5,7 +5,7 @@ export class Controller {
 
     constructor(io, width, height) {
         this.radius = Math.min(width, height) / 6;
-        this.color = 'red'
+        this.color = 'red';
         this.center = new Vector(-width / 2 + this.radius + 45, -height / 2 + this.radius + 45);
         this.direction = new Vector();
 

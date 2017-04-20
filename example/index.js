@@ -1,7 +1,6 @@
 import {
-    Utils, Vector, CanvasRenderer,
-    Scene, Engine, SpringyVector,
-    Parallax, Circle
+    Vector, CanvasRenderer, Scene,
+    Engine, SpringyVector, Parallax
 } from 'engine';
 
 import { IO } from './io';
@@ -13,7 +12,7 @@ import { Controller } from './controller';
 
 let init = (canvas) => {
 
-    let [ width, height ] = [ canvas.width, canvas.height ] = [ innerWidth, innerHeight ];
+    let [ width, height ] = [ canvas.width, canvas.height ] = [ window.innerWidth, window.innerHeight ];
     let ctx = canvas.getContext('2d');
     ctx.translate(width / 2, height / 2);
     ctx.scale(1.05, -1.05);
@@ -40,17 +39,17 @@ let init = (canvas) => {
     scene.add(parallax, controller, camera);
 
 
-    cancelAnimationFrame(animationFrame);
+    window.cancelAnimationFrame(animationFrame);
     (function animation() {
         engine.clear().render().update();
         environment.outOfBounds();
 
         parallax.zoom = 50 / (player.velocity.length() * 3 + 30);
 
-        animationFrame = requestAnimationFrame(animation);
+        animationFrame = window.requestAnimationFrame(animation);
     })();
 
-}
+};
 
 
 let animationFrame = undefined,

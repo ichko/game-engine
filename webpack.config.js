@@ -10,16 +10,18 @@ module.exports = {
       }
     }]
   },
-  context: path.resolve(__dirname, './example/src'),
+  context: path.resolve(__dirname, './'),
   resolve: {
     modules: ['./node_modules', './'],
   },
   entry: {
-    app: ['./index.js'],
+    example: ['./example/index.js'],
+    engine: ['./engine/index.js']
   },
   output: {
-    path: path.resolve(__dirname, './example/dist'),
-    filename: 'bundle.js',
+    path: path.resolve(__dirname, './dist'),
+    filename: '[name].js',
+    library: ['engine']
   },
   devtool: '#inline-source-map',
   watch: true

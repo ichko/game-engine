@@ -4,8 +4,8 @@ export class EventManager {
         this.container = {};
     }
 
-    register(name, condition, context) {
-        this.container[name] = { condition, context, handlers: [] };
+    register(name, condition) {
+        this.container[name] = { condition, handlers: [] };
         return this;
     }
 
@@ -19,7 +19,7 @@ export class EventManager {
 
     triggerEvents() {
         for (let name in this.container) {
-            let { condition, context, handlers } = this.container[name];
+            let { condition, handlers } = this.container[name];
             handlers.forEach(({ executor, elements }) =>
                 elements
                     .filter(element => condition(element))
