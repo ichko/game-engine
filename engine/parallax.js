@@ -10,20 +10,15 @@ export class Parallax {
         this.zoom = 1;
     }
 
-    target(reference) {
-        this.reference = reference;
-        return this;
-    }
-
     addLayer({ objects = [], depth = 1 }) {
-        this.layers.push({ objects: new Set(objects), depth: 1 / depth });
+        this.layers.push({ objects: new Set(objects), depth: -1 / depth });
         return this;
     }
 
     render(renderer) {
         this.layers.forEach(layer => {
             renderer.push({
-                translation: this.reference.copy().scale(-layer.depth),
+                translation: this.reference.copy().scale(layer.depth),
                 scale: new Vector(this.zoom, this.zoom)
             });
             layer.objects.forEach(object => object.render(renderer));

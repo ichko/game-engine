@@ -10,19 +10,17 @@ export class Scene {
     }
 
     render(renderer) {
-        this.container.forEach(object => object.render && object.render(renderer));
+        this.container.forEach(object => object.render(renderer));
     }
 
-    update(params) {
+    update(ctx) {
         this.container = this.container.filter(object => {
-            if (object.update) {
-                object.update(params);
-                if (typeof object.alive !== "undefined") {
-                    return object.alive();
-                }
-
-                return true;
+            object.update(ctx);
+            if (typeof object.alive !== "undefined") {
+                return object.alive();
             }
+
+            return true;
         });
     }
 

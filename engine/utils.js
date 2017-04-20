@@ -1,18 +1,18 @@
-export class Utils {
+export const Utils = {
 
-    static random(min = 0, max = 1) {
+    random: function(min = 0, max = 1) {
         return Math.random() * (max - min) + min;
-    }
+    },
 
-    static randomArray (array) {
+    randomArray: function(array) {
         return array[Math.floor(this.random(0, array.length))];
-    }
+    },
 
-    static range(size, handler) {
+    range: function(size, handler) {
         return Array.from(Array(Math.round(size)).keys()).map(handler);
-    }
+    },
 
-    static filterSet(set, predicate) {
+    filterSet: function(set, predicate) {
         set.forEach(element => {
             if (!predicate(element)) {
                 set.delete(element);
@@ -22,4 +22,4 @@ export class Utils {
         return set;
     }
 
-}
+};
