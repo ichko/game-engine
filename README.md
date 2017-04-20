@@ -1,5 +1,5 @@
 # Game engine
-Simple 2D JS game engine
+Simple 2D ES6 game engine
 
 # Links
  - [Demo link](https://rawgit.com/ichko/sidescroll/master/index.html)
