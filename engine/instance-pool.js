@@ -30,3 +30,28 @@ export class InstancePool {
     }
 
 }
+
+
+let poolContainer = {};
+
+export class Instancable {
+    
+    static getPool() {
+        let pool = poolContainer[this.name];
+        if (!pool) {
+            pool = new InstancePool(this);
+            poolContainer.add(pool);
+        }
+
+        return pool;
+    }
+    
+    static new(...config) {
+        return this.getPool().new(...config);
+    }
+   
+    static release(instance) {
+        return this.getPool().release(instance);
+    }
+   
+}
