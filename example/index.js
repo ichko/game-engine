@@ -36,15 +36,12 @@ let init = (canvas) => {
     io.onMouse(() => player.speed = 5, () => player.speed = 0);
     environment.container.forEach(layer => parallax.addLayer({ depth: layer.depth, objects: layer.objects }));
     parallax.addLayer({ objects: [player, new AsteroidField(player, Math.max(width, height))] });
-    scene.add(parallax, controller, camera);
+    scene.add(parallax, controller, camera, environment);
 
 
     window.cancelAnimationFrame(animationFrame);
     (function animation() {
         engine.clear().render().update();
-        environment.outOfBounds();
-
-        parallax.zoom = 50 / (player.velocity.length() * 3 + 30);
 
         animationFrame = window.requestAnimationFrame(animation);
     })();

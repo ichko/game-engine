@@ -24,7 +24,7 @@ export class Environment {
         }));
     }
 
-    outOfBounds() {
+    update() {
         this.container.forEach(layer => {
             layer.objects.forEach(element => {
                 let cameraPos = this.camera.position.copy().scale(1 / layer.depth);
