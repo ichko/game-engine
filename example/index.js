@@ -15,7 +15,7 @@ let init = (canvas) => {
     let [ width, height ] = [ canvas.width, canvas.height ] = [ window.innerWidth, window.innerHeight ];
     let ctx = canvas.getContext('2d');
     ctx.translate(width / 2, height / 2);
-    ctx.scale(1.05, -1.05);
+    ctx.scale(1, -1);
 
 
     let io = new IO(width, height);

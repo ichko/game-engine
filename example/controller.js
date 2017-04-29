@@ -1,9 +1,10 @@
-import { Vector, Circle, SpringyVector } from 'engine';
+import { Vector, Circle, SpringyVector, Rectangle } from 'engine';
 
 
 export class Controller {
 
     constructor(io, width, height) {
+        this.width = width;
         this.radius = Math.min(width, height) / 6;
         this.color = 'red';
         this.center = new Vector(-width / 2 + this.radius + 45, -height / 2 + this.radius + 45);
@@ -24,11 +25,21 @@ export class Controller {
             position: this.center,
             style: { color: this.color, opacity: 0.5 }
         });
+        this.fuelTankUi = new Rectangle({
+            position: new Vector(0, height / 2),
+            size: { width, height: 20 },
+            width, height: 20
+        });
     }
 
     render(renderer) {
         this.bigCircle.render(renderer);
         this.smallCircle.render(renderer);
+        this.fuelTankUi.render(renderer);
+    }
+
+    setFuelTank(percentage) {
+        this.fuelTankUi.width = this.width * percentage;
     }
 
     update() {

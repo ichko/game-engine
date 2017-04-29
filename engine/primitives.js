@@ -21,11 +21,12 @@ export class Rectangle extends GameObject {
 
     constructor(config = {}) {
         super(config);
-        this.size = config.size;
+        this.width = config.width || 10;
+        this.height = config.height || 10;
     }
 
     render(renderer) {
-        renderer.rectangle(this.position, this.size, this.style);
+        renderer.rectangle(this.position, { width: this.width, height: this.height }, this.style);
     }
 
 }
