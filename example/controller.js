@@ -26,8 +26,8 @@ export class Controller {
             style: { color: this.color, opacity: 0.5 }
         });
         this.fuelTankUi = new Rectangle({
-            position: new Vector(0, height / 2),
-            size: { width, height: 20 },
+            position: new Vector(0, height / 2 - 10),
+            size: { width, height: 50 },
             width, height: 20
         });
     }
