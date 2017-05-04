@@ -43,7 +43,7 @@ export class Player extends Composite {
     
     setFuelDiff(fuelDiff = 10) {
         let newFuel = this.fuelTank + fuelDiff;
-        this.fuelTank = newFuel < 0 ? 0 : newFuel;
+        this.fuelTank = Math.min(Math.max(0, newFuel), this.fuelTankMax);
         if (this.fuelTank <= 0) {
             this.kill();
         }
