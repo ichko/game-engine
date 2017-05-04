@@ -30,15 +30,19 @@ export class Player extends Composite {
     }
     
     revive(size = 10) {
-        this.setFuel(size);
+        this.setFuelDiff(size);
     }
     
     damage(size = 10) {
-        this.setFuel(-size);
+        this.setFuelDiff(-size);
+        this.explosions.push(new Explosion({
+            position: this.position, size: 30, particleSize: 20,
+            style: { color: this.color }, magnitude: 5
+        }).fire());
     }
     
-    setFuel(fuelDiff = 10) {
-        let newFuel = this.fuelTank - fuelDiff;
+    setFuelDiff(fuelDiff = 10) {
+        let newFuel = this.fuelTank + fuelDiff;
         this.fuelTank = newFuel < 0 ? 0 : newFuel;
         if (this.fuelTank <= 0) {
             this.kill();
@@ -46,10 +50,6 @@ export class Player extends Composite {
     }
 
     kill() {
-        this.explosions.push(new Explosion({
-            position: this.position, size: 30, particleSize: 20,
-            style: { color: this.color }, magnitude: 5
-        }).fire());
         this.size = 0;
     }
 
