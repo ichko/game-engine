@@ -28,6 +28,14 @@ export class Player extends Composite {
         this.explosionSpawner = new Spawner(() => this.explosions.length > 0,
             () => this.explosions.splice(0, this.explosions.length));
     }
+    
+    damage(size = 10) {
+        let newFuel = this.fuelTank - size;
+        this.fuelTank = newFuel < 0 ? 0 : newFuel;
+        if (this.fuelTank <= 0) {
+            this.kill();
+        }
+    }
 
     kill() {
         this.explosions.push(new Explosion({

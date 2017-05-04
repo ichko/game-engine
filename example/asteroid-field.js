@@ -46,7 +46,7 @@ export class AsteroidField {
 
             if (distance < asteroid.size && this.player.size > 0) {
                 if (this.player.color != asteroid.style.color) {
-                    this.player.kill();
+                    this.player.damage(asteroid.size);
                 }
                 else {
                     this.player.color = this.randomAsteroidColor();
