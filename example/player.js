@@ -29,8 +29,16 @@ export class Player extends Composite {
             () => this.explosions.splice(0, this.explosions.length));
     }
     
+    revive(size = 10) {
+        this.setFuel(size);
+    }
+    
     damage(size = 10) {
-        let newFuel = this.fuelTank - size;
+        this.setFuel(-size);
+    }
+    
+    setFuel(fuelDiff = 10) {
+        let newFuel = this.fuelTank - fuelDiff;
         this.fuelTank = newFuel < 0 ? 0 : newFuel;
         if (this.fuelTank <= 0) {
             this.kill();
@@ -42,7 +50,7 @@ export class Player extends Composite {
             position: this.position, size: 30, particleSize: 20,
             style: { color: this.color }, magnitude: 5
         }).fire());
-        // this.size = 0;
+        this.size = 0;
     }
 
     render(renderer) {

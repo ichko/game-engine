@@ -46,9 +46,10 @@ export class AsteroidField {
 
             if (distance < asteroid.size && this.player.size > 0) {
                 if (this.player.color != asteroid.style.color) {
-                    this.player.damage(asteroid.size * this.player.speed);
+                    this.player.damage(asteroid.size + this.player.speed);
                 }
                 else {
+                    this.player.revive(asteroid.size + this.player.speed);
                     this.player.color = this.randomAsteroidColor();
                     this.explosions.push(new Explosion({
                         position: asteroid.position, size: asteroid.size,
