@@ -12,7 +12,7 @@ export class Player extends Composite {
         this.controller = controller;
 
         this.fuelTankMax = 1000;
-        this.fuelTank = this.fuelTankMax;
+        this.fuelTank = this.fuelTankMax / 10;
 
         this.exhaust = new Fountain({ particleSize: 4, style: { opacity: 0.2 },
                         fromAngle: Math.PI / 2 * 3 - 0.3, toAngle: Math.PI / 2 * 3 + 0.3 });
@@ -69,14 +69,16 @@ export class Player extends Composite {
         this.controller.setFuelTank(this.fuelTank / this.fuelTankMax);
 
         let forwardAngle = this.controller.direction.angle() + Math.PI;
-        this.ship.rotation = forwardAngle + Math.PI / 2;
-        this.exhaust.config.fromAngle = forwardAngle - 1 / this.speed;
-        this.exhaust.config.toAngle = forwardAngle + 1 / this.speed;
-        this.exhaust.config.magnitude = this.speed / 1.5;
-        this.exhaust.config.size = this.speed / 1.5;
-        this.fuelTank = this.fuelTank < 0 ? 0 : this.fuelTank - this.speed / 10;
+        let speedForce = this.fuelTank > 0 ? this.speed : 0;
 
-        this.velocity.add(this.controller.direction.copy().scale((1 / 3000) * this.speed));
+        this.ship.rotation = forwardAngle + Math.PI / 2;
+        this.exhaust.config.fromAngle = forwardAngle - 1 / speedForce;
+        this.exhaust.config.toAngle = forwardAngle + 1 / speedForce;
+        this.exhaust.config.magnitude = speedForce / 1.5;
+        this.exhaust.config.size = speedForce / 1.5;
+        this.fuelTank = this.fuelTank < 0 ? 0 : this.fuelTank - speedForce / 10;
+
+        this.velocity.add(this.controller.direction.copy().scale((1 / 3000) * speedForce));
         if (this.velocity.length() > 2.5) {
             this.velocity.scaleTo(2.5);
         }
