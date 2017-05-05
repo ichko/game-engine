@@ -42,7 +42,6 @@ let init = (canvas) => {
     window.cancelAnimationFrame(animationFrame);
     (function animation() {
         engine.clear().render().update();
-
         animationFrame = window.requestAnimationFrame(animation);
     })();
 

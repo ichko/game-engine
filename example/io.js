@@ -19,7 +19,9 @@ export class IO {
             if (this.keyStates[name]) {
                 this.keyHandlers[name].handler();
             } else {
-                this.keyHandlers[name].reverseHandler && this.keyHandlers[name].reverseHandler();
+                if (this.keyHandlers[name].reverseHandler){
+                    this.keyHandlers[name].reverseHandler();
+                }
             }
         }
     }
@@ -41,7 +43,7 @@ export class IO {
 
     changeTouch({ changedTouches }) {
         this.mouse.set(changedTouches[0].pageX - this.width / 2,
-                        -changedTouches[0].pageY + this.height / 2);
+                      -changedTouches[0].pageY + this.height / 2);
     }
 
     bindEvents() {
