@@ -1,6 +1,6 @@
 import {
     Vector, Composite, Fountain, Polygon,
-    Utils, Spawner, Explosion, Rectangle
+    Utils, Spawner, Explosion
 } from 'engine';
 import { colors } from './config';
 
