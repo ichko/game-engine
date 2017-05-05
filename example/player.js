@@ -11,8 +11,8 @@ export class Player extends Composite {
         super();
         this.controller = controller;
 
-        this.fuelTankMax = 1000;
-        this.fuelTank = this.fuelTankMax / 10;
+        this.fuelTankMax = 500;
+        this.fuelTank = this.fuelTankMax;
 
         this.exhaust = new Fountain({ particleSize: 4, style: { opacity: 0.2 },
                         fromAngle: Math.PI / 2 * 3 - 0.3, toAngle: Math.PI / 2 * 3 + 0.3 });
