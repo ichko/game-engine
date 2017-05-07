@@ -17,7 +17,6 @@ let init = (canvas) => {
     ctx.translate(width / 2, height / 2);
     ctx.scale(1, -1);
 
-
     let io = new IO(width, height);
     let renderer = new CanvasRenderer(ctx, width, height);
     let scene = new Scene();
