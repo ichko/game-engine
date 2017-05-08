@@ -63,7 +63,7 @@ init(canvas);
 ```
 
 # Screenshots
-![example](assets/controller_and_fuel_tank.png)
+![example](assets/asteroids_speedometer.png)
 
 ![example](assets/asteroids_colorful_exploding.png)
 

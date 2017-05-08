@@ -46,7 +46,7 @@ export class Player extends Composite {
             style: { color: this.color }, magnitude: 5
         }).fire());
     }
-    
+
     setFuelDiff(fuelDiff = 10) {
         let newFuel = this.fuelTank + fuelDiff;
         this.fuelTank = Math.min(Math.max(0, newFuel), this.fuelTankMax);
