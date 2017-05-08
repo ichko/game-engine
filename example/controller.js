@@ -27,7 +27,10 @@ export class Controller {
         });
         this.fuelTankUi = new Rectangle({
             position: new Vector(0, height / 2 - 10),
-            size: { width, height: 50 },
+            width, height: 20
+        });
+        this.speedUi = new Rectangle({
+            position: new Vector(0, -height / 2 + 10),
             width, height: 20
         });
     }
@@ -36,6 +39,11 @@ export class Controller {
         this.bigCircle.render(renderer);
         this.smallCircle.render(renderer);
         this.fuelTankUi.render(renderer);
+        this.speedUi.render(renderer);
+    }
+
+    setSpeed(percentage) {
+        this.speedUi.width = percentage * this.width / 5;
     }
 
     setFuelTank(percentage) {

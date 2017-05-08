@@ -32,7 +32,7 @@ let init = (canvas) => {
     let parallax = new Parallax(camera.position);
     let environment = new Environment(camera, width, height);
 
-    io.onMouse(() => player.speed = 5, () => player.speed = 0);
+    io.onMouse(() => player.setSpeed(1), () => player.setSpeed(0));
     environment.container.forEach(layer => parallax.addLayer({ depth: layer.depth, objects: layer.objects }));
     parallax.addLayer({ objects: [player, new AsteroidField(player, Math.max(width, height))] });
     scene.add(parallax, controller, camera, environment);

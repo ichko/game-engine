@@ -14,11 +14,13 @@ export class Player extends Composite {
         this.fuelTankMax = 500;
         this.fuelTank = this.fuelTankMax;
 
+        this.maxSpeed = 5;
+        this.speed = 0;
+
         this.exhaust = new Fountain({ particleSize: 4, style: { opacity: 0.2 },
                         fromAngle: Math.PI / 2 * 3 - 0.3, toAngle: Math.PI / 2 * 3 + 0.3 });
         this.ship = new Polygon({ points: [new Vector(-5, 0), new Vector(0, -3), 
                                            new Vector(5, 0), new Vector(0, 15)] });
-        this.speed = 0;
         this.color = Utils.randomArray(colors);
 
         this.add({ object: this.exhaust });
@@ -28,11 +30,15 @@ export class Player extends Composite {
         this.explosionSpawner = new Spawner(() => this.explosions.length > 0,
             () => this.explosions.splice(0, this.explosions.length));
     }
-    
+
+    setSpeed(percentage) {
+        this.speed = this.maxSpeed * percentage;
+    }
+
     revive(size = 10) {
         this.setFuelDiff(size);
     }
-    
+
     damage(size = 10) {
         this.setFuelDiff(-size);
         this.explosions.push(new Explosion({
@@ -66,7 +72,10 @@ export class Player extends Composite {
         this.exhaust.style.color = this.color;
         this.controller.color = this.color;
         this.controller.fuelTankUi.style.color = this.color;
+        this.controller.speedUi.style.color = this.color;
+
         this.controller.setFuelTank(this.fuelTank / this.fuelTankMax);
+        this.controller.setSpeed(this.velocity.length());
 
         let forwardAngle = this.controller.direction.angle() + Math.PI;
         let speedForce = this.fuelTank > 0 ? this.speed : 0;

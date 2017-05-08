@@ -67,7 +67,7 @@ export class AsteroidField {
             }
         });
 
-        this.explosionSpawner.update(ctx);        
+        this.explosionSpawner.update(ctx);
     }
 
     render(renderer) {
